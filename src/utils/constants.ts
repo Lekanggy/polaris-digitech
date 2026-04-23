@@ -94,7 +94,7 @@ export const NAV_LINKS: NavLink[] = [
   },
   {
     label: 'Projects',
-    href: '#projects',
+    href: '/projects',
     projects: [
       { logo: 'mtn',     title: 'MTN Coverage Locator',                    description: 'A web app that lets MTNN staff and users check signal strength, report poor coverage...' },
       { logo: 'image23', title: 'Geo-enabled ICT Surveillance Center',      description: 'Deployment of Geo-enabled ICT Surveillance centre for Boats, Ships in Lagos state.' },
