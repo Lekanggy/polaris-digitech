@@ -18,17 +18,19 @@ const satoshi = 'Satoshi, Inter, sans-serif';
 
 export interface ProjectDescriptionProps {
   description: string;
-  /** Left image (shown on the right side per swap instruction) */
-  imageLeft: string;
-  /** Right image (shown on the left side per swap instruction) */
-  imageRight: string;
-  /** Large image below the card row */
-  imageFull: string;
+  /** Left image — omit to show a placeholder card */
+  imageLeft?: string;
+  /** Right image — omit to show a placeholder card */
+  imageRight?: string;
+  /** Large image below the card row — optional, omit to hide or show placeholder */
+  imageFull?: string;
   imageLeftAlt?: string;
   imageRightAlt?: string;
   imageFullAlt?: string;
   /** Unused — kept for API compatibility; section bg is always #EBECF6 */
   cardBg?: string;
+  /** Show a placeholder card for imageFull when true (no image available) */
+  imageFullPlaceholder?: boolean;
 }
 
 export default function ProjectDescription({
@@ -39,6 +41,7 @@ export default function ProjectDescription({
   imageLeftAlt = 'Project image',
   imageRightAlt = 'Project image',
   imageFullAlt = 'Project image',
+  imageFullPlaceholder = false,
 }: ProjectDescriptionProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
 
@@ -106,10 +109,10 @@ export default function ProjectDescription({
             marginBottom: '24px',
           }}
         >
-          {/* Left card — bg: #8BD4FF — shows imageRight (swapped) */}
+          {/* Left card — bg: #8BD4FF — shows imageRight or placeholder */}
           <div
             style={{
-              background: '#8BD4FF',
+              background: imageRight ? '#8BD4FF' : '#FFFFFF',
               borderRadius: '40px',
               paddingTop: '48px',
               paddingBottom: '48px',
@@ -121,20 +124,22 @@ export default function ProjectDescription({
               minHeight: '502px',
             }}
           >
-            <img
-              src={imageRight}
-              alt={imageRightAlt}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: '28px',
-                display: 'block',
-              }}
-            />
+            {imageRight && (
+              <img
+                src={imageRight}
+                alt={imageRightAlt}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  borderRadius: '28px',
+                  display: 'block',
+                }}
+              />
+            )}
           </div>
 
-          {/* Right card — bg: #fff — shows imageLeft (swapped) */}
+          {/* Right card — bg: #fff — shows imageLeft or placeholder */}
           <div
             style={{
               background: '#FFFFFF',
@@ -149,44 +154,51 @@ export default function ProjectDescription({
               minHeight: '502px',
             }}
           >
-            <img
-              src={imageLeft}
-              alt={imageLeftAlt}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: '28px',
-                display: 'block',
-              }}
-            />
+            {imageLeft && (
+              <img
+                src={imageLeft}
+                alt={imageLeftAlt}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  borderRadius: '28px',
+                  display: 'block',
+                }}
+              />
+            )}
           </div>
         </motion.div>
 
-        {/* ── Large full-width image — bg: #fff ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          style={{
-            background: '#FFFFFF',
-            borderRadius: '40px',
-            overflow: 'hidden',
-            padding: '10px',
-          }}
-        >
-          <img
-            src={imageFull}
-            alt={imageFullAlt}
+        {/* ── Large full-width image — bg: #fff — only rendered when imageFull is provided or placeholder requested ── */}
+        {(imageFull || imageFullPlaceholder) && (
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
             style={{
-              width: '100%',
-              height: 'auto',
-              display: 'block',
-              borderRadius: '32px',
-              objectFit: 'cover',
+              background: '#EBECF6',
+              borderRadius: '40px',
+              overflow: 'hidden',
+              padding: imageFull ? '10px' : '0',
+              minHeight: imageFull ? undefined : '400px',
             }}
-          />
-        </motion.div>
+          >
+            {imageFull && (
+              <img
+                src={imageFull}
+                alt={imageFullAlt}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  borderRadius: '32px',
+                  objectFit: 'cover',
+                }}
+              />
+            )}
+          </motion.div>
+        )}
       </div>
     </section>
   );

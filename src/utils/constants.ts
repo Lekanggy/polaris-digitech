@@ -106,7 +106,7 @@ export const NAV_LINKS: NavLink[] = [
       { logo: 'image28', title: 'Thematic Mapping of restricted area for mining', description: 'Production Of Thematic Mapping of Areas Restricted (Protected) From Mining Activ...' },
     ],
   },
-  { label: 'Careers', href: '#careers' },
+  { label: 'Careers', href: '/careers' },
   { label: 'Blogs', href: '#blogs' },
 ];
 

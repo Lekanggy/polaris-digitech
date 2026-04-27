@@ -577,9 +577,9 @@ export default function Navbar() {
 
   const activeLink = NAV_LINKS.find((l) => l.label === activeDropdown);
 
-  // Only mark a link active if it's a real route path (starts with /) and matches current pathname
+  // Mark a link active if the current pathname matches or starts with the link's href
   const isLinkActive = (href: string) =>
-    href.startsWith('/') && location.pathname === href;
+    href.startsWith('/') && location.pathname.startsWith(href);
 
   return (
     <header className="fixed top-10 left-0 right-0 z-50 flex justify-center pt-8 px-4">

@@ -12,18 +12,20 @@ import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 const satoshi = 'Satoshi, Inter, sans-serif';
 
 export interface ProjectGalleryProps {
-  /** Large top image (horizontally centred) */
-  imageLarge: string;
+  /** Large top image — omit to show a placeholder card */
+  imageLarge?: string;
   imageLargeAlt?: string;
-  /** Two bottom images */
-  imageBottomLeft: string;
-  imageBottomRight: string;
+  /** Two bottom images — omit to show placeholder cards */
+  imageBottomLeft?: string;
+  imageBottomRight?: string;
   imageBottomLeftAlt?: string;
   imageBottomRightAlt?: string;
   /** Optional section heading */
   heading?: string;
   /** Background colour (default white) */
   bg?: string;
+  /** Placeholder card colour when images are missing */
+  placeholderBg?: string;
 }
 
 export default function ProjectGallery({
@@ -35,6 +37,7 @@ export default function ProjectGallery({
   imageBottomRightAlt = 'Project image',
   heading,
   bg = '#FFFFFF',
+  placeholderBg = '#EBECF6',
 }: ProjectGalleryProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
 
@@ -73,37 +76,40 @@ export default function ProjectGallery({
           </motion.h2>
         )}
 
-        {/* ── Large centred image ── */}
+        {/* ── Large centred image or placeholder ── */}
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65 }}
           style={{
-            background: '#EEF3FB',
+            background: placeholderBg,
             borderRadius: '24px',
             overflow: 'hidden',
             marginBottom: '24px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '24px',
+            padding: imageLarge ? '24px' : '0',
+            minHeight: '400px',
           }}
         >
-          <img
-            src={imageLarge}
-            alt={imageLargeAlt}
-            style={{
-              width: '100%',
-              height: 'auto',
-              maxHeight: '560px',
-              objectFit: 'contain',
-              display: 'block',
-              borderRadius: '16px',
-            }}
-          />
+          {imageLarge && (
+            <img
+              src={imageLarge}
+              alt={imageLargeAlt}
+              style={{
+                width: '100%',
+                height: 'auto',
+                maxHeight: '560px',
+                objectFit: 'contain',
+                display: 'block',
+                borderRadius: '16px',
+              }}
+            />
+          )}
         </motion.div>
 
-        {/* ── Two bottom images ── */}
+        {/* ── Two bottom images or placeholders ── */}
         <div
           style={{
             display: 'grid',
@@ -116,25 +122,29 @@ export default function ProjectGallery({
             { src: imageBottomRight, alt: imageBottomRightAlt },
           ].map((img, i) => (
             <motion.div
-              key={img.alt + i}
+              key={(img.alt ?? '') + i}
               initial={{ opacity: 0, y: 28 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.65, delay: 0.12 + i * 0.1 }}
               style={{
                 borderRadius: '24px',
                 overflow: 'hidden',
+                background: placeholderBg,
+                minHeight: '360px',
               }}
             >
-              <img
-                src={img.src}
-                alt={img.alt}
-                style={{
-                  width: '100%',
-                  height: '480px',
-                  objectFit: 'cover',
-                  display: 'block',
-                }}
-              />
+              {img.src && (
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  style={{
+                    width: '100%',
+                    height: '480px',
+                    objectFit: 'cover',
+                    display: 'block',
+                  }}
+                />
+              )}
             </motion.div>
           ))}
         </div>

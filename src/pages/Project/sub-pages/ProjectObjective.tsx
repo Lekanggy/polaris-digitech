@@ -18,8 +18,11 @@ const satoshi = 'Satoshi, Inter, sans-serif';
 export interface ProjectObjectiveProps {
   objectivePlain?: string;
   objectiveNode?: React.ReactNode;
-  image: string;
+  /** Image URL — omit to show a placeholder card */
+  image?: string;
   imageAlt?: string;
+  /** Height of placeholder card when image is omitted (default 400px) */
+  placeholderHeight?: number;
 }
 
 export default function ProjectObjective({
@@ -27,6 +30,7 @@ export default function ProjectObjective({
   objectiveNode,
   image,
   imageAlt = 'Project objective',
+  placeholderHeight = 400,
 }: ProjectObjectiveProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
 
@@ -65,7 +69,7 @@ export default function ProjectObjective({
           {objectiveNode ?? objectivePlain}
         </motion.p>
 
-        {/* ── Image ── */}
+        {/* ── Image or placeholder card ── */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -73,18 +77,22 @@ export default function ProjectObjective({
           style={{
             borderRadius: '24px',
             overflow: 'hidden',
+            background: image ? 'transparent' : '#EBECF6',
+            minHeight: image ? undefined : `${placeholderHeight}px`,
           }}
         >
-          <img
-            src={image}
-            alt={imageAlt}
-            style={{
-              width: '100%',
-              height: 'auto',
-              display: 'block',
-              objectFit: 'cover',
-            }}
-          />
+          {image && (
+            <img
+              src={image}
+              alt={imageAlt}
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                objectFit: 'cover',
+              }}
+            />
+          )}
         </motion.div>
       </div>
     </section>
