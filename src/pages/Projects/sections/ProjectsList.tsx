@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 
 // ── Logo imports ───────────────────────────────────────────────────────────
@@ -24,6 +25,7 @@ const PROJECTS = [
     description: 'Deployment of Geo-enabled ICT Surveillance centre for Boats, Ships in Lagos state. Effective maritime management for Lagos.',
     bg: '#4A90D9',
     image: project1,
+    href: '/projects/lag-ferry',
   },
   {
     logo: partner7Logo,
@@ -31,6 +33,7 @@ const PROJECTS = [
     description: 'Polaris Digitech Limited has developed a platform that helps AXA Mansard assess insured assets to match customers with the right products.',
     bg: '#00008E',
     image: project2,
+    href: '/projects/risk-geo-platform',
   },
   {
     logo: mtnLogo,
@@ -38,6 +41,7 @@ const PROJECTS = [
     description: 'Providing MTNN staff and users with a web application to check signal strength, report poor coverage, and find the best location for improved service.',
     bg: '#F5C518',
     image: project3,
+    href: '/projects/mtn-coverage-locator',
   },
   {
     logo: image27Logo,
@@ -45,6 +49,7 @@ const PROJECTS = [
     description: 'Polaris Digitech Limited has developed a platform that helps AXA Mansard assess insured assets to match customers with the right products.',
     bg: '#2B295B',
     image: project1,
+    href: '#',
   },
   {
     logo: partner6Logo,
@@ -52,6 +57,7 @@ const PROJECTS = [
     description: 'An application to effectively manage the day-to-day activities of the Osun state ministry of lands, housing and urban development.',
     bg: '#2E7D32',
     image: project2,
+    href: '#',
   },
   {
     logo: almLogo,
@@ -59,6 +65,7 @@ const PROJECTS = [
     description: 'Providing MTNN staff and users with a web application to evaluate survey plan and set out the proposed coastal road right of way for improved service.',
     bg: '#B0E4FE',
     image: project3,
+    href: '#',
   },
 ];
 
@@ -78,11 +85,12 @@ interface ProjectCardProps {
   description: string;
   bg: string;
   image: string;
+  href: string;
   index: number;
   isVisible: boolean;
 }
 
-function ProjectCard({ logo, title, description, bg, image, index, isVisible }: ProjectCardProps) {
+function ProjectCard({ logo, title, description, bg, image, href, index, isVisible }: ProjectCardProps) {
   // Determine text color based on bg brightness
   const isDark = ['#00008E', '#2B295B', '#2E7D32'].includes(bg);
   const textColor = isDark || bg === '#4A90D9' ? '#FFFFFF' : '#010527';
@@ -161,8 +169,8 @@ function ProjectCard({ logo, title, description, bg, image, index, isVisible }: 
         </p>
 
         {/* Read More button */}
-        <a
-          href="#"
+        <Link
+          to={href}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -184,7 +192,7 @@ function ProjectCard({ logo, title, description, bg, image, index, isVisible }: 
         >
           Read More
           <ChevronRight />
-        </a>
+        </Link>
       </div>
 
       {/* Right — large image buried into card bottom */}
@@ -207,7 +215,7 @@ function ProjectCard({ logo, title, description, bg, image, index, isVisible }: 
             overflow: 'hidden',
             border: '10px solid rgba(0,0,0,0.88)',
             borderBottom: 'none',
-            boxSizing: 'border-box',
+            boxSizing: 'border-box', 
           }}
         >
           <img
@@ -303,6 +311,7 @@ export default function ProjectsList() {
               description={project.description}
               bg={project.bg}
               image={project.image}
+              href={project.href}
               index={i}
               isVisible={isVisible}
             />

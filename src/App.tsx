@@ -5,6 +5,9 @@ import SolutionsPage from './pages/Solutions';
 import PDCPage from './pages/Solutions/PDCPage';
 import AMPPage from './pages/Solutions/AMPPage';
 import ProjectsPage from './pages/Projects';
+import LagFerryPage from './pages/Project/sub-pages/LagFerryPage';
+import RiskGeoPage from './pages/Project/sub-pages/RiskGeoPage';
+import MTNCoveragePage from './pages/Project/sub-pages/MTNCoveragePage';
 
 export default function App() {
   return (
@@ -16,6 +19,9 @@ export default function App() {
         <Route path="/solutions/pdc" element={<PDCPage />} />
         <Route path="/solutions/amp" element={<AMPPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/projects/lag-ferry" element={<LagFerryPage />} />
+        <Route path="/projects/risk-geo-platform" element={<RiskGeoPage />} />
+        <Route path="/projects/mtn-coverage-locator" element={<MTNCoveragePage />} />
       </Routes>
     </BrowserRouter>
   );
