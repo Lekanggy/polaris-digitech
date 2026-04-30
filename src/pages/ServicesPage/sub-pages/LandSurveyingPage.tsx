@@ -61,7 +61,7 @@ function PlaceholderSection() {
       ref={ref}
       style={{
         background: '#FFFFFF',
-        paddingTop: '0',
+        paddingTop: '80px',
         paddingBottom: '80px',
       }}
     >

@@ -56,7 +56,7 @@ function PlaceholderSection() {
   return (
     <section
       ref={ref}
-      style={{ background: '#FFFFFF', paddingTop: '0', paddingBottom: '80px' }}
+      style={{ background: '#FFFFFF', paddingTop: '80px',   paddingBottom: '80px' }}
     >
       <div
         style={{
