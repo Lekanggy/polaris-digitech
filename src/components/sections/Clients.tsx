@@ -40,7 +40,7 @@ function LogoCard({ src, alt, delay, isVisible }: { src: string; alt: string; de
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
+        boxShadow: '0px 0px 40px 0px rgba(2, 10, 71, 0.10)',
         width: '146px',
         height: '100px',
       }}

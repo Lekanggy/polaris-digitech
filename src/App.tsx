@@ -13,6 +13,12 @@ import AssetMappingPage from './pages/Project/sub-pages/AssetMappingPage';
 import LandParcelPage from './pages/Project/sub-pages/LandParcelPage';
 import CareersPage from './pages/Careers';
 import JobDetailPage from './pages/Careers/JobDetailPage';
+import ServicesPage from './pages/ServicesPage';
+import SoftwareDevelopmentPage from './pages/ServicesPage/sub-pages/SoftwareDevelopmentPage';
+import LandSurveyingPage from './pages/ServicesPage/sub-pages/LandSurveyingPage';
+import GeospatialDataPage from './pages/ServicesPage/sub-pages/GeospatialDataPage';
+import TrainingSupportPage from './pages/ServicesPage/sub-pages/TrainingSupportPage';
+import IdentityIntelligencePage from './pages/ServicesPage/sub-pages/IdentityIntelligencePage';
 
 export default function App() {
   return (
@@ -32,6 +38,12 @@ export default function App() {
         <Route path="/projects/land-parcel" element={<LandParcelPage />} />
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/careers/:jobId" element={<JobDetailPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/services/software-development" element={<SoftwareDevelopmentPage />} />
+        <Route path="/services/land-surveying" element={<LandSurveyingPage />} />
+        <Route path="/services/geospatial-data-acquisition" element={<GeospatialDataPage />} />
+        <Route path="/services/training-support" element={<TrainingSupportPage />} />
+        <Route path="/services/identity-intelligence" element={<IdentityIntelligencePage />} />
       </Routes>
     </BrowserRouter>
   );

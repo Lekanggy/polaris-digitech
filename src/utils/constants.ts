@@ -63,7 +63,7 @@ export const NAV_LINKS: NavLink[] = [
   },
   {
     label: 'Services',
-    href: '#services',
+    href: '/services',
     services: [
       {
         icon: 'monitor',
