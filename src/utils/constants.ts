@@ -107,7 +107,7 @@ export const NAV_LINKS: NavLink[] = [
     ],
   },
   { label: 'Careers', href: '/careers' },
-  { label: 'Blogs', href: '#blogs' },
+  { label: 'Blogs', href: '/blog' },
 ];
 
 export const WHY_CHOOSE_US = [

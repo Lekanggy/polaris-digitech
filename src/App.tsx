@@ -19,6 +19,8 @@ import LandSurveyingPage from './pages/ServicesPage/sub-pages/LandSurveyingPage'
 import GeospatialDataPage from './pages/ServicesPage/sub-pages/GeospatialDataPage';
 import TrainingSupportPage from './pages/ServicesPage/sub-pages/TrainingSupportPage';
 import IdentityIntelligencePage from './pages/ServicesPage/sub-pages/IdentityIntelligencePage';
+import BlogPage from './pages/Blog';
+import BlogDetailPage from './pages/Blog/detail/BlogDetailPage';
 
 export default function App() {
   return (
@@ -44,6 +46,8 @@ export default function App() {
         <Route path="/services/geospatial-data-acquisition" element={<GeospatialDataPage />} />
         <Route path="/services/training-support" element={<TrainingSupportPage />} />
         <Route path="/services/identity-intelligence" element={<IdentityIntelligencePage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogDetailPage />} />
       </Routes>
     </BrowserRouter>
   );
