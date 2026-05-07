@@ -21,6 +21,7 @@ import TrainingSupportPage from './pages/ServicesPage/sub-pages/TrainingSupportP
 import IdentityIntelligencePage from './pages/ServicesPage/sub-pages/IdentityIntelligencePage';
 import BlogPage from './pages/Blog';
 import BlogDetailPage from './pages/Blog/detail/BlogDetailPage';
+import ContactUsPage from './pages/ContactUs';
 
 export default function App() {
   return (
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/services/identity-intelligence" element={<IdentityIntelligencePage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:id" element={<BlogDetailPage />} />
+        <Route path="/contact" element={<ContactUsPage />} />
       </Routes>
     </BrowserRouter>
   );

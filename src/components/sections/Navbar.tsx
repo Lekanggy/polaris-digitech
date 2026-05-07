@@ -642,8 +642,8 @@ export default function Navbar() {
           </ul>
 
           {/* Contact Us */}
-          <a
-            href="#contact"
+          <Link
+            to="/contact"
             className="hidden lg:inline-flex items-center text-primary-2 opacity-80 text-sm font-semibold rounded-xl transition-all duration-200 hover:opacity-85 shrink-0"
             style={{
               backgroundColor: '#EBECF6',
@@ -651,10 +651,12 @@ export default function Navbar() {
               paddingBottom: '10px',
               paddingLeft: '20px',
               paddingRight: '20px',
+              textDecoration: 'none',
             }}
+            onClick={() => setActiveDropdown(null)}
           >
             Contact Us
-          </a>
+          </Link>
 
           {/* Mobile hamburger */}
           <button
@@ -748,14 +750,14 @@ export default function Navbar() {
                     </Link>
                   );
                 })}
-                <a
-                  href="#contact"
+                <Link
+                  to="/contact"
                   className="inline-flex items-center justify-center px-5 py-2.5 text-primary-2 text-sm font-semibold rounded-xl mt-1"
-                  style={{ backgroundColor: '#EBECF6' }}
+                  style={{ backgroundColor: '#EBECF6', textDecoration: 'none' }}
                   onClick={() => setMobileOpen(false)}
                 >
                   Contact Us
-                </a>
+                </Link>
               </div>
             </motion.div>
           )}

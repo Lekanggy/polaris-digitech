@@ -49,7 +49,8 @@ const PROJECTS = [
     description: 'Polaris Digitech Limited has developed a platform that helps AXA Mansard assess insured assets to match customers with the right products.',
     bg: '#2B295B',
     image: project1,
-    href: '/projects/google-street-view',
+     href: '/projects/asset-mapping',
+    // href: '/projects/google-street-view',
   },
   {
     logo: partner6Logo,
@@ -57,7 +58,7 @@ const PROJECTS = [
     description: 'An application to effectively manage the day-to-day activities of the Osun state ministry of lands, housing and urban development.',
     bg: '#2E7D32',
     image: project2,
-    href: '/projects/asset-mapping',
+    href: '/projects/land-parcel',
   },
   {
     logo: almLogo,
@@ -65,7 +66,7 @@ const PROJECTS = [
     description: 'Providing MTNN staff and users with a web application to evaluate survey plan and set out the proposed coastal road right of way for improved service.',
     bg: '#B0E4FE',
     image: project3,
-    href: '/projects/land-parcel',
+    href: '/projects/google-street-view',
   },
 ];
 
