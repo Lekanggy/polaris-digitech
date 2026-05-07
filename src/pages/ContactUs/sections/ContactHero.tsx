@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 // ct.png should be placed in src/assets/ — using bgpro.png as fallback until added
-import ctBg from '../../../assets/bgpro.png';
+import ctBg from '../../../assets/ct.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -74,6 +74,16 @@ export default function ContactHero() {
             background: `url(${ctBg}) center/cover no-repeat`,
           }}
         >
+          {/* Overlay */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: '#0000004D',
+            }}
+          >
+          </div>
+
           {/* Form card overlay — positioned on the left */}
           <div
             style={{

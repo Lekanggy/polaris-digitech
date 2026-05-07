@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import hero2 from '../../assets/hero2.png';
 
 const fadeUp = {
@@ -131,8 +132,8 @@ export default function Hero() {
             }}
           >
             {/* Schedule a meeting — muted glass button */}
-            <a
-              href="#contact"
+            <Link
+              to="/schedule"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -161,7 +162,7 @@ export default function Hero() {
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
             >
               Schedule a meeting
-            </a>
+            </Link>
 
             {/* View All Projects — gold */}
             <a

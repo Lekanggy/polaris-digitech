@@ -22,6 +22,7 @@ import IdentityIntelligencePage from './pages/ServicesPage/sub-pages/IdentityInt
 import BlogPage from './pages/Blog';
 import BlogDetailPage from './pages/Blog/detail/BlogDetailPage';
 import ContactUsPage from './pages/ContactUs';
+import ScheduleMeetingPage from './pages/ScheduleMeeting';
 
 export default function App() {
   return (
@@ -50,6 +51,7 @@ export default function App() {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:id" element={<BlogDetailPage />} />
         <Route path="/contact" element={<ContactUsPage />} />
+        <Route path="/schedule" element={<ScheduleMeetingPage />} />
       </Routes>
     </BrowserRouter>
   );

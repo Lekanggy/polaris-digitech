@@ -82,6 +82,7 @@ function AccordionItem({
         background: '#FFFFFF',
         borderRadius: '24px',
         overflow: 'hidden',
+        border: '1px solid #D1D3E7',
       }}
     >
       <button
