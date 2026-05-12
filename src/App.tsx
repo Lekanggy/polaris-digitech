@@ -10,6 +10,8 @@ import RiskGeoPage from './pages/Project/sub-pages/RiskGeoPage';
 import MTNCoveragePage from './pages/Project/sub-pages/MTNCoveragePage';
 import GoogleStreetViewPage from './pages/Project/sub-pages/GoogleStreetViewPage';
 import AssetMappingPage from './pages/Project/sub-pages/AssetMappingPage';
+import ThematicMappingPage from './pages/Project/sub-pages/ThematicMappingPage';
+import AlmaBeachPage from './pages/Project/sub-pages/AlmaBeachPage';
 import LandParcelPage from './pages/Project/sub-pages/LandParcelPage';
 import CareersPage from './pages/Careers';
 import JobDetailPage from './pages/Careers/JobDetailPage';
@@ -38,7 +40,10 @@ export default function App() {
         <Route path="/projects/risk-geo-platform" element={<RiskGeoPage />} />
         <Route path="/projects/mtn-coverage-locator" element={<MTNCoveragePage />} />
         <Route path="/projects/google-street-view" element={<GoogleStreetViewPage />} />
+        <Route path="/projects/googl-street-view" element={<GoogleStreetViewPage />} />
         <Route path="/projects/asset-mapping" element={<AssetMappingPage />} />
+        <Route path="/projects/thematic-mapping" element={<ThematicMappingPage />} />
+        <Route path="/projects/alma-beach" element={<AlmaBeachPage />} />
         <Route path="/projects/land-parcel" element={<LandParcelPage />} />
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/careers/:jobId" element={<JobDetailPage />} />

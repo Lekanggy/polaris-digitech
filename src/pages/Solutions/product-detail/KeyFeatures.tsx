@@ -100,7 +100,17 @@ export default function KeyFeatures({ sectionTitle, sectionDescription, features
         </motion.div>
 
         {/* Right — feature list */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            maxHeight: '520px',
+            overflowY: 'auto',
+            paddingRight: '8px',
+            scrollbarWidth: 'thin',
+            scrollbarColor: 'rgba(255,255,255,0.25) transparent',
+          }}
+        >
           {features.map((feat, i) => (
             <motion.div
               key={feat.title}

@@ -33,7 +33,7 @@ const SERVICES: ServiceItem[] = [
   { title: 'Land Surveying',                          image: soft1, href: '/services/land-surveying' },
   { title: 'Geospatial Data Acquisition Management',  image: soft2, href: '/services/geospatial-data-acquisition' },
   { title: 'Identity Intelligence Management',        image: soft3, href: '/services/identity-intelligence' },
-  { title: 'Training and Technical Support Services', image: soft4, href: '/services/training-support', flip: true },
+  { title: 'Training and Technical Support Services', image: soft4, href: '/services/training-support'},
 ];
 
 // ── Single service card ───────────────────────────────────────────────────

@@ -9,11 +9,16 @@ import mtnLogo      from '../../../assets/mtn.png';
 import image27Logo  from '../../../assets/image 27.png';
 import partner6Logo from '../../../assets/partner6.png';
 import almLogo      from '../../../assets/alm.png';
+import googLogo     from '../../../assets/goog.png';
+import pol2Logo     from '../../../assets/pol2.png';
 
 // ── Project card image imports ─────────────────────────────────────────────
 import project1 from '../../../assets/project1.png';
 import project2 from '../../../assets/project2.png';
 import project3 from '../../../assets/project3.png';
+import alBeach   from '../../../assets/al-beach.png';
+import assetMap  from '../../../assets/asset-map.png';
+import tMap      from '../../../assets/t-map.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -45,12 +50,11 @@ const PROJECTS = [
   },
   {
     logo: image27Logo,
-    title: 'Risk Geo-Platform',
-    description: 'Polaris Digitech Limited has developed a platform that helps AXA Mansard assess insured assets to match customers with the right products.',
+    title: 'Asset Mapping and Customer Enumeration',
+    description: 'To ascertain the number of customers per asset of Eko electric in readiness for their SCADA project.',
     bg: '#2B295B',
     image: project1,
-     href: '/projects/asset-mapping',
-    // href: '/projects/google-street-view',
+    href: '/projects/asset-mapping',
   },
   {
     logo: partner6Logo,
@@ -63,10 +67,26 @@ const PROJECTS = [
   {
     logo: almLogo,
     title: 'Alma Beach',
-    description: 'Providing MTNN staff and users with a web application to evaluate survey plan and set out the proposed coastal road right of way for improved service.',
+    description: 'Evaluate survey plan and set out the proposed coastal road right of way.',
     bg: '#B0E4FE',
-    image: project3,
-    href: '/projects/google-street-view',
+    image: alBeach,
+    href: '/projects/alma-beach',
+  },
+  {
+    logo: googLogo,
+    title: 'Google Street View',
+    description: 'Collect street names, environmental features, and building/house/structure details to aid remote view of locations.',
+    bg: '#4A90D9',
+    image: assetMap,
+    href: '/projects/googl-street-view',
+  },
+  {
+    logo: pol2Logo,
+    title: 'Thematic Mapping of restricted area for mining.',
+    description: 'Production Of Thematic Mapping of Areas Restricted (Protected) From Mining Activities in Nigeria for Integration into the Nigeria Mining Cadastre Digital Database.',
+    bg: '#2B295B',
+    image: tMap,
+    href: '/projects/thematic-mapping',
   },
 ];
 
