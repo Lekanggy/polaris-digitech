@@ -18,10 +18,10 @@ const row1 = [
   { src: partner3, alt: 'Partner 3' },
   { src: partner4, alt: 'MTN' },
   { src: partner5, alt: 'AXA' },
-  { src: partner6, alt: 'GTBank' },
 ];
 
 const row2 = [
+  { src: partner6, alt: 'GTBank' },
   { src: partner7, alt: 'OPay' },
   { src: partner8, alt: 'UPDC' },
   { src: partner9, alt: 'Mercy Corps' },
@@ -41,14 +41,14 @@ function LogoCard({ src, alt, delay, isVisible }: { src: string; alt: string; de
         alignItems: 'center',
         justifyContent: 'center',
         boxShadow: '0px 0px 40px 0px rgba(2, 10, 71, 0.10)',
-        width: '146px',
-        height: '100px',
+        width: '200px',
+        height: '140px',
       }}
     >
       <img
         src={src}
         alt={alt}
-        style={{ height: '36px', width: 'auto', objectFit: 'contain' }}
+        style={{ height: '60px', width: 'auto', objectFit: 'contain' }}
         loading="lazy"
       />
     </motion.div>

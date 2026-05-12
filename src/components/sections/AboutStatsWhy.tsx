@@ -10,7 +10,7 @@ const satoshi = 'Satoshi, Inter, sans-serif';
 function StatItem({ value, label, start }: { value: number; label: string; start: boolean }) {
   const count = useCounter(value, 2000, start);
   return (
-    <div style={{ textAlign: 'right' }}>
+    <div style={{ textAlign: 'center' }}>
       <p style={{
         fontFamily: satoshi,
         fontWeight: 400,
@@ -18,7 +18,7 @@ function StatItem({ value, label, start }: { value: number; label: string; start
         lineHeight: '100%',
         letterSpacing: '0',
         color: '#D7B56D',
-        textAlign: 'right',
+        textAlign: 'center',
       }}>
         {count}+
       </p>
@@ -30,7 +30,7 @@ function StatItem({ value, label, start }: { value: number; label: string; start
         letterSpacing: '0',
         color: '#FFFFFF',
         marginTop: '12px',
-        textAlign: 'right',
+        textAlign: 'center',
       }}>
         {label}
       </p>
