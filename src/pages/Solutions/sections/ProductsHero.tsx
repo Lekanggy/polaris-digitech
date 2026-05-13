@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-// ── Product data with routes ───────────────────────────────────────────────
+// ── Product data ───────────────────────────────────────────────────────────
 const PRODUCTS = [
   {
     title: 'Polaris Data Collector (PDC)',
@@ -47,7 +46,7 @@ const PRODUCTS = [
   },
 ];
 
-// ── Bullet icon — large circle in card bg color with dark inner dot ────────
+// ── Bullet icon ────────────────────────────────────────────────────────────
 function BulletDot({ cardBg }: { cardBg: string }) {
   return (
     <span
@@ -63,14 +62,7 @@ function BulletDot({ cardBg }: { cardBg: string }) {
         flexShrink: 0,
       }}
     >
-      <span
-        style={{
-          width: '8px',
-          height: '8px',
-          borderRadius: '50%',
-          backgroundColor: '#1a1a3e',
-        }}
-      />
+      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#1a1a3e' }} />
     </span>
   );
 }
@@ -84,128 +76,117 @@ interface ProductCardProps {
   boxBg: string;
   boxPosition: 'left' | 'right';
   route: string;
-  index: number;
-  isVisible: boolean;
+  // sticky offset from top of viewport — each card sticks a little lower
+  // so the previous card's top edge peeks out beneath it
+  stickyTop: number;
+  zIndex: number;
 }
 
-function ProductCard({ title, description, features, bg, boxBg, boxPosition, route, index, isVisible }: ProductCardProps) {
+function ProductCard({
+  title, description, features, bg, boxBg, boxPosition, route, stickyTop, zIndex,
+}: ProductCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      animate={isVisible ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: 0.1 + index * 0.12 }}
+    <div
       style={{
-        background: bg,
-        borderRadius: '24px',
-        padding: '40px',
-        display: 'grid',
-        gridTemplateColumns: boxPosition === 'left' ? '1fr 1.2fr' : '1.2fr 1fr',
-        gap: '32px',
-        alignItems: 'center',
+        position: 'sticky',
+        top: `${stickyTop}px`,
+        zIndex,
+        // Extra bottom padding so the card below has room to slide under
+        marginBottom: '24px',
       }}
     >
-      {/* Colored box */}
       <div
         style={{
-          background: boxBg,
-          borderRadius: '20px',
-          aspectRatio: '1',
+          background: bg,
+          borderRadius: '24px',
+          padding: '40px',
+          display: 'grid',
+          gridTemplateColumns: boxPosition === 'left' ? '1fr 1.2fr' : '1.2fr 1fr',
+          gap: '32px',
+          alignItems: 'center',
           width: '100%',
-          order: boxPosition === 'left' ? 0 : 1,
+          boxSizing: 'border-box',
+          // Subtle shadow so stacked cards look layered
+          boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
         }}
-      />
-
-      {/* Text content */}
-      <div style={{ order: boxPosition === 'left' ? 1 : 0 }}>
-        <h3
+      >
+        {/* Colored box */}
+        <div
           style={{
-            fontFamily: satoshi,
-            fontWeight: 600,
-            fontSize: '26px',
-            lineHeight: '130%',
-            color: '#283172',
-            marginBottom: '12px',
+            background: boxBg,
+            borderRadius: '20px',
+            aspectRatio: '1',
+            width: '100%',
+            order: boxPosition === 'left' ? 0 : 1,
           }}
-        >
-          {title}
-        </h3>
-        <p
-          style={{
-            fontFamily: satoshi,
-            fontWeight: 400,
-            fontSize: '15px',
-            lineHeight: '160%',
-            color: '#46485F',
-            marginBottom: '20px',
-          }}
-        >
-          {description}
-        </p>
+        />
 
-        {/* Feature list — circular bullet matching card bg */}
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {features.map((feat) => (
-            <li key={feat} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <BulletDot cardBg={boxBg} />
-              <span
-                style={{
-                  fontFamily: satoshi,
-                  fontWeight: 400,
-                  fontSize: '15px',
-                  lineHeight: '150%',
-                  color: '#46485F',
-                }}
-              >
-                {feat}
-              </span>
-            </li>
-          ))}
-        </ul>
+        {/* Text content */}
+        <div style={{ order: boxPosition === 'left' ? 1 : 0 }}>
+          <h3
+            style={{
+              fontFamily: satoshi, fontWeight: 600, fontSize: '26px',
+              lineHeight: '130%', color: '#283172', marginBottom: '12px',
+            }}
+          >
+            {title}
+          </h3>
+          <p
+            style={{
+              fontFamily: satoshi, fontWeight: 400, fontSize: '15px',
+              lineHeight: '160%', color: '#46485F', marginBottom: '20px',
+            }}
+          >
+            {description}
+          </p>
 
-        {/* Read More button */}
-        <Link
-          to={route}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginTop: '28px',
-            padding: '10px 20px',
-            borderRadius: '8px',
-            background: '#283172',
-            color: '#fff',
-            fontFamily: satoshi,
-            fontWeight: 600,
-            fontSize: '14px',
-            textDecoration: 'none',
-            transition: 'opacity 200ms',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-        >
-          Read More
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="4,2 10,7 4,12" />
-          </svg>
-        </Link>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {features.map((feat) => (
+              <li key={feat} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <BulletDot cardBg={boxBg} />
+                <span style={{ fontFamily: satoshi, fontWeight: 400, fontSize: '15px', lineHeight: '150%', color: '#46485F' }}>
+                  {feat}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            to={route}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              marginTop: '28px', padding: '10px 20px', borderRadius: '8px',
+              background: '#283172', color: '#fff', fontFamily: satoshi,
+              fontWeight: 600, fontSize: '14px', textDecoration: 'none',
+              transition: 'opacity 200ms',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+          >
+            Read More
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="4,2 10,7 4,12" />
+            </svg>
+          </Link>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 // ── Main section ───────────────────────────────────────────────────────────
 export default function ProductsHero() {
-  const { ref, isVisible } = useScrollAnimation(0.05);
+  // Each card sticks at a slightly lower top value so the card beneath it
+  // peeks out by ~20px — giving the "deck of cards" stacking visual.
+  // Card 1: sticks at 100px (below navbar)
+  // Card 2: sticks at 120px (20px lower → Card 1 peeks above it)
+  // Card 3: sticks at 140px (20px lower → Cards 1 & 2 peek above it)
+  const NAVBAR_H = 100;
+  const PEEK     = 20; // px each card peeks above the one stacked on it
 
   return (
-    <section
-      ref={ref}
-      style={{
-        background: '#fff',
-        paddingTop: '160px',
-        paddingBottom: '80px',
-      }}
-    >
+    <section style={{ background: '#fff', paddingTop: '160px', paddingBottom: '80px' }}>
+      {/* ── Header ── */}
       <div
         style={{
           maxWidth: '1280px',
@@ -214,20 +195,15 @@ export default function ProductsHero() {
           paddingRight: 'clamp(24px, 5vw, 80px)',
         }}
       >
-        {/* ── Header: title + desc + button ── */}
         <div style={{ textAlign: 'center', marginBottom: '64px' }}>
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             style={{
-              fontFamily: satoshi,
-              fontWeight: 600,
-              fontSize: 'clamp(32px, 5vw, 56px)',
-              lineHeight: '120%',
-              letterSpacing: '-0.02em',
-              color: '#010527',
-              marginBottom: '20px',
+              fontFamily: satoshi, fontWeight: 600,
+              fontSize: 'clamp(32px, 5vw, 56px)', lineHeight: '120%',
+              letterSpacing: '-0.02em', color: '#010527', marginBottom: '20px',
             }}
           >
             Solutions You Can Rely On
@@ -235,16 +211,12 @@ export default function ProductsHero() {
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             style={{
-              fontFamily: satoshi,
-              fontWeight: 400,
-              fontSize: '18px',
-              lineHeight: '160%',
-              color: '#46485F',
-              maxWidth: '720px',
-              margin: '0 auto 32px',
+              fontFamily: satoshi, fontWeight: 400, fontSize: '18px',
+              lineHeight: '160%', color: '#46485F',
+              maxWidth: '720px', margin: '0 auto 32px',
             }}
           >
             Discover our in-house products that enable quick data collection, precise address management, and effective geographical risk assessment. We also integrate smoothly with Google Workspace to boost your operations.
@@ -253,21 +225,13 @@ export default function ProductsHero() {
           <motion.a
             href="#contact"
             initial={{ opacity: 0, y: 16 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '12px 32px',
-              borderRadius: '8px',
-              background: '#283172',
-              color: '#fff',
-              fontFamily: satoshi,
-              fontWeight: 600,
-              fontSize: '15px',
-              textDecoration: 'none',
-              transition: 'opacity 200ms',
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              padding: '12px 32px', borderRadius: '8px', background: '#283172',
+              color: '#fff', fontFamily: satoshi, fontWeight: 600, fontSize: '15px',
+              textDecoration: 'none', transition: 'opacity 200ms',
             }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
             onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
@@ -276,20 +240,14 @@ export default function ProductsHero() {
           </motion.a>
         </div>
 
-        {/* ── Product cards ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        {/* ── Cards — each is position:sticky, stacking as user scrolls ── */}
+        <div>
           {PRODUCTS.map((product, i) => (
             <ProductCard
               key={product.title}
-              title={product.title}
-              description={product.description}
-              features={product.features}
-              bg={product.bg}
-              boxBg={product.boxBg}
-              boxPosition={product.boxPosition}
-              route={product.route}
-              index={i}
-              isVisible={isVisible}
+              {...product}
+              stickyTop={NAVBAR_H + i * PEEK}
+              zIndex={i + 1}
             />
           ))}
         </div>
