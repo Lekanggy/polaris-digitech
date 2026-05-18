@@ -94,7 +94,7 @@ export default function KeyFeatures({ sectionTitle, sectionDescription, features
           >
             {sectionTitle}
           </h2>
-          <p style={{ ...descStyle, color: 'rgba(255,255,255,0.7)' }}>
+          <p style={{ ...descStyle, color: 'rgba(255,255,255,0.7)', maxWidth: '320px' }}>
             {sectionDescription}
           </p>
         </motion.div>
@@ -118,14 +118,13 @@ export default function KeyFeatures({ sectionTitle, sectionDescription, features
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 + i * 0.08 }}
             >
-              <PinIcon />
               <h3
                 style={{
                   fontFamily: satoshi,
                   fontWeight: 600,
                   fontSize: '20px',
                   lineHeight: '130%',
-                  color: '#FFFFFF',
+                  color: '#D7B56D',
                   marginBottom: '8px',
                 }}
               >

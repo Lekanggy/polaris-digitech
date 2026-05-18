@@ -243,6 +243,7 @@ export default function ProductsHero() {
         {/* ── Cards — each is position:sticky, stacking as user scrolls ── */}
         <div>
           {PRODUCTS.map((product, i) => (
+            
             <ProductCard
               key={product.title}
               {...product}

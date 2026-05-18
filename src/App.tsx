@@ -1,9 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/Home';
 import AboutPage from './pages/About';
 import SolutionsPage from './pages/Solutions';
 import PDCPage from './pages/Solutions/PDCPage';
 import AMPPage from './pages/Solutions/AMPPage';
+import GoogleWorkspaceBusinessPage from './pages/Solutions/GoogleWorkspaceBusinessPage';
+import GoogleWorkspaceEducationPage from './pages/Solutions/GoogleWorkspaceEducationPage';
 import ProjectsPage from './pages/Projects';
 import LagFerryPage from './pages/Project/sub-pages/LagFerryPage';
 import RiskGeoPage from './pages/Project/sub-pages/RiskGeoPage';
@@ -29,12 +32,15 @@ import ScheduleMeetingPage from './pages/ScheduleMeeting';
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/solutions" element={<SolutionsPage />} />
         <Route path="/solutions/pdc" element={<PDCPage />} />
         <Route path="/solutions/amp" element={<AMPPage />} />
+        <Route path="/solutions/google-workspace-business" element={<GoogleWorkspaceBusinessPage />} />
+        <Route path="/solutions/google-workspace-education" element={<GoogleWorkspaceEducationPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/lag-ferry" element={<LagFerryPage />} />
         <Route path="/projects/risk-geo-platform" element={<RiskGeoPage />} />
