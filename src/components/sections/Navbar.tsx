@@ -120,7 +120,7 @@ function ProjectsMegaMenu({ items }: { items: NavProjectItem[] }) {
         {items.map((item) => (
           <a
             key={item.title}
-            href="#projects"
+            href={item.href}
             style={{
               display: 'block',
               padding: '14px',
@@ -270,7 +270,7 @@ function ProductsMegaMenu({ items, partnerProducts }: { items: NavProductItem[];
         {items.map((item) => (
           <a
             key={item.title}
-            href="#products"
+            href={item.href}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -511,7 +511,7 @@ function ServicesMegaMenu({ items }: { items: NavServiceItem[] }) {
         {items.map((item) => (
           <a
             key={item.title}
-            href="#services"
+            href={item.href}
             style={{
               display: 'block',
               padding: '14px',

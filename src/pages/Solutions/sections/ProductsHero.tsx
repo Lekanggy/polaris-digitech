@@ -29,7 +29,7 @@ const PRODUCTS = [
     bg: '#DAE4FF',
     boxBg: '#6B9FD8',
     boxPosition: 'right' as const,
-    route: '/solutions/risk-geo',
+    route: 'projects/risk-geo-platform',
   },
   {
     title: 'Address Management Portal (AMP)',

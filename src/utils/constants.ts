@@ -2,6 +2,7 @@ export type NavServiceItem = {
   icon: string;
   title: string;
   description: string;
+  href: string
 };
 
 export type NavProductItem = {
@@ -9,12 +10,14 @@ export type NavProductItem = {
   title: string;
   description: string;
   bg: string;
+  href?: string;
 };
 
 export type NavProjectItem = {
   logo: string;   // asset import key
   title: string;
   description: string;
+  href: string;
 };
 
 export type NavLink = {
@@ -38,18 +41,21 @@ export const NAV_LINKS: NavLink[] = [
         title: 'Polaris Data Collector (PDC)',
         description: 'A digital tool for real-time data gathering using custom forms, enabling efficient electronic data collection and storage.',
         bg: '#F0E2FF',
+        href: "/solutions/pdc"
       },
       {
         icon: 'risk',
         title: 'Risk Geo-Platform',
         description: 'An advanced tool that analyzes and visualizes geospatial data to help organizations manage risks proactively and support business growth.',
         bg: '#DAE4FF',
+        href: "/projects/risk-geo-platform"
       },
       {
         icon: 'address',
         title: 'Address Management Portal',
         description: 'A user-friendly platform that streamlines address verification and management, improving data accuracy and customer experience.',
         bg: '#CCECFF',
+        href: "/solutions/amp"
       },
     ],
     partnerProducts: [
@@ -69,26 +75,31 @@ export const NAV_LINKS: NavLink[] = [
         icon: 'monitor',
         title: 'Software Development',
         description: 'We build, deploy, and maintain custom software tailored to your business needs.',
+        href: "/services/software-development"
       },
       {
         icon: 'survey',
         title: 'Land Surveying',
         description: 'We create accurate digital maps using satellite, aerial, and GIS technology.',
+        href: "/services/land-surveying"
       },
       {
         icon: 'shield',
         title: 'Customer Address Verification',
         description: 'We help businesses ensure accurate deliveries and reliable customer data.',
+        href: "/services/identity-intelligence"
       },
       {
         icon: 'bulb',
         title: 'Training and Technical Support',
         description: 'We offer tailored training and support to help clients get the most from our solutions.',
+        href: "/services/training-support"
       },
       {
         icon: 'globe',
         title: 'Geospatial Data Acquisition Management',
         description: 'We provide precise mapping of land features for informed decision-making.',
+        href: "/services/geospatial-data-acquisition"
       },
     ],
   },
@@ -96,14 +107,14 @@ export const NAV_LINKS: NavLink[] = [
     label: 'Projects',
     href: '/projects',
     projects: [
-      { logo: 'mtn',     title: 'MTN Coverage Locator',                    description: 'A web app that lets MTNN staff and users check signal strength, report poor coverage...' },
-      { logo: 'image23', title: 'Geo-enabled ICT Surveillance Center',      description: 'Deployment of Geo-enabled ICT Surveillance centre for Boats, Ships in Lagos state.' },
-      { logo: 'partner7',title: 'Risk Geo-Platform',                        description: 'A platform that helps AXA Mansard assess insured assets to match customers with t...' },
-      { logo: 'partner6',title: 'OLIS - Osun Land Information System',      description: 'An application to effectively manage the day-to-day activities of the Osun state ministry o...' },
-      { logo: 'goog',    title: 'Google Street View',                       description: 'Collect street names, environmental features, and building/house/structure details to ...' },
-      { logo: 'alm',     title: 'Alma Beach',                               description: 'Evaluate survey plan and set out the proposed coastal road right of way' },
-      { logo: 'image27', title: 'Asset Mapping and Customer Enumeration',   description: 'To know the no of customers per asset of Eko electric in readiness for their SCADA project.' },
-      { logo: 'image28', title: 'Thematic Mapping of restricted area for mining', description: 'Production Of Thematic Mapping of Areas Restricted (Protected) From Mining Activ...' },
+      { logo: 'mtn',     title: 'MTN Coverage Locator',                    description: 'A web app that lets MTNN staff and users check signal strength, report poor coverage...', href: "/projects/mtn-coverage-locator" },
+      { logo: 'image23', title: 'Geo-enabled ICT Surveillance Center',      description: 'Deployment of Geo-enabled ICT Surveillance centre for Boats, Ships in Lagos state.', href: "/projects/lag-ferry" },
+      { logo: 'partner7',title: 'Risk Geo-Platform',                        description: 'A platform that helps AXA Mansard assess insured assets to match customers with t...', href: "/projects/risk-geo-platform" },
+      { logo: 'partner6',title: 'OLIS - Osun Land Information System',      description: 'An application to effectively manage the day-to-day activities of the Osun state ministry o...', href: "/projects/land-parcel" },
+      { logo: 'goog',    title: 'Google Street View',                       description: 'Collect street names, environmental features, and building/house/structure details to ...', href: "/projects/googl-street-view" },
+      { logo: 'alm',     title: 'Alma Beach',                               description: 'Evaluate survey plan and set out the proposed coastal road right of way', href: "/projects/alma-beach" },
+      { logo: 'image27', title: 'Asset Mapping and Customer Enumeration',   description: 'To know the no of customers per asset of Eko electric in readiness for their SCADA project.', href: "/projects/asset-mapping" },
+      { logo: 'image28', title: 'Thematic Mapping of restricted area for mining', description: 'Production Of Thematic Mapping of Areas Restricted (Protected) From Mining Activ...', href: "/projects/thematic-mapping" },
     ],
   },
   { label: 'Careers', href: '/careers' },
