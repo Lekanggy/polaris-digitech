@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import { JOBS } from '../jobsData';
 import type { Category, Job } from '../jobsData';
 
@@ -147,6 +148,7 @@ function JobCard({ job, index, isVisible }: { job: Job; index: number; isVisible
 // ── Main section ──────────────────────────────────────────────────────────
 export default function OpenPositions() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [activeCategory, setActiveCategory] = useState<Category>('All');
 
   const filteredJobs =
@@ -176,15 +178,15 @@ export default function OpenPositions() {
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          style={{
-            fontFamily: satoshi,
-            fontWeight: 500,
-            fontSize: '40px',
-            lineHeight: '150%',
-            letterSpacing: '-0.02em',
-            color: '#010527',
-            marginBottom: '24px',
-          }}
+            style={{
+              fontFamily: satoshi,
+              fontWeight: 500,
+              fontSize: isMobile ? 'clamp(28px, 6vw, 40px)' : '40px',
+              lineHeight: '150%',
+              letterSpacing: '-0.02em',
+              color: '#010527',
+              marginBottom: '24px',
+            }}
         >
           Open Positions
         </motion.h2>
@@ -250,7 +252,7 @@ export default function OpenPositions() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
             gap: '24px',
           }}
         >

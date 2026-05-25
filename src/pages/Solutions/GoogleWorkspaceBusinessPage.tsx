@@ -8,6 +8,8 @@ import KeyFeatures from './product-detail/KeyFeatures';
 import ProductShowcase from './product-detail/ProductShowcase';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -48,7 +50,7 @@ const GWB_FEATURES = [
 ];
 
 // ── Section 1: Intro (custom — wider placeholder box) ─────────────────────
-function IntroSection() {
+function IntroSection({ isMobile }: { isMobile: boolean }) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   return (
     <section
@@ -63,8 +65,8 @@ function IntroSection() {
           paddingRight: 'clamp(24px, 5vw, 80px)',
           // Wider left column for the placeholder box
           display: 'grid',
-          gridTemplateColumns: '1.4fr 1fr',
-          gap: 'clamp(40px, 6vw, 80px)',
+          gridTemplateColumns: isMobile ? '1fr' : '1.4fr 1fr',
+          gap: isMobile ? '32px' : 'clamp(40px, 6vw, 80px)',
           alignItems: 'stretch',
         }}
       >
@@ -76,7 +78,7 @@ function IntroSection() {
           style={{
             background: '#E8EAF6',
             borderRadius: '24px',
-            minHeight: '380px',
+            minHeight: isMobile ? '280px' : '380px',
           }}
         />
 
@@ -303,7 +305,7 @@ function PlanCard({ name, price, period, features, highlighted = false, delay, i
   );
 }
 
-function PricingSection() {
+function PricingSection({ isMobile }: { isMobile: boolean }) {
   const { ref, isVisible } = useScrollAnimation(0.1);
 
   const plans = [
@@ -399,7 +401,8 @@ function PricingSection() {
         {/* Plan cards — single row, no wrapping */}
         <div
           style={{
-            display: 'flex',
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
             gap: '24px',
             justifyContent: 'center',
             alignItems: 'flex-start',
@@ -425,18 +428,19 @@ function PricingSection() {
 
 // ── Page ───────────────────────────────────────────────────────────────────
 export default function GoogleWorkspaceBusinessPage() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   return (
     <div className="min-h-screen">
       <Navbar />
 
       {/* Section 1 — Intro (wider placeholder box) */}
-      <IntroSection />
+      <IntroSection isMobile={isMobile} />
 
       {/* Section 2 — Quote (pure gradient, no image) */}
       <QuoteSection />
 
       {/* Section 3 — Pricing */}
-      <PricingSection />
+      <PricingSection isMobile={isMobile} />
 
       {/* Section 4 — Key Features */}
       <KeyFeatures

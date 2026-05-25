@@ -1,3 +1,5 @@
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
+
 const satoshi = 'Satoshi, Inter, sans-serif';
 
 interface ProductQuoteProps {
@@ -6,12 +8,13 @@ interface ProductQuoteProps {
 }
 
 export default function ProductQuote({ image, quote }: ProductQuoteProps) {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   return (
     <section
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '600px',
+        minHeight: isMobile ? '400px' : '600px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -37,7 +40,7 @@ export default function ProductQuote({ image, quote }: ProductQuoteProps) {
           zIndex: 1,
           fontFamily: satoshi,
           fontWeight: 500,
-          fontSize: '36px',
+          fontSize: isMobile ? 'clamp(20px, 5vw, 28px)' : '36px',
           lineHeight: '150%',
           letterSpacing: '-0.02em',
           textAlign: 'center',

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -62,6 +63,7 @@ function ProductCard({ bg, icon, title, description, delay, isVisible, offsetTop
       initial={{ opacity: 0, y: 30 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay }}
+      className="products-card"
       style={{
         backgroundColor: bg,
         borderRadius: '24px',
@@ -69,12 +71,14 @@ function ProductCard({ bg, icon, title, description, delay, isVisible, offsetTop
         display: 'flex',
         flexDirection: 'column',
         gap: '10px',
-        width: '351px',
+        width: '100%',
+        maxWidth: '351px',
         minHeight: '268px',
         boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
         marginTop: offsetTop ? '40px' : '0',
         transition: 'transform 0.3s ease, box-shadow 0.3s ease',
         cursor: 'pointer',
+        boxSizing: 'border-box',
       }}
       whileHover={{ y: -4, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}
     >
@@ -114,6 +118,7 @@ function ProductCard({ bg, icon, title, description, delay, isVisible, offsetTop
 // ── Main section ───────────────────────────────────────────────────────────
 export default function Products() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const products = [
     {
@@ -156,14 +161,15 @@ export default function Products() {
   return (
     <section id="products" ref={ref} style={{ backgroundColor: '#FFF', paddingTop: '80px', paddingBottom: '80px' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto', paddingLeft: 'clamp(24px, 5vw, 80px)', paddingRight: 'clamp(24px, 5vw, 80px)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '40% 60%', gap: '64px', alignItems: 'start' }}>
+        <div className="products-main-grid" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '40% 60%', gap: isMobile ? '32px' : '64px', alignItems: 'start' }}>
 
           {/* ── Left: badge, title, description, CTA ── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6 }}
-            style={{ position: 'sticky', top: '112px' }}
+            className="products-sticky-panel"
+            style={{ position: isMobile ? 'static' : 'sticky', top: '112px' }}
           >
             {/* Badge */}
             <span style={{
@@ -244,12 +250,11 @@ export default function Products() {
             </a>
           </motion.div>
 
-          {/* ── Right: staggered 2-col grid ── */}
-          {/* Left col starts lower (offsetTop), right col starts at top */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', alignItems: 'start' }}>
+          {/* ── Right: staggered 2-col grid — single col on mobile ── */}
+          <div className="products-cards-grid" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '20px', alignItems: 'start' }}>
 
-            {/* Left column — offset down */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '48px' }}>
+            {/* Left column — offset down on desktop only */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: isMobile ? '0' : '48px' }}>
               {leftCards.map((p, i) => (
                 <ProductCard
                   key={p.id}
@@ -263,7 +268,7 @@ export default function Products() {
               ))}
             </div>
 
-            {/* Right column — starts at top */}
+            {/* Right column */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {rightCards.map((p, i) => (
                 <ProductCard

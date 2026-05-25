@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import project1 from '../../assets/project1.png';
 import project2 from '../../assets/project2.png';
 import project3 from '../../assets/project3.png';
@@ -81,6 +82,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
   showBorder?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const isDark = project.bg === '#FFCC00';
 
   return (
@@ -105,7 +107,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
     >
       {/* Left content */}
       <div style={{
-        flex: '0 0 55%',
+        flex: isMobile ? '0 0 65%' : '0 0 55%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -180,7 +182,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
           top: '15%',
           bottom: '-20px',
           width: '58%',
-          transform: hovered ? 'translateX(0)' : 'translateX(40%)',
+          transform: hovered || isMobile ? 'translateX(0)' : 'translateX(40%)',
           transition: 'transform 0.4s ease',
         }}
       >
@@ -218,6 +220,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
 // ── Main section ───────────────────────────────────────────────────────────
 export default function Projects() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section id="projects" ref={ref} style={{ backgroundColor: '#fff', paddingTop: '80px', paddingBottom: '80px' }}>
@@ -228,8 +231,8 @@ export default function Projects() {
         paddingRight: 'clamp(24px, 5vw, 80px)',
       }}>
 
-        {/* ── Header — Task 1 ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '656px 656px', gap: '20px', justifyContent: 'center', alignItems: 'start', paddingBottom: '40px' }}>
+        {/* ── Header ── */}
+        <div className="projects-header-grid" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '656px 656px', gap: '20px', justifyContent: 'center', alignItems: 'start', paddingBottom: '40px' }}>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -263,15 +266,15 @@ export default function Projects() {
           </motion.p>
         </div>
 
-        {/* ── Row 1: two equal cards — 656×408 each ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '656px 656px', gap: '20px', justifyContent: 'center' }}>
-          <ProjectCard project={projects[0]} delay={0.1} isVisible={isVisible} height="408px" showBorder />
-          <ProjectCard project={projects[1]} delay={0.2} isVisible={isVisible} height="408px" showBorder />
+        {/* ── Row 1: two equal cards ── */}
+        <div className="projects-row1" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '656px 656px', gap: '20px', justifyContent: 'center' }}>
+          <ProjectCard project={projects[0]} delay={0.1} isVisible={isVisible} height={isMobile ? '320px' : '408px'} showBorder />
+          <ProjectCard project={projects[1]} delay={0.2} isVisible={isVisible} height={isMobile ? '320px' : '408px'} showBorder />
         </div>
 
-        {/* ── Row 2: MTN 791px, See All 521px ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '791px 521px', gap: '20px', justifyContent: 'center', marginTop: '20px' }}>
-          <ProjectCard project={projects[2]} delay={0.3} isVisible={isVisible} height="408px" />
+        {/* ── Row 2: MTN + See All ── */}
+        <div className="projects-row2" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '791px 521px', gap: '20px', justifyContent: 'center', marginTop: '20px' }}>
+          <ProjectCard project={projects[2]} delay={0.3} isVisible={isVisible} height={isMobile ? '320px' : '408px'} />
 
           {/* See All Projects card */}
           <motion.a
@@ -279,6 +282,7 @@ export default function Projects() {
             initial={{ opacity: 0, y: 24 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.4 }}
+            className="projects-see-all"
             style={{
               backgroundColor: '#C8CCDF',
               borderRadius: '24px',
@@ -288,8 +292,8 @@ export default function Projects() {
               justifyContent: 'flex-start',
               position: 'relative',
               overflow: 'hidden',
-              width: '521px',
-              height: '408px',
+              width: isMobile ? '100%' : '521px',
+              height: isMobile ? '200px' : '408px',
               textDecoration: 'none',
               cursor: 'pointer',
             }}

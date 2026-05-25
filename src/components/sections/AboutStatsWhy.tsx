@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useCounter } from '../../hooks/useCounter';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { WHY_CHOOSE_US } from '../../utils/constants';
 import bgpro from '../../assets/bgpro.png';
 
@@ -63,6 +64,7 @@ const icons: Record<string, React.ReactNode> = {
 // ── Main component ─────────────────────────────────────────────────────────
 export default function AboutStatsWhy() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -177,16 +179,18 @@ export default function AboutStatsWhy() {
           initial={{ opacity: 0, y: 30 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3 }}
+          className="stats-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
             maxWidth: '1280px',
             margin: '0 auto',
             paddingLeft: 'clamp(24px, 5vw, 80px)',
             paddingRight: 'clamp(24px, 5vw, 80px)',
-            paddingTop: '56px',
-            paddingBottom: '120px',
+            paddingTop: isMobile ? '32px' : '56px',
+            paddingBottom: isMobile ? '60px' : '120px',
             borderTop: '1px solid rgba(255,255,255,0.15)',
+            gap: isMobile ? '40px' : '0',
           }}
         >
           {[
@@ -200,22 +204,24 @@ export default function AboutStatsWhy() {
 
         {/* ── Part 3: Why Choose Us — Task 3–5 ── */}
         <div
+          className="why-choose-section"
           style={{
             maxWidth: '1280px',
             margin: '0 auto',
             paddingLeft: 'clamp(24px, 5vw, 80px)',
             paddingRight: 'clamp(24px, 5vw, 80px)',
-            paddingBottom: '140px',
+            paddingBottom: isMobile ? '60px' : '140px',
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '48px', justifyContent: 'center' }}>
+          <div className="why-choose-row" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '24px' : '48px', justifyContent: 'center' }}>
 
             {/* Left — "Why You Should Choose Us" — Task 3: 40px, weight 500, 2 lines */}
             <motion.div
               initial={{ opacity: 0, x: -24 }}
               animate={isVisible ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
-              style={{ minWidth: '280px', maxWidth: '300px', flexShrink: 0 }}
+              className="why-choose-title"
+              style={{ minWidth: isMobile ? 'unset' : '280px', maxWidth: isMobile ? '100%' : '300px', flexShrink: 0 }}
             >
               <h2 style={{
                 fontFamily: satoshi,
@@ -230,20 +236,21 @@ export default function AboutStatsWhy() {
               </h2>
             </motion.div>
 
-            {/* Right — 3 cards — Task 4: fixed 321×291, padding 24px, radius 16px */}
-            <div style={{ display: 'flex', gap: '24px', minWidth: 0 }}>
+            {/* Right — 3 cards — responsive: fixed on desktop, full on mobile */}
+            <div className="why-cards-row" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '24px', minWidth: 0, width: isMobile ? '100%' : 'auto' }}>
               {WHY_CHOOSE_US.map((item, i) => (
                 <motion.div
                   key={item.title}
                   initial={{ opacity: 0, y: 30 }}
                   animate={isVisible ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.3 + i * 0.12 }}
+                  className="why-card"
                   style={{
-                    flex: '0 0 321px',
-                    width: '321px',
-                    height: '291px',
-                    minWidth: '321px',
-                    maxWidth: '321px',
+                    flex: isMobile ? 'unset' : '0 0 321px',
+                    width: isMobile ? '100%' : '321px',
+                    height: isMobile ? 'auto' : '291px',
+                    minWidth: isMobile ? 'unset' : '321px',
+                    maxWidth: isMobile ? '100%' : '321px',
                     borderRadius: '16px',
                     padding: '24px',
                     background: 'rgba(255,255,255,0.12)',

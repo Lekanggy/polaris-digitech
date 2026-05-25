@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -29,7 +30,7 @@ const PRODUCTS = [
     bg: '#DAE4FF',
     boxBg: '#6B9FD8',
     boxPosition: 'right' as const,
-    route: 'projects/risk-geo-platform',
+    route: '/projects/risk-geo-platform',
   },
   {
     title: 'Address Management Portal (AMP)',
@@ -76,22 +77,21 @@ interface ProductCardProps {
   boxBg: string;
   boxPosition: 'left' | 'right';
   route: string;
-  // sticky offset from top of viewport — each card sticks a little lower
-  // so the previous card's top edge peeks out beneath it
   stickyTop: number;
   zIndex: number;
+  isMobile?: boolean;
 }
 
 function ProductCard({
   title, description, features, bg, boxBg, boxPosition, route, stickyTop, zIndex,
-}: ProductCardProps) {
+  isMobile,
+}: ProductCardProps & { isMobile: boolean }) {
   return (
     <div
       style={{
-        position: 'sticky',
-        top: `${stickyTop}px`,
+        position: isMobile ? 'static' : 'sticky',
+        top: isMobile ? 'auto' : `${stickyTop}px`,
         zIndex,
-        // Extra bottom padding so the card below has room to slide under
         marginBottom: '24px',
       }}
     >
@@ -99,14 +99,13 @@ function ProductCard({
         style={{
           background: bg,
           borderRadius: '24px',
-          padding: '40px',
+          padding: isMobile ? '24px' : '40px',
           display: 'grid',
-          gridTemplateColumns: boxPosition === 'left' ? '1fr 1.2fr' : '1.2fr 1fr',
-          gap: '32px',
+          gridTemplateColumns: isMobile ? '1fr' : (boxPosition === 'left' ? '1fr 1.2fr' : '1.2fr 1fr'),
+          gap: isMobile ? '20px' : '32px',
           alignItems: 'center',
           width: '100%',
           boxSizing: 'border-box',
-          // Subtle shadow so stacked cards look layered
           boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
         }}
       >
@@ -115,9 +114,9 @@ function ProductCard({
           style={{
             background: boxBg,
             borderRadius: '20px',
-            aspectRatio: '1',
+            aspectRatio: isMobile ? '16 / 9' : '1',
             width: '100%',
-            order: boxPosition === 'left' ? 0 : 1,
+            order: isMobile ? 0 : (boxPosition === 'left' ? 0 : 1),
           }}
         />
 
@@ -176,11 +175,10 @@ function ProductCard({
 
 // ── Main section ───────────────────────────────────────────────────────────
 export default function ProductsHero() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
   // Each card sticks at a slightly lower top value so the card beneath it
   // peeks out by ~20px — giving the "deck of cards" stacking visual.
-  // Card 1: sticks at 100px (below navbar)
-  // Card 2: sticks at 120px (20px lower → Card 1 peeks above it)
-  // Card 3: sticks at 140px (20px lower → Cards 1 & 2 peek above it)
   const NAVBAR_H = 100;
   const PEEK     = 20; // px each card peeks above the one stacked on it
 
@@ -249,6 +247,7 @@ export default function ProductsHero() {
               {...product}
               stickyTop={NAVBAR_H + i * PEEK}
               zIndex={i + 1}
+              isMobile={isMobile}
             />
           ))}
         </div>

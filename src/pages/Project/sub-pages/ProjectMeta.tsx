@@ -9,6 +9,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -39,6 +40,7 @@ export default function ProjectMeta({
   showcaseCardHeight = 480,
 }: ProjectMetaProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -62,9 +64,9 @@ export default function ProjectMeta({
           transition={{ duration: 0.6 }}
           style={{
             display: 'grid',
-            gridTemplateColumns: `repeat(${fields.length}, 1fr)`,
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : `repeat(${fields.length}, 1fr)`,
             width: '100%',
-            marginBottom: '48px',
+            marginBottom: isMobile ? '32px' : '48px',
           }}
         >
           {fields.map((field) => (
@@ -73,7 +75,7 @@ export default function ProjectMeta({
                 style={{
                   fontFamily: satoshi,
                   fontWeight: 400,
-                  fontSize: '20px',
+                  fontSize: isMobile ? '16px' : '20px',
                   lineHeight: '120%',
                   letterSpacing: '-0.02em',
                   color: '#7177A3',
@@ -86,7 +88,7 @@ export default function ProjectMeta({
                 style={{
                   fontFamily: satoshi,
                   fontWeight: 500,
-                  fontSize: '20px',
+                  fontSize: isMobile ? '16px' : '20px',
                   lineHeight: '120%',
                   letterSpacing: '-0.02em',
                   color: '#283172',

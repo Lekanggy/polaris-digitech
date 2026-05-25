@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 // ── Logo imports ───────────────────────────────────────────────────────────
 import image23Logo  from '../../../assets/image 23.png';
@@ -109,9 +110,10 @@ interface ProjectCardProps {
   href: string;
   index: number;
   isVisible: boolean;
+  isMobile: boolean;
 }
 
-function ProjectCard({ logo, title, description, bg, image, href, index, isVisible }: ProjectCardProps) {
+function ProjectCard({ logo, title, description, bg, image, href, index, isVisible, isMobile }: ProjectCardProps) {
   // Determine text color based on bg brightness
   const isDark = ['#00008E', '#2B295B', '#2E7D32'].includes(bg);
   const textColor = isDark || bg === '#4A90D9' ? '#FFFFFF' : '#010527';
@@ -128,22 +130,23 @@ function ProjectCard({ logo, title, description, bg, image, href, index, isVisib
         background: bg,
         borderRadius: '24px',
         border: '1px solid rgba(0,0,0,0.08)',
-        display: 'grid',
-        gridTemplateColumns: '1fr auto',
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
         overflow: 'hidden',
-        minHeight: '450px',
+        minHeight: isMobile ? 'auto' : '450px',
         position: 'relative',
       }}
     >
-      {/* Left content */}
+      {/* Content */}
       <div
         style={{
-          padding: '40px 40px 40px 40px',
+          padding: isMobile ? '24px 20px' : '40px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-start',
           gap: '16px',
           zIndex: 1,
+          flex: isMobile ? 'none' : 1,
         }}
       >
         {/* Logo */}
@@ -151,7 +154,7 @@ function ProjectCard({ logo, title, description, bg, image, href, index, isVisib
           src={logo}
           alt={title}
           style={{
-            height: '40px',
+            height: isMobile ? '32px' : '40px',
             width: 'auto',
             objectFit: 'contain',
             objectPosition: 'left',
@@ -164,11 +167,11 @@ function ProjectCard({ logo, title, description, bg, image, href, index, isVisib
           style={{
             fontFamily: satoshi,
             fontWeight: 700,
-            fontSize: 'clamp(20px, 2.5vw, 28px)',
+            fontSize: isMobile ? 'clamp(18px, 5vw, 24px)' : 'clamp(20px, 2.5vw, 28px)',
             lineHeight: '130%',
             color: textColor,
             margin: 0,
-            maxWidth: '400px',
+            maxWidth: isMobile ? '100%' : '400px',
           }}
         >
           {title}
@@ -179,11 +182,11 @@ function ProjectCard({ logo, title, description, bg, image, href, index, isVisib
           style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '15px',
+            fontSize: isMobile ? '14px' : '15px',
             lineHeight: '160%',
             color: descColor,
             margin: 0,
-            maxWidth: '380px',
+            maxWidth: isMobile ? '100%' : '380px',
           }}
         >
           {description}
@@ -196,7 +199,7 @@ function ProjectCard({ logo, title, description, bg, image, href, index, isVisib
             display: 'inline-flex',
             alignItems: 'center',
             gap: '4px',
-            padding: '10px 24px',
+            padding: isMobile ? '8px 20px' : '10px 24px',
             borderRadius: '10px',
             background: btnBg,
             color: btnColor,
@@ -216,29 +219,48 @@ function ProjectCard({ logo, title, description, bg, image, href, index, isVisib
         </Link>
       </div>
 
-      {/* Right — large image buried into card bottom */}
-      <div
-        style={{
-          width: 'clamp(280px, 38vw, 520px)',
-          position: 'relative',
-          alignSelf: 'stretch',
-          display: 'flex',
-          alignItems: 'flex-end',
-          paddingRight: '80px',
-          marginBottom: '-80px',
-        }}
-      >
+      {/* Image section */}
+      {!isMobile && (
         <div
           style={{
-            width: '100%',
-            height: '90%',
-            borderRadius: '16px 16px 0 0',
-            overflow: 'hidden',
-            border: '10px solid rgba(0,0,0,0.88)',
-            borderBottom: 'none',
-            boxSizing: 'border-box', 
+            width: 'clamp(280px, 38vw, 520px)',
+            position: 'relative',
+            alignSelf: 'stretch',
+            display: 'flex',
+            alignItems: 'flex-end',
+            paddingRight: '80px',
+            marginBottom: '-80px',
           }}
         >
+          <div
+            style={{
+              width: '100%',
+              height: '90%',
+              borderRadius: '16px 16px 0 0',
+              overflow: 'hidden',
+              border: '10px solid rgba(0,0,0,0.88)',
+              borderBottom: 'none',
+              boxSizing: 'border-box', 
+            }}
+          >
+            <img
+              src={image}
+              alt={title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'top',
+                display: 'block',
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Mobile image - full width below content */}
+      {isMobile && (
+        <div style={{ width: '100%', height: '220px', position: 'relative' }}>
           <img
             src={image}
             alt={title}
@@ -250,8 +272,15 @@ function ProjectCard({ logo, title, description, bg, image, href, index, isVisib
               display: 'block',
             }}
           />
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.35))',
+            }}
+          />
         </div>
-      </div>
+      )}
     </motion.div>
   );
 }
@@ -259,6 +288,7 @@ function ProjectCard({ logo, title, description, bg, image, href, index, isVisib
 // ── Main section ───────────────────────────────────────────────────────────
 export default function ProjectsList() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -281,10 +311,10 @@ export default function ProjectsList() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '40px',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: isMobile ? '24px' : '40px',
             alignItems: 'start',
-            marginBottom: '56px',
+            marginBottom: isMobile ? '40px' : '56px',
           }}
         >
           <motion.h1
@@ -335,6 +365,7 @@ export default function ProjectsList() {
               href={project.href}
               index={i}
               isVisible={isVisible}
+              isMobile={isMobile}
             />
           ))}
         </div>

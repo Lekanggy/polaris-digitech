@@ -1,4 +1,4 @@
-import Navbar from '../../components/sections/Navbar';
+//import Navbar from '../../components/sections/Navbar';
 import Hero from '../../components/sections/Hero';
 import ClientLogos from '../../components/sections/ClientLogos';
 import Services from '../../components/sections/Services';
@@ -9,6 +9,7 @@ import Clients from '../../components/sections/Clients';
 import Contact from '../../components/sections/Contact';
 import Testimonials from '../../components/sections/Testimonials';
 import Footer from '../../components/sections/Footer';
+import Navbar from '../../components/sections/Navbar';
 
 export default function HomePage() {
   return (

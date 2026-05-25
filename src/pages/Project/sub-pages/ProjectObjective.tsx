@@ -12,6 +12,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -33,6 +34,7 @@ export default function ProjectObjective({
   placeholderHeight = 400,
 }: ProjectObjectiveProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -58,7 +60,7 @@ export default function ProjectObjective({
           style={{
             fontFamily: satoshi,
             fontWeight: 500,
-            fontSize: '40px',
+            fontSize: isMobile ? 'clamp(22px, 5vw, 32px)' : '40px',
             lineHeight: '150%',
             letterSpacing: '-0.02em',
             textAlign: 'center',

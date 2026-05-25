@@ -54,7 +54,7 @@ export default function ServicesIntro() {
           style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '18px',
+            fontSize: 'clamp(16px, 4vw, 18px)',
             lineHeight: '160%',
             letterSpacing: '0',
             color: '#46485F',

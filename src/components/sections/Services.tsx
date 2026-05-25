@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import soft from '../../assets/soft.png';
 import soft1 from '../../assets/soft1.png';
 import soft2 from '../../assets/soft2.png';
@@ -37,11 +38,15 @@ export default function Services() {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<number | null>(null);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
-  // Scroll by exactly one card width (25vw)
+  // On mobile show 1 card per view; on desktop 4
+  const cardWidth = isMobile ? '85vw' : '25vw';
+  const minCardWidth = isMobile ? '280px' : '240px';
+
   const scroll = (dir: 'left' | 'right') => {
-    const cardWidth = window.innerWidth * 0.25;
-    scrollRef.current?.scrollBy({ left: dir === 'right' ? cardWidth : -cardWidth, behavior: 'smooth' });
+    const w = isMobile ? window.innerWidth * 0.85 : window.innerWidth * 0.25;
+    scrollRef.current?.scrollBy({ left: dir === 'right' ? w : -w, behavior: 'smooth' });
   };
 
   const arrowBtnStyle: React.CSSProperties = {
@@ -98,8 +103,8 @@ export default function Services() {
           Services
         </motion.span>
 
-        {/* Title + description — two equal columns spanning full width */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
+        {/* Title + description — two equal columns spanning full width, stacks on mobile */}
+        <div className="services-header-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -196,10 +201,9 @@ export default function Services() {
                 flexShrink: 0,
                 overflow: 'hidden',
                 cursor: 'pointer',
-                /* Exactly 4 cards fill the viewport; 5th triggers scroll */
-                width: '25vw',
-                minWidth: '240px',
-                height: '520px',
+                width: cardWidth,
+                minWidth: minCardWidth,
+                height: isMobile ? '400px' : '520px',
                 marginRight: i < services.length - 1 ? '4px' : '0',
                 scrollSnapAlign: 'start',
               }}

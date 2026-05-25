@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -12,6 +13,7 @@ interface ProductIntroProps {
 
 export default function ProductIntro({ title, description, boxBg, boxImage }: ProductIntroProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -29,8 +31,8 @@ export default function ProductIntro({ title, description, boxBg, boxImage }: Pr
           paddingLeft: 'clamp(24px, 5vw, 80px)',
           paddingRight: 'clamp(24px, 5vw, 80px)',
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 'clamp(40px, 6vw, 100px)',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          gap: isMobile ? '32px' : 'clamp(40px, 6vw, 100px)',
           alignItems: 'stretch',
         }}
       >

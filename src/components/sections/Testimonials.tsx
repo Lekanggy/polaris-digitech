@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -92,6 +93,7 @@ function TestimonialCard({ testimonial, delay, isVisible, large = false }: Testi
 
 export default function Testimonials() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section id="testimonials" ref={ref} style={{ background: '#EBECF6' }}>
@@ -145,11 +147,12 @@ export default function Testimonials() {
           </p>
         </motion.div>
 
-        {/* Grid Layout: 2 columns - left narrower, right wider */}
+        {/* Grid Layout: 2 columns - left narrower, right wider; stacks on mobile */}
         <div
+          className="testimonials-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: '0.85fr 1.15fr',
+            gridTemplateColumns: isMobile ? '1fr' : '0.85fr 1.15fr',
             gap: '20px',
           }}
         >
@@ -162,7 +165,7 @@ export default function Testimonials() {
             <TestimonialCard testimonial={testimonials[1]} delay={0.2} isVisible={isVisible} large />
 
             {/* Row 2: Two small cards side by side */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            <div className="testimonials-inner-grid" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '20px' }}>
               <TestimonialCard testimonial={testimonials[2]} delay={0.3} isVisible={isVisible} />
               <TestimonialCard testimonial={testimonials[3]} delay={0.4} isVisible={isVisible} />
             </div>

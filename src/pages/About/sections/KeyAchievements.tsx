@@ -3,6 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import herob from '../../../assets/herob.png';
 import gonew from '../../../assets/gonew.png';
+import locationimg from '../../../assets/location.png';
+import pdcollect from '../../../assets/pdcollect.png';
+import pmd from '../../../assets/pmd.png';
+import globbed from '../../../assets/glob.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -10,20 +14,32 @@ const ACHIEVEMENTS = [
   {
     year: '2021',
     title: 'The first Certified Google Cloud Platform (GCP) reseller in Nigeria',
-    body: 'Polaris Digitech Limited holds the distinction of being the first Certified Google Cloud Platform (GCP) reseller in Nigeria. As a leading provider of cloud-based solutions, Polaris Digitech Limited has demonstrated its expertise and competence in delivering cutting-edge GCP services to businesses and organizations across Nigeria. With a team of skilled professionals and a commitment to delivering innovative solutions, Polaris Digitech Limited is well-positioned to help companies transform their IT operations and achieve greater efficiency, scalability, and security on the cloud.',
-    logo: gonew,
-  },
-  {
-    year: '2019',
-    title: 'Pioneering GIS Solutions Across West Africa',
-    body: 'Polaris Digitech expanded its geospatial footprint across West Africa, delivering landmark GIS projects for government agencies and private enterprises. Our work in land management, infrastructure mapping, and location intelligence set new standards for the region.',
+    body: "Polaris Digitech Limited holds the distinction of being the first Certified Google Cloud Platform (GCP) reseller in Nigeria. As a leading provider of cloud-based solutions, Polaris Digitech Limited has demonstrated its expertise and competence in delivering cutting-edge GCP services to businesses and organizations across Nigeria. With a team of skilled professionals and a commitment to delivering innovative solutions, Polaris Digitech Limited is well-positioned to help companies transform their IT operations and achieve greater efficiency, scalability, and security on the cloud.",
     logo: gonew,
   },
   {
     year: '2017',
-    title: 'Launch of the Polaris Data Collector Platform',
-    body: 'We launched the Polaris Data Collector (PDC), a proprietary digital tool for real-time field data gathering. The platform transformed how organizations collect, manage, and analyze ground-level data — replacing paper-based processes with efficient digital workflows.',
-    logo: gonew,
+    title: 'Developed and deployed one of the first public-facing Spatial Data Infrastructure (SDI) in Nigeria​',
+    body: "Polaris Digitech developed one of the country’s first public-facing Spatial Data Infrastructures (SDI). This platform offers users access to accurate maps, imagery, and geospatial data for better analysis and decision-making. It supports data integration and sharing across sectors, improving planning and monitoring of development efforts. Widely embraced by both government and private entities, the SDI strengthens Nigeria’s data capabilities and governance. Polaris remains committed to innovation and leveraging advanced technologies to serve national and client needs.",
+    logo: globbed,
+  },
+  {
+    year: '2016',
+    title: 'Technical partner for the Google Street View (GSV) project in Nigeria',
+    body: "Polaris Digitech Limited is the technical partner for the Google Street View (GSV) project in Nigeria, helping capture high-quality street imagery across the country. This collaboration enhances user experience on Google Maps by offering immersive visuals of Nigerian cities and towns. The project marks a major milestone for Polaris, reinforcing its status as a top tech company in Nigeria. Through its skilled teams, Polaris ensured image quality and accuracy, enabling broader access to geographic insights and aiding navigation, planning, and exploration for the Nigerian public.",
+    logo: locationimg,
+  },
+   {
+    year: '',
+    title: 'The OEM of the Address Management Portal Service',
+    body: "Polaris Digitech Limited takes great pride in offering an innovative Address Verification & Standardization Service that has been designed to cater to the unique needs of our clients. As the OEM provider for this service, we are committed to providing exceptional quality and unparalleled accuracy that is unmatched in the industry. Our Address Verification & Standardization Service leverages cutting-edge technology to standardize addresses, correct any inconsistencies in spelling or formatting, and ensure that all addresses are validated for accuracy. By partnering with us, our clients can enjoy a seamless experience that is both efficient and reliable.",
+    logo: pdcollect,
+  },
+  {
+    year: '',
+    title: 'The OEM for the first indigenous Field Force Application (Polaris Data Collector) relevant to different business sectors',
+    body: "Polaris Digitech Limited offers advanced tech solutions across industries and is the OEM of the first Indian-made Field Force Application, the Polaris Data Collector. This app streamlines field operations by enabling real-time data collection and communication between field staff and management. It boosts decision-making, customer service, and ROI, positioning Polaris as a reliable partner for businesses seeking operational efficiency and innovation.",
+    logo: pmd,
   },
 ];
 
@@ -91,7 +107,7 @@ export default function KeyAchievements() {
     >
       <div
         style={{
-          maxWidth: '1400px',
+          maxWidth: '1500px',
           margin: '0 auto',
           paddingLeft: 'clamp(24px, 5vw, 80px)',
           paddingRight: 'clamp(24px, 5vw, 80px)',
@@ -234,15 +250,15 @@ export default function KeyAchievements() {
                       fontSize: 'clamp(100px, 12vw, 160px)',
                       lineHeight: '150%',
                       letterSpacing: '0',
-                      color: 'transparent',
+                      color: '',
                       WebkitTextStroke: '1px rgba(255,255,255,0.3)',
                       userSelect: 'none',
                       whiteSpace: 'nowrap',
                       position: 'absolute',
-                      top: '50%',
+                      top: '40%',
                       left: '50%',
                       transform: 'translate(-50%, -60%)',
-                      zIndex: 1,
+                      zIndex: 1
                     }}
                   >
                     {achievement.year}
@@ -259,7 +275,7 @@ export default function KeyAchievements() {
                       width: 'clamp(140px, 16vw, 220px)',
                       height: 'auto',
                       objectFit: 'contain',
-                      top: '50%',
+                      top: '40%',
                       left: '50%',
                       transform: 'translateX(-50%)',
                       filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5))',

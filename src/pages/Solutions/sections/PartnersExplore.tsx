@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import sol1 from '../../../assets/sol1.jpg';
 import sol2 from '../../../assets/sol2.jpg';
 import sol3 from '../../../assets/sol3.jpg';
@@ -27,9 +28,10 @@ interface PartnerCardProps {
   route: string;
   index: number;
   isVisible: boolean;
+  isMobile: boolean;
 }
 
-function PartnerCard({ image, title, description, route, index, isVisible }: PartnerCardProps) {
+function PartnerCard({ image, title, description, route, index, isVisible, isMobile }: PartnerCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 28 }}
@@ -44,15 +46,15 @@ function PartnerCard({ image, title, description, route, index, isVisible }: Par
       }}
     >
       {/* Image — fills its box, rounded corners */}
-      <div
-        style={{
-          width: '100%',
-          height: '250px',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          flexShrink: 0,
-        }}
-      >
+        <div
+          style={{
+            width: '100%',
+            height: isMobile ? '200px' : '250px',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            flexShrink: 0,
+          }}
+        >
         <img
           src={image}
           alt={title}
@@ -61,12 +63,12 @@ function PartnerCard({ image, title, description, route, index, isVisible }: Par
       </div>
 
       {/* Text content — no background */}
-      <div style={{ padding: '8px 4px 0' }}>
+      <div style={{ padding: isMobile ? '6px 4px 0' : '8px 4px 0' }}>
         <h3
           style={{
             fontFamily: satoshi,
             fontWeight: 600,
-            fontSize: '20px',
+            fontSize: isMobile ? 'clamp(17px, 4.5vw, 20px)' : '20px',
             lineHeight: '130%',
             color: '#283172',
             marginBottom: '8px',
@@ -78,7 +80,7 @@ function PartnerCard({ image, title, description, route, index, isVisible }: Par
           style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '14px',
+            fontSize: isMobile ? '13px' : '14px',
             lineHeight: '160%',
             color: '#46485F',
             marginBottom: '16px',
@@ -95,7 +97,7 @@ function PartnerCard({ image, title, description, route, index, isVisible }: Par
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '10px 20px',
+              padding: isMobile ? '8px 16px' : '10px 20px',
               borderRadius: '100px',
               background: '#EEF0F8',
               color: '#283172',
@@ -129,7 +131,7 @@ function PartnerCard({ image, title, description, route, index, isVisible }: Par
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '10px 20px',
+              padding: isMobile ? '8px 16px' : '10px 20px',
               borderRadius: '100px',
               background: '#EEF0F8',
               color: '#283172',
@@ -165,6 +167,7 @@ function PartnerCard({ image, title, description, route, index, isVisible }: Par
 // ── Main section ───────────────────────────────────────────────────────────
 export default function PartnersExplore() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -205,9 +208,9 @@ export default function PartnersExplore() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            columnGap: '40px',
-            rowGap: '56px',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            columnGap: isMobile ? '20px' : '40px',
+            rowGap: isMobile ? '40px' : '56px',
           }}
         >
           {PARTNERS.map((partner, i) => (
@@ -219,6 +222,7 @@ export default function PartnersExplore() {
               route={partner.route}
               index={i}
               isVisible={isVisible}
+              isMobile={isMobile}
             />
           ))}
         </div>

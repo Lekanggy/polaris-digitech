@@ -10,6 +10,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import bgpro from '../../../assets/bgpro.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -118,6 +119,7 @@ export default function ProjectKeyFeatures({
   heading = 'Key Features',
 }: ProjectKeyFeaturesProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -146,11 +148,11 @@ export default function ProjectKeyFeatures({
           style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '64px',
+            fontSize: isMobile ? 'clamp(28px, 7vw, 48px)' : 'clamp(40px, 5vw, 64px)',
             lineHeight: '120%',
             letterSpacing: '-0.02em',
             color: '#FFFFFF',
-            marginBottom: '48px',
+            marginBottom: isMobile ? '32px' : '48px',
           }}
         >
           {heading}
@@ -160,8 +162,8 @@ export default function ProjectKeyFeatures({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '24px',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: isMobile ? '16px' : '24px',
           }}
         >
           {features.map((feat, i) => (
@@ -173,7 +175,7 @@ export default function ProjectKeyFeatures({
               style={{
                 background: 'rgba(255,255,255,0.12)',
                 borderRadius: '16px',
-                padding: '24px',
+                padding: isMobile ? '20px' : '24px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '24px',

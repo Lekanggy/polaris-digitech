@@ -72,7 +72,7 @@ export default function ProjectHero({ bgImage, title, subtitle }: ProjectHeroPro
           style={{
             fontFamily: satoshi,
             fontWeight: 900,
-            fontSize: '80px',
+            fontSize: 'clamp(36px, 9vw, 80px)',
             lineHeight: '110%',
             letterSpacing: '-0.02em',
             color: '#FFFFFF',
@@ -90,7 +90,7 @@ export default function ProjectHero({ bgImage, title, subtitle }: ProjectHeroPro
           style={{
             fontFamily: satoshi,
             fontWeight: 500,
-            fontSize: '36px',
+            fontSize: 'clamp(18px, 5vw, 36px)',
             lineHeight: '120%',
             letterSpacing: '-0.02em',
             textAlign: 'center',

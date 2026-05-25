@@ -6,6 +6,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import car1 from '../../../assets/car1.png';
 import car2 from '../../../assets/car2.png';
 import car3 from '../../../assets/car3.png';
@@ -14,6 +15,7 @@ const satoshi = 'Satoshi, Inter, sans-serif';
 
 export default function CareersHero() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -43,7 +45,7 @@ export default function CareersHero() {
             style={{
               fontFamily: satoshi,
               fontWeight: 500,
-              fontSize: '72px',
+              fontSize: isMobile ? 'clamp(32px, 7vw, 56px)' : '72px',
               lineHeight: '120%',
               letterSpacing: '-0.02em',
               color: '#283172',
@@ -56,7 +58,7 @@ export default function CareersHero() {
             style={{
               fontFamily: satoshi,
               fontWeight: 400,
-              fontSize: '20px',
+              fontSize: isMobile ? 'clamp(16px, 4vw, 20px)' : '20px',
               lineHeight: '150%',
               letterSpacing: '0',
               color: '#46485F',
@@ -77,7 +79,7 @@ export default function CareersHero() {
           transition={{ duration: 0.75, delay: 0.15 }}
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
             gap: '16px',
             alignItems: 'start',
           }}
@@ -87,7 +89,7 @@ export default function CareersHero() {
             style={{
               borderRadius: '20px',
               overflow: 'hidden',
-              height: '584px',
+              height: isMobile ? '320px' : '584px',
             }}
           >
             <img
@@ -100,11 +102,11 @@ export default function CareersHero() {
           {/* Right — two stacked images */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div
-              style={{
-                borderRadius: '20px',
-                overflow: 'hidden',
-                height: '280px',
-              }}
+                style={{
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  height: isMobile ? '180px' : '280px',
+                }}
             >
               <img
                 src={car1}
@@ -113,11 +115,11 @@ export default function CareersHero() {
               />
             </div>
             <div
-              style={{
-                borderRadius: '20px',
-                overflow: 'hidden',
-                height: '280px',
-              }}
+                style={{
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  height: isMobile ? '180px' : '280px',
+                }}
             >
               <img
                 src={car3}

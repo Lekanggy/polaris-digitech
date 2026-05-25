@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 import soft  from '../../../assets/soft.png';
 import soft1 from '../../../assets/soft1.png';
@@ -99,7 +100,7 @@ function ServiceCard({
             style={{
               fontFamily: satoshi,
               fontWeight: 500,
-              fontSize: '22px',
+              fontSize: 'clamp(18px, 4.5vw, 22px)',
               lineHeight: '140%',
               letterSpacing: '0',
               color: '#FFFFFF',
@@ -117,6 +118,7 @@ function ServiceCard({
 // ── Main grid ─────────────────────────────────────────────────────────────
 export default function ServicesGrid() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -135,21 +137,36 @@ export default function ServicesGrid() {
         }}
       >
         {/* Row 1 */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 662px)', gap: '12px', justifyContent: 'center' }}>
-          <ServiceCard service={SERVICES[0]} index={0} isVisible={isVisible} />
-          <ServiceCard service={SERVICES[1]} index={1} isVisible={isVisible} />
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', 
+          gap: '12px', 
+          justifyContent: 'center' 
+        }}>
+          <ServiceCard service={SERVICES[0]} index={0} isVisible={isVisible} height={isMobile ? 340 : 500} />
+          <ServiceCard service={SERVICES[1]} index={1} isVisible={isVisible} height={isMobile ? 340 : 500} />
         </div>
 
         {/* Row 2 */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 662px)', gap: '12px', justifyContent: 'center' }}>
-          <ServiceCard service={SERVICES[2]} index={2} isVisible={isVisible} />
-          <ServiceCard service={SERVICES[3]} index={3} isVisible={isVisible} />
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', 
+          gap: '12px', 
+          justifyContent: 'center' 
+        }}>
+          <ServiceCard service={SERVICES[2]} index={2} isVisible={isVisible} height={isMobile ? 340 : 500} />
+          <ServiceCard service={SERVICES[3]} index={3} isVisible={isVisible} height={isMobile ? 340 : 500} />
         </div>
 
-        {/* Row 3 — half-width left */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 662px)', gap: '12px', justifyContent: 'center' }}>
-          <ServiceCard service={SERVICES[4]} index={4} isVisible={isVisible} />
-          <div />
+        {/* Row 3 — on mobile just the last card */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', 
+          gap: '12px', 
+          justifyContent: 'center' 
+        }}>
+          <ServiceCard service={SERVICES[4]} index={4} isVisible={isVisible} height={isMobile ? 340 : 500} />
+          {!isMobile && <div />}
         </div>
       </div>
     </section>

@@ -52,7 +52,7 @@ export default function App() {
         <Route path="/projects/alma-beach" element={<AlmaBeachPage />} />
         <Route path="/projects/land-parcel" element={<LandParcelPage />} />
         <Route path="/careers" element={<CareersPage />} />
-        <Route path="/careers/:jobId" element={<JobDetailPage />} />
+        <Route path="/careers/:id" element={<JobDetailPage />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/services/software-development" element={<SoftwareDevelopmentPage />} />
         <Route path="/services/land-surveying" element={<LandSurveyingPage />} />

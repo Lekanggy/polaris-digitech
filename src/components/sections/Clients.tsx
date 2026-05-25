@@ -34,6 +34,7 @@ function LogoCard({ src, alt, delay, isVisible }: { src: string; alt: string; de
       initial={{ opacity: 0, y: 16 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.4, delay }}
+      className="clients-logo-card"
       style={{
         backgroundColor: '#FFFFFF',
         borderRadius: '8px',
@@ -48,6 +49,7 @@ function LogoCard({ src, alt, delay, isVisible }: { src: string; alt: string; de
       <img
         src={src}
         alt={alt}
+        className="clients-logo-img"
         style={{ height: '60px', width: 'auto', objectFit: 'contain' }}
         loading="lazy"
       />

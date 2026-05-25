@@ -13,6 +13,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -44,6 +45,7 @@ export default function ProjectDescription({
   imageFullPlaceholder = false,
 }: ProjectDescriptionProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -72,7 +74,7 @@ export default function ProjectDescription({
             style={{
               fontFamily: satoshi,
               fontWeight: 500,
-              fontSize: '72px',
+              fontSize: isMobile ? 'clamp(28px, 7vw, 48px)' : 'clamp(40px, 5vw, 72px)',
               lineHeight: '120%',
               letterSpacing: '-0.02em',
               color: '#010527',
@@ -140,20 +142,14 @@ export default function ProjectDescription({
           </div>
 
           {/* Right card — bg: #fff — shows imageLeft or placeholder */}
-          <div
-            style={{
-              background: '#FFFFFF',
-              borderRadius: '40px',
-              paddingTop: '48px',
-              paddingBottom: '48px',
-              paddingLeft: '10px',
-              paddingRight: '10px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '502px',
-            }}
-          >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: '10px',
+            marginBottom: '10px',
+          }}
+        >
             {imageLeft && (
               <img
                 src={imageLeft}

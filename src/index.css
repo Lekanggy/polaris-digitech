@@ -43,3 +43,148 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: #283172; border-radius: 3px; }
+
+/* ── Mobile responsive utilities ── */
+@media (max-width: 768px) {
+  /* Services section header: stack title and description vertically */
+  .services-header-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* Products section: stack left panel and cards vertically */
+  .products-main-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .products-sticky-panel {
+    position: static !important;
+  }
+  .products-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .products-card {
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    margin-top: 0 !important;
+  }
+
+  /* Projects section: stack all cards to single column */
+  .projects-header-grid,
+  .projects-row1,
+  .projects-row2 {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+  .projects-see-all {
+    width: 100% !important;
+    height: 200px !important;
+  }
+
+  /* About/Stats/Why section */
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .why-choose-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .why-choose-title {
+    white-space: normal !important;
+    min-width: unset !important;
+    max-width: 100% !important;
+  }
+  .why-cards-row {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .why-card {
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    flex: unset !important;
+    height: auto !important;
+  }
+
+  /* Testimonials */
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .testimonials-inner-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Footer */
+  .footer-cta-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+  .footer-main-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+  .footer-bottom-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  /* Clients section */
+  .clients-logo-card {
+    width: 140px !important;
+    height: 100px !important;
+  }
+  .clients-logo-img {
+    height: 44px !important;
+  }
+
+  /* Contact section */
+  .contact-main-grid {
+    gap: 40px !important;
+  }
+
+  /* Additional tweaks for sections on mobile */
+  .products-card {
+    padding: 20px !important;
+    min-height: auto !important;
+  }
+
+  /* Hero buttons already handled in JS, but ensure */
+  section[style*="min-height: 100vh"] button,
+  section[style*="min-height: 100vh"] a {
+    max-width: 100% !important;
+  }
+
+  /* Reduce some paddings globally for mobile */
+  .why-choose-section {
+    padding-bottom: 60px !important;
+  }
+
+  /* Services arrows: smaller on mobile */
+  button[aria-label="Scroll left"],
+  button[aria-label="Scroll right"] {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-main-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .clients-logo-card {
+    width: 120px !important;
+    height: 88px !important;
+  }
+
+  /* Extra tight spacing */
+  .contact-main-grid {
+    gap: 28px !important;
+  }
+  .products-card {
+    padding: 16px !important;
+  }
+}

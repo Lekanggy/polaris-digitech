@@ -1,5 +1,6 @@
 import whitelogo from '../../assets/whitelogo.png';
 import { FOOTER_LINKS } from '../../utils/constants';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -49,6 +50,7 @@ const containerStyle: React.CSSProperties = {
 };
 
 export default function Footer() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
@@ -57,9 +59,11 @@ export default function Footer() {
       {/* ── CTA Bar ── */}
       <div style={{ ...containerStyle, paddingTop: '40px', paddingBottom: '40px' }}>
         <div
+          className="footer-cta-row"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: isMobile ? 'flex-start' : 'center',
             justifyContent: 'space-between',
             gap: '24px',
           }}
@@ -122,10 +126,11 @@ export default function Footer() {
       {/* ── Main Footer ── */}
       <div style={{ ...containerStyle, paddingTop: '56px', paddingBottom: '56px' }}>
         <div
+          className="footer-main-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: '1.4fr 1fr 1fr 1fr 1fr',
-            gap: '60px',
+            gridTemplateColumns: isMobile ? '1fr 1fr' : '1.4fr 1fr 1fr 1fr 1fr',
+            gap: isMobile ? '32px' : '60px',
             alignItems: 'start',
           }}
         >
@@ -225,12 +230,14 @@ export default function Footer() {
 
       {/* ── Bottom bar ── */}
       <div
+        className="footer-bottom-bar"
         style={{
           ...containerStyle,
           paddingTop: '24px',
           paddingBottom: '24px',
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'flex-start' : 'center',
           justifyContent: 'space-between',
           gap: '16px',
         }}

@@ -8,6 +8,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -40,6 +41,7 @@ export default function ProjectGallery({
   placeholderBg = '#EBECF6',
 }: ProjectGalleryProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -90,7 +92,7 @@ export default function ProjectGallery({
             alignItems: 'center',
             justifyContent: 'center',
             padding: imageLarge ? '24px' : '0',
-            minHeight: '400px',
+            minHeight: isMobile ? '220px' : '400px',
           }}
         >
           {imageLarge && (
@@ -100,7 +102,7 @@ export default function ProjectGallery({
               style={{
                 width: '100%',
                 height: 'auto',
-                maxHeight: '560px',
+                maxHeight: isMobile ? '300px' : '560px',
                 objectFit: 'contain',
                 display: 'block',
                 borderRadius: '16px',
@@ -113,7 +115,7 @@ export default function ProjectGallery({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
             gap: '24px',
           }}
         >
@@ -130,7 +132,7 @@ export default function ProjectGallery({
                 borderRadius: '24px',
                 overflow: 'hidden',
                 background: placeholderBg,
-                minHeight: '360px',
+                minHeight: isMobile ? '220px' : '360px',
               }}
             >
               {img.src && (
@@ -139,7 +141,7 @@ export default function ProjectGallery({
                   alt={img.alt}
                   style={{
                     width: '100%',
-                    height: '480px',
+                    height: isMobile ? '220px' : '480px',
                     objectFit: 'cover',
                     display: 'block',
                   }}

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import bgpro from '../../../assets/bgpro.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -50,6 +51,7 @@ function PinIcon() {
 
 export default function KeyFeatures({ sectionTitle, sectionDescription, features }: KeyFeaturesProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -70,8 +72,8 @@ export default function KeyFeatures({ sectionTitle, sectionDescription, features
           paddingLeft: 'clamp(24px, 5vw, 80px)',
           paddingRight: 'clamp(24px, 5vw, 80px)',
           display: 'grid',
-          gridTemplateColumns: '1fr 1.4fr',
-          gap: 'clamp(40px, 6vw, 100px)',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1.4fr',
+          gap: isMobile ? '32px' : 'clamp(40px, 6vw, 100px)',
           alignItems: 'start',
         }}
       >

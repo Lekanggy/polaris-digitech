@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import hero2 from '../../assets/hero2.png';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -14,6 +15,7 @@ const fadeUp = {
 const satoshi = 'Satoshi, Inter, sans-serif';
 
 export default function Hero() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   return (
     <section
       id="hero"
@@ -127,8 +129,10 @@ export default function Hero() {
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '20px',
+              gap: '16px',
               justifyContent: 'center',
+              flexDirection: isMobile ? 'column' : 'row',
+              alignItems: 'center',
             }}
           >
             {/* Schedule a meeting — muted glass button */}
@@ -139,16 +143,17 @@ export default function Hero() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontFamily: satoshi,
-                fontSize: '16px',
+                fontSize: isMobile ? '15px' : '16px',
                 fontWeight: 700,
                 lineHeight: '150%',
                 letterSpacing: '0',
-                width: '240px',
+                width: isMobile ? '100%' : '240px',
+                maxWidth: isMobile ? '320px' : 'none',
                 height: '48px',
                 paddingTop: '8px',
                 paddingBottom: '8px',
-                paddingLeft: '36px',
-                paddingRight: '36px',
+                paddingLeft: isMobile ? '24px' : '36px',
+                paddingRight: isMobile ? '24px' : '36px',
                 gap: '8px',
                 background: 'rgba(255, 255, 255, 0.26)',
                 border: '1px solid rgba(255,255,255,0.18)',
@@ -172,16 +177,17 @@ export default function Hero() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontFamily: satoshi,
-                fontSize: '16px',
+                fontSize: isMobile ? '15px' : '16px',
                 fontWeight: 700,
                 lineHeight: '150%',
                 letterSpacing: '0',
-                width: '240px',
+                width: isMobile ? '100%' : '240px',
+                maxWidth: isMobile ? '320px' : 'none',
                 height: '48px',
                 paddingTop: '8px',
                 paddingBottom: '8px',
-                paddingLeft: '36px',
-                paddingRight: '36px',
+                paddingLeft: isMobile ? '24px' : '36px',
+                paddingRight: isMobile ? '24px' : '36px',
                 gap: '8px',
                 backgroundColor: '#D7B56D',
                 color: '#010527',
