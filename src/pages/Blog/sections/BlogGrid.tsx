@@ -8,13 +8,14 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import { ARTICLES, CATEGORIES } from '../blogData';
 import type { BlogArticle } from '../blogData';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
 // ── Single article item ───────────────────────────────────────────────────
-function ArticleItem({ article, index, isVisible }: { article: BlogArticle; index: number; isVisible: boolean }) {
+function ArticleItem({ article, index, isVisible, isMobile }: { article: BlogArticle; index: number; isVisible: boolean; isMobile: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -26,7 +27,7 @@ function ArticleItem({ article, index, isVisible }: { article: BlogArticle; inde
       <div
         style={{
           width: '100%',
-          height: '250px',
+          height: isMobile ? '180px' : '250px',
           borderRadius: '24px',
           overflow: 'hidden',
           background: article.image ? 'transparent' : '#D0D5E8',
@@ -124,6 +125,7 @@ function ArticleItem({ article, index, isVisible }: { article: BlogArticle; inde
 // ── Main section ──────────────────────────────────────────────────────────
 export default function BlogGrid() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filtered = activeCategory === 'All'
@@ -135,8 +137,8 @@ export default function BlogGrid() {
       ref={ref}
       style={{
         background: '#EBECF6',
-        paddingTop: '80px',
-        paddingBottom: '80px',
+        paddingTop: isMobile ? '48px' : '80px',
+        paddingBottom: isMobile ? '48px' : '80px',
       }}
     >
       <div
@@ -154,9 +156,10 @@ export default function BlogGrid() {
           transition={{ duration: 0.6 }}
           style={{
             display: 'flex',
-            alignItems: 'flex-start',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: isMobile ? 'flex-start' : 'flex-start',
             justifyContent: 'space-between',
-            gap: '24px',
+            gap: isMobile ? '12px' : '24px',
             marginBottom: '8px',
           }}
         >
@@ -225,7 +228,7 @@ export default function BlogGrid() {
             display: 'flex',
             gap: '8px',
             flexWrap: 'wrap',
-            marginBottom: '40px',
+            marginBottom: isMobile ? '24px' : '40px',
           }}
         >
           {CATEGORIES.map(cat => {
@@ -257,8 +260,8 @@ export default function BlogGrid() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '32px 24px',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: isMobile ? '24px' : '32px 24px',
           }}
         >
           {filtered.map((article, i) => (
@@ -267,6 +270,7 @@ export default function BlogGrid() {
               article={article}
               index={i}
               isVisible={isVisible}
+              isMobile={isMobile}
             />
           ))}
         </div>

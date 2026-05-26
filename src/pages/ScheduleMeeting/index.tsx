@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/sections/Navbar';
 import Footer from '../../components/sections/Footer';
 import FAQAccordion from '../../components/shared/FAQAccordion';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import met from '../../assets/met.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -31,6 +32,7 @@ const SCHEDULE_FAQS = [
 ];
 
 export default function ScheduleMeetingPage() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [formData, setFormData] = useState({
     fullName: '',
     companyEmail: '',
@@ -69,8 +71,8 @@ export default function ScheduleMeetingPage() {
       {/* Breadcrumb */}
       <div
         style={{
-          paddingTop: '120px',
-          paddingBottom: '40px',
+          paddingTop: isMobile ? '80px' : '120px',
+          paddingBottom: isMobile ? '24px' : '40px',
           paddingLeft: 'clamp(24px, 5vw, 80px)',
           paddingRight: 'clamp(24px, 5vw, 80px)',
           maxWidth: '1200px',
@@ -103,93 +105,99 @@ export default function ScheduleMeetingPage() {
 
       {/* Main Content */}
       <div
-        className="responsive-grid"
         style={{
           maxWidth: '1400px',
           margin: '0 auto',
           paddingLeft: 'clamp(24px, 5vw, 80px)',
           paddingRight: 'clamp(24px, 5vw, 80px)',
-          paddingBottom: '80px',
+          paddingBottom: isMobile ? '120px' : '80px',
           display: 'grid',
-          gridTemplateColumns: '55% 45%',
-          gap: '80px',
+          gridTemplateColumns: isMobile ? '1fr' : '55% 45%',
+          gap: isMobile ? '40px' : '80px',
           alignItems: 'stretch'
         }}
       >
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            @media (max-width: 768px) {
-              .responsive-grid {
-                grid-template-columns: 1fr !important;
-                gap: 40px !important;
-              }
-              .form-grid {
-                grid-template-columns: 1fr !important;
-                gap: 20px !important;
-              }
-              .image-section {
-                minHeight: 400px !important;
-                aspect-ratio: 632/724 !important;
-              }
-            }
-          `
-        }} />
-        {/* Left Column: Image Section */}
-        <div
-          className="image-section"
-          style={{
-            position: 'relative',
-            width: '100%',
-            minHeight: '600px',
-            borderRadius: '40px',
-            overflow: 'hidden',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-            backgroundImage: `url(${met})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            paddingTop: '24px',
-            paddingRight: '40px',
-            paddingBottom: '24px',
-            paddingLeft: '40px',
-            gap: '10px',
-            opacity: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center'
-          }}
-        >
-          {/* Gradient overlay */}
+        {/* Left Column: Image Section - completely hidden on mobile */}
+        {!isMobile && (
           <div
             style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 74%)'
-            }}
-          />
-
-          {/* Headline text */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '40px',
-              left: '40px',
-              color: '#FFFFFF',
-              fontFamily: satoshi,
-              fontSize: 'clamp(32px, 4vw, 56px)',
-              fontWeight: 700,
-              lineHeight: '1.1',
-              maxWidth: '400px',
-              zIndex: 1
+              position: 'relative',
+              width: '100%',
+              minHeight: '600px',
+              borderRadius: '40px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+              backgroundImage: `url(${met})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              paddingTop: '24px',
+              paddingRight: '40px',
+              paddingBottom: '24px',
+              paddingLeft: '40px',
+              gap: '10px',
+              opacity: 1,
+              display: isMobile ? 'none' : 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
             }}
           >
-            Let's Map Out Your Project
+            {/* Gradient overlay */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 74%)'
+              }}
+            />
+
+            {/* Headline text */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '40px',
+                left: '40px',
+                color: '#FFFFFF',
+                fontFamily: satoshi,
+                fontSize: 'clamp(32px, 4vw, 56px)',
+                fontWeight: 700,
+                lineHeight: '1.1',
+                maxWidth: '400px',
+                zIndex: 1
+              }}
+            >
+              Let's Map Out Your Project
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Right Column: Form Section */}
-        <div style={{ minWidth: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div style={{ 
+          minWidth: isMobile ? 'auto' : '400px', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: isMobile ? 'flex-start' : 'center',
+          paddingBottom: isMobile ? '40px' : 0
+        }}>
+          {/* Mobile headline (replaces the image background on mobile) */}
+          {isMobile && (
+            <div style={{ marginBottom: '16px' }}>
+              <h2
+                style={{
+                  fontFamily: satoshi,
+                  fontSize: 'clamp(24px, 6vw, 36px)',
+                  fontWeight: 700,
+                  color: '#1a1f3c',
+                  lineHeight: '1.1',
+                  margin: 0
+                }}
+              >
+                Let's Map Out Your Project
+              </h2>
+            </div>
+          )}
+
           {/* Form Header */}
-          <div style={{ marginBottom: '32px' }}>
+          <div style={{ marginBottom: isMobile ? '24px' : '32px' }}>
             <h1
               style={{
                 fontFamily: satoshi,
@@ -215,7 +223,7 @@ export default function ScheduleMeetingPage() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '16px' : '20px' }}>
             {/* Full Name */}
             <div>
               <label
@@ -256,7 +264,7 @@ export default function ScheduleMeetingPage() {
             </div>
 
             {/* Company Email and Company Name - Two Column */}
-            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '16px' : '16px' }}>
               <div>
                 <label
                   style={{
@@ -383,7 +391,7 @@ export default function ScheduleMeetingPage() {
             </div>
 
             {/* Preferred Meeting Date and Time - Two Column */}
-            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '16px' : '16px' }}>
               <div>
                 <label
                   style={{
@@ -547,7 +555,8 @@ export default function ScheduleMeetingPage() {
                 fontSize: '16px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'background-color 200ms'
+                transition: 'background-color 200ms',
+                marginBottom: isMobile ? '20px' : 0
               }}
               onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#2a2f4c')}
               onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#1a1f3c')}

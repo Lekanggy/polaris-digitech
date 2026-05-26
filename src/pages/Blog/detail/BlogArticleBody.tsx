@@ -10,6 +10,7 @@
  * Each section root div carries id="section-{id}" for the TOC scroll-spy.
  */
 import { motion } from 'framer-motion';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import type { BlogArticle } from '../blogData';
 import TableOfContents from './TableOfContents';
 
@@ -124,6 +125,7 @@ function ArticleSection({
 
 // ── Main section ──────────────────────────────────────────────────────────
 export default function BlogArticleBody({ article }: BlogArticleBodyProps) {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const sections = article.sections ?? [];
 
   return (
@@ -131,7 +133,7 @@ export default function BlogArticleBody({ article }: BlogArticleBodyProps) {
       style={{
         background: '#FFFFFF',
         paddingTop: '0',
-        paddingBottom: '80px',
+        paddingBottom: isMobile ? '48px' : '80px',
       }}
     >
       <div
@@ -151,8 +153,8 @@ export default function BlogArticleBody({ article }: BlogArticleBodyProps) {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 260px',
-            gap: '48px',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 260px',
+            gap: isMobile ? '32px' : '48px',
             alignItems: 'start',
           }}
         >

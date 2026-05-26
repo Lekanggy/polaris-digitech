@@ -7,6 +7,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -50,14 +51,15 @@ const ArrowIcon = () => (
 
 export default function ContactInfo() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
       ref={ref}
       style={{
         background: '#EBECF6',
-        paddingTop: '80px',
-        paddingBottom: '80px',
+        paddingTop: isMobile ? '48px' : '80px',
+        paddingBottom: isMobile ? '48px' : '80px',
       }}
     >
       <div
@@ -71,8 +73,8 @@ export default function ContactInfo() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '64px',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: isMobile ? '40px' : '64px',
             alignItems: 'center',
           }}
         >
@@ -108,7 +110,7 @@ export default function ContactInfo() {
               Our team is ready to connect. Reach out today and discover how Polaris Digitech can help you solve complex challenges with data-driven precision.
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '12px' : '14px' }}>
               {contactItems.map((item, i) => (
                 <motion.div
                   key={i}
@@ -192,7 +194,7 @@ export default function ContactInfo() {
             transition={{ duration: 0.6, delay: 0.2 }}
             style={{
               width: '100%',
-              height: 'clamp(420px, 48vw, 540px)',
+              height: isMobile ? '320px' : 'clamp(420px, 48vw, 540px)',
               borderRadius: '20px',
               overflow: 'hidden',
               border: '3px solid #283172',

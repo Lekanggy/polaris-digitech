@@ -13,6 +13,7 @@
  */
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import type { BlogArticle } from '../blogData';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -76,13 +77,14 @@ export default function BlogDetailHero({
   readTime = '10 min',
 }: BlogDetailHeroProps) {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
       style={{
         background: '#FFFFFF',
-        paddingTop: '120px',
-        paddingBottom: '48px',
+        paddingTop: isMobile ? '80px' : '120px',
+        paddingBottom: isMobile ? '32px' : '48px',
       }}
     >
       <div
@@ -111,7 +113,7 @@ export default function BlogDetailHero({
             border: 'none',
             cursor: 'pointer',
             padding: 0,
-            marginBottom: '24px',
+            marginBottom: isMobile ? '16px' : '24px',
             transition: 'color 200ms',
           }}
           onMouseEnter={e => (e.currentTarget.style.color = '#010527')}
@@ -159,9 +161,9 @@ export default function BlogDetailHero({
           style={{
             display: 'flex',
             alignItems: 'flex-start',
-            gap: '48px',
+            gap: isMobile ? '24px' : '48px',
             flexWrap: 'wrap',
-            marginBottom: '28px',
+            marginBottom: isMobile ? '20px' : '28px',
           }}
         >
           {/* Post By */}

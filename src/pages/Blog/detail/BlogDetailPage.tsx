@@ -14,6 +14,7 @@ import Footer from '../../../components/sections/Footer';
 import BlogDetailHero from './BlogDetailHero';
 import BlogArticleBody from './BlogArticleBody';
 import MoreArticles from './MoreArticles';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import { FEATURED_ARTICLE, ARTICLES } from '../blogData';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -24,6 +25,7 @@ const ALL_ARTICLES = [FEATURED_ARTICLE, ...ARTICLES];
 export default function BlogDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const article = ALL_ARTICLES.find(a => a.id === id);
 
@@ -40,7 +42,7 @@ export default function BlogDetailPage() {
             justifyContent: 'center',
             minHeight: '60vh',
             gap: '16px',
-            padding: '160px 80px 80px',
+            padding: isMobile ? '100px 24px 60px' : '160px 80px 80px',
           }}
         >
           <p

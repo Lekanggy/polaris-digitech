@@ -48,17 +48,20 @@ export default function Navbar() {
   return (
     <>
       <header 
-        className="fixed left-0 right-0 z-50 flex justify-center px-6 sm:px-8"
+        className="fixed left-0 right-0 z-50 flex justify-center"
         style={{ 
           top: isMobile ? '8px' : '40px',
-          paddingTop: isMobile ? '4px' : '32px'
+          paddingTop: isMobile ? '4px' : '32px',
+          paddingLeft: isMobile ? '0' : '24px',
+          paddingRight: isMobile ? '0' : '24px'
         }}
       >
       <nav
         className="w-full rounded-2xl shadow-xl transition-all duration-300"
         onMouseLeave={() => setActiveDropdown(null)}
         style={{
-          maxWidth: '920px',
+          width: isMobile ? 'min(92vw, 320px)' : '100%',
+          maxWidth: isMobile ? '320px' : '920px',
           height: isMobile ? '52px' : '72px',
           backdropFilter: 'blur(8px)',
           background:
@@ -140,7 +143,7 @@ export default function Navbar() {
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden text-white p-1.5"
+            className="lg:hidden text-white"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -213,11 +216,11 @@ export default function Navbar() {
           animate={{ x: 0 }}
           exit={{ x: '100%' }}
           transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
-          className="fixed inset-0 z-[60] flex flex-col lg:hidden"
+          className="fixed inset-0 z-60 flex flex-col lg:hidden"
           style={{ backgroundColor: '#0a0e27' }}
         >
           {/* Top bar: logo + close */}
-          <div className="flex items-center justify-between px-6 pt-6 pb-4">
+          <div className="flex items-center justify-between px-5! py-8!">
             <button
               onClick={() => {
                 navigate('/');
@@ -243,10 +246,10 @@ export default function Navbar() {
           </div>
 
           {/* Thin divider */}
-          <div className="h-px bg-white/10" />
+          <div className="h-px bg-white/10"/>
 
           {/* Nav items — centered, generous spacing, scrollable if needed */}
-          <div className="flex-1 overflow-y-auto px-6 pt-8 pb-6 flex flex-col items-center gap-5 text-center">
+          <div className="flex-1 overflow-y-auto  flex flex-col items-center gap-8 text-center pt-5!">
             {NAV_LINKS.map((link) => {
               const hasDropdown = !!(link.products || link.services || link.projects);
               const isExpanded = expanded === link.label;

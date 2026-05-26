@@ -13,6 +13,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -148,6 +149,7 @@ function AccordionItem({
 // ── Main export ───────────────────────────────────────────────────────────
 export default function FAQAccordion({ faqs, description }: FAQAccordionProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
@@ -157,8 +159,8 @@ export default function FAQAccordion({ faqs, description }: FAQAccordionProps) {
       ref={ref}
       style={{
         background: '#FFFFFF',
-        paddingTop: '80px',
-        paddingBottom: '80px',
+        paddingTop: isMobile ? '48px' : '80px',
+        paddingBottom: isMobile ? '48px' : '80px',
       }}
     >
       <div
@@ -173,10 +175,10 @@ export default function FAQAccordion({ faqs, description }: FAQAccordionProps) {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 'clamp(40px, 6vw, 100px)',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: isMobile ? '16px' : 'clamp(40px, 6vw, 100px)',
             alignItems: 'start',
-            marginBottom: '40px',
+            marginBottom: isMobile ? '24px' : '40px',
           }}
         >
           <motion.h2

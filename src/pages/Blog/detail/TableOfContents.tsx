@@ -13,6 +13,7 @@
  *   • Page scrolls freely; TOC stays fixed in its column
  */
 import { useEffect, useRef, useState } from 'react';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import type { BlogSection } from '../blogData';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -32,6 +33,7 @@ interface TableOfContentsProps {
 }
 
 export default function TableOfContents({ sections }: TableOfContentsProps) {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [activeId, setActiveId] = useState<string>('');
   const tocSectionsRef = useRef<BlogSection[]>([]);
   tocSectionsRef.current = sections.filter(s => s.heading.trim() !== '');
@@ -80,11 +82,10 @@ export default function TableOfContents({ sections }: TableOfContentsProps) {
       style={{
         background: CARD_BG,
         borderRadius: '20px',
-        padding: '28px 22px 24px',
-        // Sticky — stays in column, page scrolls freely, card does NOT scroll
-        position: 'sticky',
-        top: '120px',
-        // No maxHeight, no overflowY — card never scrolls
+        padding: isMobile ? '20px 16px 18px' : '28px 22px 24px',
+        // Sticky only on desktop
+        position: isMobile ? 'static' : 'sticky',
+        top: isMobile ? 'auto' : '120px',
       }}
     >
       {/* ── Heading ── */}
@@ -92,10 +93,10 @@ export default function TableOfContents({ sections }: TableOfContentsProps) {
         style={{
           fontFamily: satoshi,
           fontWeight: 700,
-          fontSize: '20px',
+          fontSize: isMobile ? '16px' : '20px',
           lineHeight: '130%',
           color: ACTIVE_TEXT,
-          marginBottom: '28px',
+          marginBottom: isMobile ? '18px' : '28px',
         }}
       >
         Table of Content
@@ -119,14 +120,14 @@ export default function TableOfContents({ sections }: TableOfContentsProps) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     flexShrink: 0,
-                    width: '22px',
+                    width: isMobile ? '18px' : '22px',
                   }}
                 >
                   {/* Outer ring + inner dot */}
                   <div
                     style={{
-                      width: '22px',
-                      height: '22px',
+                      width: isMobile ? '18px' : '22px',
+                      height: isMobile ? '18px' : '22px',
                       borderRadius: '50%',
                       border: `2px solid ${isActive ? ACTIVE_RING : INACTIVE_RING}`,
                       display: 'flex',
@@ -137,10 +138,10 @@ export default function TableOfContents({ sections }: TableOfContentsProps) {
                       marginTop: '1px',
                     }}
                   >
-                    <div
-                      style={{
-                        width: '10px',
-                        height: '10px',
+                      <div
+                        style={{
+                          width: isMobile ? '8px' : '10px',
+                          height: isMobile ? '8px' : '10px',
                         borderRadius: '50%',
                         background: isActive ? ACTIVE_DOT : INACTIVE_DOT,
                         transition: 'background 300ms',
@@ -182,7 +183,7 @@ export default function TableOfContents({ sections }: TableOfContentsProps) {
                     textAlign: 'left',
                     fontFamily: satoshi,
                     fontWeight: isActive ? 700 : 400,
-                    fontSize: '14px',
+                    fontSize: isMobile ? '13px' : '14px',
                     lineHeight: '150%',
                     color: isActive ? ACTIVE_TEXT : INACTIVE_TEXT,
                     transition: 'color 250ms',

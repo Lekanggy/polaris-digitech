@@ -9,6 +9,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import { ARTICLES, FEATURED_ARTICLE } from '../blogData';
 import type { BlogArticle } from '../blogData';
 
@@ -39,7 +40,7 @@ function ArticleCard({
       <div
         style={{
           width: '100%',
-          height: '220px',
+          height: isMobile ? '160px' : '220px',
           borderRadius: '20px',
           overflow: 'hidden',
           background: '#D0D5E8',
@@ -150,6 +151,7 @@ function ArticleCard({
 // ── Section ───────────────────────────────────────────────────────────────
 export default function MoreArticles({ currentId }: MoreArticlesProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   // Pool: FEATURED + ARTICLES, exclude current
   const pool = [FEATURED_ARTICLE, ...ARTICLES].filter(a => a.id !== currentId);
@@ -162,8 +164,8 @@ export default function MoreArticles({ currentId }: MoreArticlesProps) {
       ref={ref}
       style={{
         background: '#EBECF6',
-        paddingTop: '72px',
-        paddingBottom: '80px',
+        paddingTop: isMobile ? '48px' : '72px',
+        paddingBottom: isMobile ? '48px' : '80px',
       }}
     >
       <div
@@ -186,7 +188,7 @@ export default function MoreArticles({ currentId }: MoreArticlesProps) {
             lineHeight: '120%',
             letterSpacing: '-0.02em',
             color: '#010527',
-            marginBottom: '36px',
+            marginBottom: isMobile ? '24px' : '36px',
           }}
         >
           More Articles
@@ -196,8 +198,8 @@ export default function MoreArticles({ currentId }: MoreArticlesProps) {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '32px 24px',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: isMobile ? '24px' : '32px 24px',
           }}
         >
           {displayed.map((article, i) => (

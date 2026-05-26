@@ -6,6 +6,7 @@
  */
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import type { BlogArticle } from '../blogData';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -15,13 +16,15 @@ interface BlogHeroProps {
 }
 
 export default function BlogHero({ article }: BlogHeroProps) {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
   return (
     /* Outer section — white bg with top padding to clear the navbar */
     <section
       style={{
         background: '#FFFFFF',
-        paddingTop: '120px',
-        paddingBottom: '80px',
+        paddingTop: isMobile ? '80px' : '120px',
+        paddingBottom: isMobile ? '48px' : '80px',
       }}
     >
       <div
@@ -37,7 +40,7 @@ export default function BlogHero({ article }: BlogHeroProps) {
           style={{
             position: 'relative',
             width: '100%',
-            height: '603px',
+            height: isMobile ? '320px' : '603px',
             borderRadius: '40px',
             overflow: 'hidden',
             background: article.image
@@ -62,10 +65,10 @@ export default function BlogHero({ article }: BlogHeroProps) {
             style={{
               position: 'relative',
               zIndex: 1,
-              paddingTop: '64px',
-              paddingBottom: '64px',
-              paddingLeft: '96px',
-              paddingRight: '96px',
+              paddingTop: isMobile ? '32px' : '64px',
+              paddingBottom: isMobile ? '32px' : '64px',
+              paddingLeft: isMobile ? '24px' : '96px',
+              paddingRight: isMobile ? '24px' : '96px',
               width: '100%',
             }}
           >
