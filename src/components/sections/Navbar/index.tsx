@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_LINKS } from '../../../utils/constants';
-import type { NavServiceItem, NavProductItem, NavProjectItem } from '../../../utils/constants';
 import whitelogo from '../../../assets/whitelogo.png';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
@@ -50,8 +49,8 @@ export default function Navbar() {
       <header 
         className="fixed left-0 right-0 z-50 flex justify-center"
         style={{ 
-          top: isMobile ? '8px' : '40px',
-          paddingTop: isMobile ? '4px' : '32px',
+          top: isMobile ? '8px' : '15px',
+          paddingTop: isMobile ? '4px' : '20px',
           paddingLeft: isMobile ? '0' : '24px',
           paddingRight: isMobile ? '0' : '24px'
         }}

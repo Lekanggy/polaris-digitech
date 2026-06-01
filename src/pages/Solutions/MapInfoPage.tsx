@@ -1,0 +1,180 @@
+/**
+ * MapInfoPage
+ * Sections: Navbar → IntroSection → QuoteSection → KeyFeatures → ProductShowcase → Footer
+ */
+import Navbar from '../../components/sections/Navbar';
+import Footer from '../../components/sections/Footer';
+import KeyFeatures from './product-detail/KeyFeatures';
+import ProductShowcase from './product-detail/ProductShowcase';
+import { motion } from 'framer-motion';
+import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+
+const satoshi = 'Satoshi, Inter, sans-serif';
+
+// ── Key features ───────────────────────────────────────────────────────────
+const MI_FEATURES = [
+  {
+    title: 'Comprehensive Visualisation',
+    description:
+      'With MapInfo, PDL can convert virtually any spatial data into rich, interactive maps and charts. The platform provides the ability to display data at any scale, so that they can be shown within different layers of data.',
+  },
+  {
+    title: 'Accelerated Time-to-value',
+    description:
+      'MapInfo Pro has been praised as one of the best GIS mapping tools on the market. It is versatile, it does not slow down, and it enables clients to make data-driven decisions faster, reducing the overall time-to-value of every engagement.',
+  },
+  {
+    title: 'Seamless Integration',
+    description:
+      'MapInfo Pro is extremely customisable, and it can be integrated with other mapping software, which enables you to distribute the final output to users in the way that is most useful to them.',
+  },
+  {
+    title: 'Trusted Solution',
+    description:
+      'MapInfo Pro has a long history of being trusted by widely used by academics and practitioners of varying fields. It is used across a large number of industries, from government to private sector bodies. Polaris Digitech leverages this proven and dependable platform, making it the right choice for clients who require the highest standards of data quality and power.',
+  },
+];
+
+// ── Section 1: Intro ───────────────────────────────────────────────────────
+function IntroSection({ isMobile }: { isMobile: boolean }) {
+  const { ref, isVisible } = useScrollAnimation(0.05);
+  return (
+    <section
+      ref={ref}
+      style={{ background: '#fff', paddingTop: '160px', paddingBottom: '80px' }}
+    >
+      <div
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          paddingLeft: 'clamp(24px, 5vw, 80px)',
+          paddingRight: 'clamp(24px, 5vw, 80px)',
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1.4fr 1fr',
+          gap: isMobile ? '32px' : 'clamp(40px, 6vw, 80px)',
+          alignItems: 'stretch',
+        }}
+      >
+        {/* Left — placeholder box */}
+        <motion.div
+          initial={{ opacity: 0, x: -32 }}
+          animate={isVisible ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.7 }}
+          style={{
+            background: '#E8EAF6',
+            borderRadius: '24px',
+            minHeight: isMobile ? '280px' : '380px',
+          }}
+        />
+
+        {/* Right — title + description */}
+        <motion.div
+          initial={{ opacity: 0, x: 32 }}
+          animate={isVisible ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.1 }}
+        >
+          <h1
+            style={{
+              fontFamily: satoshi,
+              fontWeight: 700,
+              fontSize: 'clamp(32px, 4.5vw, 56px)',
+              lineHeight: '115%',
+              letterSpacing: '-0.02em',
+              color: '#283172',
+              marginBottom: '24px',
+            }}
+          >
+            Map Info
+          </h1>
+          <p
+            style={{
+              fontFamily: satoshi,
+              fontWeight: 400,
+              fontSize: '15px',
+              lineHeight: '170%',
+              color: '#46485F',
+            }}
+          >
+            MapInfo Pro is a powerful and feature-rich GIS software that provides advanced
+            data visualisation, analysis, and mapping capabilities for businesses and
+            organisations. MapInfo Pro enables users to create, manage, and analyse geospatial
+            data, as well as to perform spatial analysis and create detailed maps. The software
+            delivers advanced tools for data management, geocoding, routing, and spatial analysis,
+            making it an ideal solution for businesses and organisations that need to manage and
+            analyse large amounts of geospatial data, such as demographic information. MapInfo
+            delivers advanced tools for data management, geocoding, routing, and spatial analysis,
+            making it an ideal solution for governments, businesses, and organisations of all sizes.
+            At PDL, our experts leverage MapInfo for effective mapping and location analysis,
+            delivering Polaris Digitech's clients the most accurate and reliable results.
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ── Section 2: Quote ───────────────────────────────────────────────────────
+function QuoteSection() {
+  return (
+    <section
+      style={{
+        width: '100%',
+        minHeight: '280px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background:
+          'linear-gradient(180deg, rgba(102,102,102,0.6) 0%, rgba(0,0,0,0.6) 62.5%)',
+        backgroundColor: '#0d1b3e',
+      }}
+    >
+      <p
+        style={{
+          fontFamily: satoshi,
+          fontWeight: 500,
+          fontSize: 'clamp(22px, 3vw, 40px)',
+          lineHeight: '150%',
+          letterSpacing: '-0.01em',
+          textAlign: 'center',
+          color: '#FFFFFF',
+          maxWidth: '1200px',
+          padding: '100px clamp(24px, 5vw, 80px)',
+          margin: 0,
+        }}
+      >
+        Our skilled team collaborates with clients to understand their needs and deliver tailored
+        software solutions that meet their goals.
+      </p>
+    </section>
+  );
+}
+
+// ── Page ───────────────────────────────────────────────────────────────────
+export default function MapInfoPage() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+
+      {/* Section 1 — Intro */}
+      <IntroSection isMobile={isMobile} />
+
+      {/* Section 2 — Quote */}
+      <QuoteSection />
+
+      {/* Section 3 — Key Features */}
+      <KeyFeatures
+        sectionTitle="Key Features of Map Info"
+        sectionDescription="Geospatial information is an essential component of making well-informed decisions. For this reason, the way data is collected, processed, and visualised plays a critical role in helping organisations understand their environment and make better decisions. To understand how data from different locations can be combined to create a comprehensive picture, there is full dependence on GIS tools such as MapInfo to deliver the most accurate and relevant results."
+        features={MI_FEATURES}
+      />
+
+      {/* Section 4 — Showcase */}
+      <ProductShowcase />
+
+      {/* Footer */}
+      <Footer />
+    </div>
+  );
+}
