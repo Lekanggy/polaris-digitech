@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import pol1 from '../../../assets/pol1.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -43,17 +44,20 @@ interface VMCardProps {
   body: string;
   delay: number;
   isVisible: boolean;
+  isMobile: boolean;
 }
 
-function VMCard({ icon, title, body, delay, isVisible }: VMCardProps) {
+function VMCard({ icon, title, body, delay, isVisible, isMobile }: VMCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 28 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay }}
       style={{
-        width: '433px',
-        minHeight: '334px',
+        flex: isMobile ? 'unset' : '1 1 0',
+        width: isMobile ? '100%' : undefined,
+        maxWidth: isMobile ? '100%' : '433px',
+        minHeight: isMobile ? 'auto' : '280px',
         borderRadius: '40px',
         paddingTop: '26px',
         paddingRight: '22px',
@@ -64,7 +68,7 @@ function VMCard({ icon, title, body, delay, isVisible }: VMCardProps) {
         flexDirection: 'column',
         gap: '12px',
         boxSizing: 'border-box',
-        alignSelf: 'center',
+        alignSelf: isMobile ? 'stretch' : 'center',
       }}
     >
       {/* Icon + title row */}
@@ -105,20 +109,21 @@ function VMCard({ icon, title, body, delay, isVisible }: VMCardProps) {
 }
 
 // ── Center image card ──────────────────────────────────────────────────────
-function CultureCard({ isVisible }: { isVisible: boolean }) {
+function CultureCard({ isVisible, isMobile }: { isVisible: boolean; isMobile: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: 0.2 }}
       style={{
-        width: '433px',
+        flex: isMobile ? 'unset' : '1 1 0',
+        width: isMobile ? '100%' : undefined,
+        maxWidth: isMobile ? '100%' : '433px',
         borderRadius: '40px',
         overflow: 'hidden',
         position: 'relative',
-        flexShrink: 0,
-        alignSelf: 'flex-start',
-        marginTop: '-48px',
+        alignSelf: isMobile ? 'stretch' : 'flex-start',
+        marginTop: isMobile ? '0' : '-48px',
       }}
     >
       {/* Photo */}
@@ -186,6 +191,7 @@ function CultureCard({ isVisible }: { isVisible: boolean }) {
 // ── Main section ───────────────────────────────────────────────────────────
 export default function VisionMission() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -195,7 +201,7 @@ export default function VisionMission() {
         paddingBottom: '0',
       }}
     >
-      {/* Full-width white container — top-left + top-right radius 40px creates the visible curve against the dark hero above */}
+      {/* Full-width white container */}
       <div
         style={{
           background: '#FFFFFF',
@@ -211,12 +217,13 @@ export default function VisionMission() {
         {/* Three-card row */}
         <div
           style={{
+            maxWidth: '1280px',
+            margin: '0 auto',
             display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-end',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: isMobile ? 'stretch' : 'flex-end',
             justifyContent: 'center',
             gap: '24px',
-            flexWrap: 'wrap',
           }}
         >
           {/* Mission */}
@@ -226,10 +233,11 @@ export default function VisionMission() {
             body="Our mission is to enhance the quality of relationships with our clients in order to promote a high level of integrity, customer satisfaction, and employee empowerment to achieve optimal organizational productivity. We are committed to building long-term relationships based on sustainable values, providing technical support, training, customized applications development and project consulting services."
             delay={0.1}
             isVisible={isVisible}
+            isMobile={isMobile}
           />
 
           {/* Culture — center, taller, rises above */}
-          <CultureCard isVisible={isVisible} />
+          <CultureCard isVisible={isVisible} isMobile={isMobile} />
 
           {/* Vision */}
           <VMCard
@@ -238,6 +246,7 @@ export default function VisionMission() {
             body="Our Vision is to be a dominant Twenty-First Century Surveying and Geographical Information Technology Company, spearheading the growth of a new phenomenon in the Nigerian Geo-Spatial Data Industry by using Location and Information-rich Data to revolutionize the way individuals and organizations conduct business."
             delay={0.3}
             isVisible={isVisible}
+            isMobile={isMobile}
           />
         </div>
       </div>

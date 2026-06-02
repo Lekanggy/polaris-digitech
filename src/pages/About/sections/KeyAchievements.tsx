@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import herob from '../../../assets/herob.png';
 import gonew from '../../../assets/gonew.png';
 import locationimg from '../../../assets/location.png';
@@ -89,6 +90,7 @@ function ArrowBtn({ dir, onClick }: ArrowBtnProps) {
 
 export default function KeyAchievements() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [current, setCurrent] = useState(0);
 
   const prev = () => setCurrent((c) => (c - 1 + ACHIEVEMENTS.length) % ACHIEVEMENTS.length);
@@ -138,7 +140,7 @@ export default function KeyAchievements() {
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          {/* Achievement card — fixed dimensions, arrows inside */}
+          {/* Achievement card — responsive height, arrows inside */}
           <div
             style={{
               borderRadius: '30px',
@@ -148,17 +150,14 @@ export default function KeyAchievements() {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               width: '100%',
-              height: '480px',
+              minHeight: isMobile ? '480px' : '480px',
             }}
           >
-            {/* Dark overlay */}
-            {/* <div style={{ position: 'absolute', inset: 0, background: 'rgba(1,5,39,0.88)' }} /> */}
-
-            {/* Left arrow — pinned to left edge, vertically centered */}
+            {/* Left arrow */}
             <div
               style={{
                 position: 'absolute',
-                left: '24px',
+                left: isMobile ? '12px' : '24px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 zIndex: 10,
@@ -167,11 +166,11 @@ export default function KeyAchievements() {
               <ArrowBtn dir="left" onClick={prev} />
             </div>
 
-            {/* Right arrow — pinned to right edge, vertically centered */}
+            {/* Right arrow */}
             <div
               style={{
                 position: 'absolute',
-                right: '24px',
+                right: isMobile ? '12px' : '24px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 zIndex: 10,
@@ -193,19 +192,20 @@ export default function KeyAchievements() {
                   inset: 0,
                   zIndex: 1,
                   display: 'grid',
-                  gridTemplateColumns: '1.3fr 1fr',
+                  gridTemplateColumns: isMobile ? '1fr' : '1.3fr 1fr',
                   alignItems: 'center',
-                  padding: '56px 88px',
-                  gap: '40px',
+                  padding: isMobile ? '40px 52px' : '56px 88px',
+                  gap: isMobile ? '24px' : '40px',
+                  overflowY: isMobile ? 'auto' : 'visible',
                 }}
               >
                 {/* ── Left: title + description ── */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <h3
                     style={{
                       fontFamily: satoshi,
                       fontWeight: 500,
-                      fontSize: '32px',
+                      fontSize: isMobile ? '18px' : '32px',
                       lineHeight: '150%',
                       letterSpacing: '0',
                       color: '#D7B56D',
@@ -221,67 +221,69 @@ export default function KeyAchievements() {
                     style={{
                       fontFamily: satoshi,
                       fontWeight: 400,
-                      fontSize: '20px',
+                      fontSize: isMobile ? '14px' : '20px',
                       lineHeight: '150%',
                       letterSpacing: '0',
                       color: '#DBDBDB',
                       margin: 0,
+                      display: isMobile ? '-webkit-box' : 'block',
+                      WebkitLineClamp: isMobile ? 5 : undefined,
+                      WebkitBoxOrient: isMobile ? 'vertical' : undefined,
+                      overflow: isMobile ? 'hidden' : 'visible',
                     }}
                   >
                     {achievement.body}
                   </p>
                 </div>
 
-                {/* ── Right: large year + logo overlay ── */}
-                <div
-                  style={{
-                    position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100%',
-                  }}
-                >
-                  {/* Large year — outlined with white 30% opacity border, transparent fill */}
-                  <span
+                {/* ── Right: year + logo — hidden on mobile ── */}
+                {!isMobile && (
+                  <div
                     style={{
-                      fontFamily: satoshi,
-                      fontWeight: 900,
-                      fontSize: 'clamp(100px, 12vw, 160px)',
-                      lineHeight: '150%',
-                      letterSpacing: '0',
-                      color: '',
-                      WebkitTextStroke: '1px rgba(255,255,255,0.3)',
-                      userSelect: 'none',
-                      whiteSpace: 'nowrap',
-                      position: 'absolute',
-                      top: '40%',
-                      left: '50%',
-                      transform: 'translate(-50%, -60%)',
-                      zIndex: 1
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
                     }}
                   >
-                    {achievement.year}
-                  </span>
-
-                  {/* Logo — overlaps year from below */}
-                  {/* Logo — sits below the year, overlapping it from below */}
-                  <img
-                    src={achievement.logo}
-                    alt="Achievement logo"
-                    style={{
-                      position: 'absolute',
-                      zIndex: 2,
-                      width: 'clamp(140px, 16vw, 220px)',
-                      height: 'auto',
-                      objectFit: 'contain',
-                      top: '40%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5))',
-                    }}
-                  />
-                </div>
+                    <span
+                      style={{
+                        fontFamily: satoshi,
+                        fontWeight: 900,
+                        fontSize: 'clamp(100px, 12vw, 160px)',
+                        lineHeight: '150%',
+                        letterSpacing: '0',
+                        color: '',
+                        WebkitTextStroke: '1px rgba(255,255,255,0.3)',
+                        userSelect: 'none',
+                        whiteSpace: 'nowrap',
+                        position: 'absolute',
+                        top: '40%',
+                        left: '50%',
+                        transform: 'translate(-50%, -60%)',
+                        zIndex: 1,
+                      }}
+                    >
+                      {achievement.year}
+                    </span>
+                    <img
+                      src={achievement.logo}
+                      alt="Achievement logo"
+                      style={{
+                        position: 'absolute',
+                        zIndex: 2,
+                        width: 'clamp(140px, 16vw, 220px)',
+                        height: 'auto',
+                        objectFit: 'contain',
+                        top: '40%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5))',
+                      }}
+                    />
+                  </div>
+                )}
               </motion.div>
             </AnimatePresence>
           </div>

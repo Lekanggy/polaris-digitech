@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import val1 from '../../../assets/val1.png';
 import val2 from '../../../assets/val2.png';
 import val3 from '../../../assets/val3.png';
@@ -49,11 +50,12 @@ interface ValueItemProps {
   description: string;
   index: number;
   isVisible: boolean;
+  isMobile: boolean;
+  isLastInRow: boolean;
 }
 
-function ValueItem({ image, title, description, index, isVisible }: ValueItemProps) {
-  // Vertical divider on right for cols 0 and 1 (not col 2)
-  const showRightDivider = (index % 3) !== 2;
+function ValueItem({ image, title, description, index, isVisible, isMobile, isLastInRow }: ValueItemProps) {
+  const showRightDivider = !isMobile && !isLastInRow;
 
   return (
     <motion.div
@@ -66,9 +68,10 @@ function ValueItem({ image, title, description, index, isVisible }: ValueItemPro
         flexDirection: 'column',
         alignItems: 'center',
         textAlign: 'center',
-        padding: '40px 32px 48px',
+        padding: isMobile ? '32px 20px' : '40px 32px 48px',
         position: 'relative',
         borderRight: showRightDivider ? '1px solid rgba(40,49,114,0.15)' : 'none',
+        borderBottom: isMobile ? '1px solid rgba(40,49,114,0.15)' : 'none',
       }}
     >
       {/* Image */}
@@ -120,6 +123,7 @@ function ValueItem({ image, title, description, index, isVisible }: ValueItemPro
 
 export default function WhatSetsUsApart() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const topRow = VALUES.slice(0, 3);
   const bottomRow = VALUES.slice(3, 6);
@@ -177,10 +181,10 @@ export default function WhatSetsUsApart() {
           </motion.p>
         </div>
 
-        {/* ── Grid — no card wrappers, items on bare background ── */}
+        {/* ── Grid ── */}
         <div>
           {/* Top row */}
-          <div style={{ display: 'flex', alignItems: 'stretch' }}>
+          <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'stretch' }}>
             {topRow.map((item, i) => (
               <ValueItem
                 key={item.title}
@@ -189,6 +193,8 @@ export default function WhatSetsUsApart() {
                 description={item.description}
                 index={i}
                 isVisible={isVisible}
+                isMobile={isMobile}
+                isLastInRow={i === topRow.length - 1}
               />
             ))}
           </div>
@@ -197,7 +203,7 @@ export default function WhatSetsUsApart() {
           <div style={{ height: '1px', background: 'rgba(40,49,114,0.2)', margin: '0' }} />
 
           {/* Bottom row */}
-          <div style={{ display: 'flex', alignItems: 'stretch' }}>
+          <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'stretch' }}>
             {bottomRow.map((item, i) => (
               <ValueItem
                 key={item.title}
@@ -206,6 +212,8 @@ export default function WhatSetsUsApart() {
                 description={item.description}
                 index={i + 3}
                 isVisible={isVisible}
+                isMobile={isMobile}
+                isLastInRow={i === bottomRow.length - 1}
               />
             ))}
           </div>

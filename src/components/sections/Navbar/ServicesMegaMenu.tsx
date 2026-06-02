@@ -17,7 +17,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
       exit={{ opacity: 0, y: 8 }}
       transition={{ duration: 0.18 }}
       style={{
-        width: 'min(680px, 92vw)',
+        width: 'min(780px, 92vw)',
         borderRadius: '16px',
         boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
         border: '1px solid rgba(255,255,255,0.1)',
@@ -68,7 +68,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
             style={{
               fontFamily: 'Satoshi, Inter, sans-serif',
               fontWeight: 400,
-              fontSize: '13px',
+              fontSize: '14px',
               lineHeight: '160%',
               color: 'rgba(255,255,255,0.82)',
             }}
@@ -156,7 +156,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
                 style={{
                   fontFamily: 'Satoshi, Inter, sans-serif',
                   fontWeight: 600,
-                  fontSize: '12.5px',
+                  fontSize: '16px',
                   color: '#010527',
                   lineHeight: '140%',
                 }}
@@ -169,7 +169,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
               style={{
                 fontFamily: 'Satoshi, Inter, sans-serif',
                 fontWeight: 400,
-                fontSize: '11.5px',
+                fontSize: '14px',
                 color: '#6B7280',
                 lineHeight: '155%',
                 margin: 0,

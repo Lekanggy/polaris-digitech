@@ -213,7 +213,7 @@ export default function AboutStatsWhy() {
             paddingBottom: isMobile ? '60px' : '140px',
           }}
         >
-          <div className="why-choose-row" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '24px' : '48px', justifyContent: 'center' }}>
+          <div className="why-choose-row" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '24px' : '40px', width: '100%' }}>
 
             {/* Left — "Why You Should Choose Us" — Task 3: 40px, weight 500, 2 lines */}
             <motion.div
@@ -221,7 +221,7 @@ export default function AboutStatsWhy() {
               animate={isVisible ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="why-choose-title"
-              style={{ minWidth: isMobile ? 'unset' : '280px', maxWidth: isMobile ? '100%' : '300px', flexShrink: 0 }}
+              style={{ flexShrink: 0, width: isMobile ? '100%' : '220px' }}
             >
               <h2 style={{
                 fontFamily: satoshi,
@@ -230,14 +230,13 @@ export default function AboutStatsWhy() {
                 lineHeight: '150%',
                 letterSpacing: '-0.02em',
                 color: '#FFFFFF',
-                whiteSpace: 'nowrap',
               }}>
                 Why You Should<br />Choose Us
               </h2>
             </motion.div>
 
-            {/* Right — 3 cards — responsive: fixed on desktop, full on mobile */}
-            <div className="why-cards-row" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '24px', minWidth: 0, width: isMobile ? '100%' : 'auto' }}>
+            {/* Right — 3 cards — fill remaining width equally */}
+            <div className="why-cards-row" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px', flex: 1, minWidth: 0 }}>
               {WHY_CHOOSE_US.map((item, i) => (
                 <motion.div
                   key={item.title}
@@ -246,11 +245,9 @@ export default function AboutStatsWhy() {
                   transition={{ duration: 0.5, delay: 0.3 + i * 0.12 }}
                   className="why-card"
                   style={{
-                    flex: isMobile ? 'unset' : '0 0 321px',
-                    width: isMobile ? '100%' : '321px',
-                    height: isMobile ? 'auto' : '291px',
-                    minWidth: isMobile ? 'unset' : '321px',
-                    maxWidth: isMobile ? '100%' : '321px',
+                    flex: isMobile ? 'unset' : '1 1 0',
+                    width: isMobile ? '100%' : undefined,
+                    minHeight: isMobile ? 'auto' : '291px',
                     borderRadius: '16px',
                     padding: '24px',
                     background: 'rgba(255,255,255,0.12)',

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import StatItem from '../../../components/shared/StatItem';
 import herob from '../../../assets/herob.png';
 import pol2 from '../../../assets/pol2.png';
@@ -14,6 +15,7 @@ const STATS = [
 
 export default function AboutHero() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -97,14 +99,14 @@ export default function AboutHero() {
             paddingRight: 'clamp(24px, 5vw, 80px)',
             paddingBottom: '100px',
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 'clamp(48px, 8vw, 120px)',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: isMobile ? '32px' : 'clamp(48px, 8vw, 120px)',
             alignItems: 'center',
           }}
         >
           {/* Left — pol2 image */}
           <motion.div
-            initial={{ opacity: 0, x: -32 }}
+            initial={{ opacity: 0, x: isMobile ? 0 : -32 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
             style={{
@@ -112,7 +114,7 @@ export default function AboutHero() {
               aspectRatio: '1',
               borderRadius: '50%',
               overflow: 'hidden',
-              maxWidth: '420px',
+              maxWidth: isMobile ? '260px' : '420px',
               justifySelf: 'center',
             }}
           >
@@ -125,7 +127,7 @@ export default function AboutHero() {
 
           {/* Right — two paragraphs */}
           <motion.div
-            initial={{ opacity: 0, x: 32 }}
+            initial={{ opacity: 0, x: isMobile ? 0 : 32 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.25 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
@@ -134,7 +136,7 @@ export default function AboutHero() {
               style={{
                 fontFamily: satoshi,
                 fontWeight: 400,
-                fontSize: '20px',
+                fontSize: isMobile ? '16px' : '20px',
                 lineHeight: '175%',
                 letterSpacing: '-0.01em',
                 color: '#DBDBDB',
@@ -146,7 +148,7 @@ export default function AboutHero() {
               style={{
                 fontFamily: satoshi,
                 fontWeight: 400,
-                fontSize: '20px',
+                fontSize: isMobile ? '16px' : '20px',
                 lineHeight: '175%',
                 letterSpacing: '-0.01em',
                 color: '#DBDBDB',
@@ -168,10 +170,11 @@ export default function AboutHero() {
             width: '100%',
             paddingLeft: 'clamp(24px, 5vw, 80px)',
             paddingRight: 'clamp(24px, 5vw, 80px)',
-            paddingTop: '64px',
-            paddingBottom: '100px',
+            paddingTop: isMobile ? '32px' : '64px',
+            paddingBottom: isMobile ? '60px' : '100px',
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: isMobile ? '40px' : '0',
           }}
         >
           {STATS.map((stat) => (

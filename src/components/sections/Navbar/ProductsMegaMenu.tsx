@@ -48,7 +48,7 @@ export default function ProductsMegaMenu({ items, partnerProducts }: ProductsMeg
           <h3 style={{ fontFamily: 'Satoshi, Inter, sans-serif', fontWeight: 700, fontSize: '20px', lineHeight: '130%', color: '#fff', marginBottom: '14px' }}>
             Our Products
           </h3>
-          <p style={{ fontFamily: 'Satoshi, Inter, sans-serif', fontWeight: 400, fontSize: '13px', lineHeight: '160%', color: 'rgba(255,255,255,0.82)' }}>
+          <p style={{ fontFamily: 'Satoshi, Inter, sans-serif', fontWeight: 400, fontSize: '15px', lineHeight: '160%', color: 'rgba(255,255,255,0.82)' }}>
             Curious about how our products can help you get things done? Reach out and let's show you.
           </p>
         </div>
@@ -98,11 +98,11 @@ export default function ProductsMegaMenu({ items, partnerProducts }: ProductsMeg
               <span style={{ color: '#010527', display: 'flex', alignItems: 'center' }}>
                 <ProductIcon name={item.icon} />
               </span>
-              <span style={{ fontFamily: 'Satoshi, Inter, sans-serif', fontWeight: 600, fontSize: '12.5px', color: '#010527', lineHeight: '140%' }}>
+              <span style={{ fontFamily: 'Satoshi, Inter, sans-serif', fontWeight: 600, fontSize: '16px', color: '#010527', lineHeight: '140%' }}>
                 {item.title}
               </span>
             </div>
-            <p style={{ fontFamily: 'Satoshi, Inter, sans-serif', fontWeight: 400, fontSize: '11.5px', color: '#46485F', lineHeight: '155%', margin: 0 }}>
+            <p style={{ fontFamily: 'Satoshi, Inter, sans-serif', fontWeight: 400, fontSize: '14px', color: '#46485F', lineHeight: '155%', margin: 0 }}>
               {item.description}
             </p>
           </a>

@@ -12,7 +12,7 @@ export default function StatItem({ value, label, start }: StatItemProps) {
   const count = useCounter(value, 2000, start);
   
   return (
-    <div style={{ textAlign: 'right' }}>
+    <div style={{ textAlign: 'center' }}>
       <p
         style={{
           fontFamily: satoshi,
@@ -21,7 +21,7 @@ export default function StatItem({ value, label, start }: StatItemProps) {
           lineHeight: '100%',
           letterSpacing: '0',
           color: '#D7B56D',
-          textAlign: 'right',
+          textAlign: 'center',
         }}
       >
         {count}+
@@ -35,7 +35,7 @@ export default function StatItem({ value, label, start }: StatItemProps) {
           letterSpacing: '0',
           color: '#FFFFFF',
           marginTop: '12px',
-          textAlign: 'right',
+          textAlign: 'center',
         }}
       >
         {label}

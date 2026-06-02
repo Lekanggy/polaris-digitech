@@ -181,7 +181,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
           right: 0,
           top: '15%',
           bottom: '-20px',
-          width: '58%',
+          width: '48%',
           transform: hovered || isMobile ? 'translateX(0)' : 'translateX(40%)',
           transition: 'transform 0.4s ease',
         }}
