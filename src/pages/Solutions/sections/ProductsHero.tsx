@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
+import pdcl1 from '../../../assets/pdcl1.png';
+import pdcl2 from '../../../assets/pdcl2.png';
+import pdcl3 from '../../../assets/pdcl3.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -18,6 +21,7 @@ const PRODUCTS = [
     boxBg: '#9B6FD8',
     boxPosition: 'left' as const,
     route: '/solutions/pdc',
+    overlayImage: pdcl1,
   },
   {
     title: 'Risk Geo-Platform',
@@ -30,7 +34,8 @@ const PRODUCTS = [
     bg: '#DAE4FF',
     boxBg: '#6B9FD8',
     boxPosition: 'right' as const,
-    route: '/projects/risk-geo-platform',
+    route: '/solutions/risk-geo-platform',
+    overlayImage: pdcl3,
   },
   {
     title: 'Address Management Portal (AMP)',
@@ -44,6 +49,7 @@ const PRODUCTS = [
     boxBg: '#5AAFCC',
     boxPosition: 'left' as const,
     route: '/solutions/amp',
+    overlayImage: pdcl2,
   },
 ];
 
@@ -80,11 +86,12 @@ interface ProductCardProps {
   stickyTop: number;
   zIndex: number;
   isMobile?: boolean;
+  overlayImage?: string;
 }
 
 function ProductCard({
   title, description, features, bg, boxBg, boxPosition, route, stickyTop, zIndex,
-  isMobile,
+  isMobile, overlayImage,
 }: ProductCardProps & { isMobile: boolean }) {
   return (
     <div
@@ -109,7 +116,7 @@ function ProductCard({
           boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
         }}
       >
-        {/* Colored box */}
+        {/* Colored box — image sits inside with padding so the color shows as a border/frame */}
         <div
           style={{
             background: boxBg,
@@ -117,8 +124,27 @@ function ProductCard({
             aspectRatio: isMobile ? '16 / 9' : '1',
             width: '100%',
             order: isMobile ? 0 : (boxPosition === 'left' ? 0 : 1),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px',
+            boxSizing: 'border-box',
           }}
-        />
+        >
+          {overlayImage && (
+            <img
+              src={overlayImage}
+              alt={title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: 'center',
+                borderRadius: '12px',
+              }}
+            />
+          )}
+        </div>
 
         {/* Text content */}
         <div style={{ order: boxPosition === 'left' ? 1 : 0 }}>

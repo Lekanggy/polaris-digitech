@@ -14,7 +14,7 @@ const satoshi = 'Satoshi, Inter, sans-serif';
 const PARTNERS = [
   { image: sol1, title: 'Google Workspace for Business',  description: 'Polaris Digitech Limited offers a platform for integrating cloud-native apps with Google Worksp...', route: '/solutions/google-workspace-business' },
   { image: sol2, title: 'Google Workspace for Education', description: 'Google Workspace for Education is a platform that provides educational tools and services to studen...', route: '/solutions/google-workspace-education' },
-  { image: sol3, title: 'Google Cloud Platform',          description: 'Cloud computing provides on-demand resources like hardware and software accessible via the int...', route: '' },
+  { image: sol3, title: 'Google Cloud Platform', description: 'Cloud computing provides on-demand resources like hardware and software accessible via the int...', route: '/solutions/google-cloud' },
   { image: sol4, title: 'Google Maps',                    description: 'At Polaris Digitech Limited, we create software to analyze geospatial data and interpret spatial patterns for mapp...', route: '/solutions/google-maps' },
   { image: sol5, title: 'MapInfo',                        description: 'At PDL, our experts leverage MapInfo for effective mapping and location analysis.', route: '/solutions/mapinfo' },
   { image: sol6, title: 'High Resolution Imagery',        description: 'We offer satellite imagery and geospatial analytics for decision-makers needing precise remote views of our...', route: '/solutions/high-resolution-imagery' },

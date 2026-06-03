@@ -10,6 +10,8 @@ import GoogleWorkspaceEducationPage from './pages/Solutions/GoogleWorkspaceEduca
 import HighResolutionImageryPage from './pages/Solutions/HighResolutionImageryPage';
 import GoogleMapsPage from './pages/Solutions/GoogleMapsPage';
 import MapInfoPage from './pages/Solutions/MapInfoPage';
+import RiskGeoPlatformPage from './pages/Solutions/RiskGeoPlatformPage';
+import GoogleCloudPage from './pages/Solutions/GoogleCloudPage';
 import ProjectsPage from './pages/Projects';
 import LagFerryPage from './pages/Project/sub-pages/LagFerryPage';
 import RiskGeoPage from './pages/Project/sub-pages/RiskGeoPage';
@@ -47,6 +49,8 @@ export default function App() {
         <Route path="/solutions/high-resolution-imagery" element={<HighResolutionImageryPage />} />
         <Route path="/solutions/google-maps" element={<GoogleMapsPage />} />
         <Route path="/solutions/mapinfo" element={<MapInfoPage />} />
+        <Route path="/solutions/risk-geo-platform" element={<RiskGeoPlatformPage />} />
+        <Route path="/solutions/google-cloud" element={<GoogleCloudPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/lag-ferry" element={<LagFerryPage />} />
         <Route path="/projects/risk-geo-platform" element={<RiskGeoPage />} />

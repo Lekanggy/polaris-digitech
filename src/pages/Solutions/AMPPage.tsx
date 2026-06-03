@@ -5,6 +5,8 @@ import ProductQuote from './product-detail/ProductQuote';
 import KeyFeatures from './product-detail/KeyFeatures';
 import ProductShowcase from './product-detail/ProductShowcase';
 import pdc from '../../assets/pdc.png';
+import pdcm2 from '../../assets/pdcm2.png';
+import pdcl3 from '../../assets/pdcl3.png';
 
 const AMP_FEATURES = [
   {
@@ -55,6 +57,7 @@ export default function AMPPage() {
         title="Address Management Portal"
         description="The Address Management Portal (AMP) is a user-friendly platform that streamlines address verification and management, improving data accuracy and customer experience. AMP is a geo-digital system that collects, validates, and manages address data in real time. The benefits of using our address management system include eliminating manual address entry errors, improving delivery success rates, and enabling businesses to maintain clean, accurate customer databases. Our system efficiently handles large volumes of address data, making it easier for organizations to focus on operations rather than data quality issues."
         boxBg="#CCECFF"
+        boxImage={pdcm2}
       />
 
       {/* Section 2 — Quote with pdc.png */}
@@ -71,7 +74,7 @@ export default function AMPPage() {
       />
 
       {/* Section 4 — Showcase */}
-      <ProductShowcase />
+      <ProductShowcase image={pdcl3} />
 
       <Footer />
     </div>

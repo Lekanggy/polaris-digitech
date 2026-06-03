@@ -5,6 +5,8 @@ import ProductQuote from './product-detail/ProductQuote';
 import KeyFeatures from './product-detail/KeyFeatures';
 import ProductShowcase from './product-detail/ProductShowcase';
 import pdc from '../../assets/pdc.png';
+import pdcm1 from '../../assets/pdcm1.png';
+import pdcm3 from '../../assets/pdcm3.png';
 
 const PDC_FEATURES = [
   { title: 'Fast and Accurate Data Collection',  description: 'Polaris data collector is capable of collecting data from a wide range of sources including websites, databases, social media platforms and more, quickly and accurately.' },
@@ -25,6 +27,7 @@ export default function PDCPage() {
         title="Polaris Data Collector"
         description="The Polaris Data Collector (PDC) is a data collection tool that enables real-time data gathering using custom-designed forms. Our Data Collector is a geo-digital system that collects and stores qualitative and quantitative data in an electronic form. The benefits of using our data collection system are that it is able to fully eliminate the use of paper surveys and allow data to be quickly exported for data analysis and reporting. Additionally, for those who may require assistance with academic writing, our system can efficiently handle large data sets, making it easier for researchers to focus on analysis rather than manual data entry."
         boxBg="#F0E2FF"
+        boxImage={pdcm1}
       />
 
       {/* Section 2 — Quote with pdc.png */}
@@ -41,7 +44,7 @@ export default function PDCPage() {
       />
 
       {/* Section 4 — Showcase */}
-      <ProductShowcase />
+      <ProductShowcase image={pdcm3} />
 
       <Footer />
     </div>
