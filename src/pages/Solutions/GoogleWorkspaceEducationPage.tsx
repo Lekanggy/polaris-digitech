@@ -6,9 +6,11 @@ import Navbar from '../../components/sections/Navbar';
 import Footer from '../../components/sections/Footer';
 import KeyFeatures from './product-detail/KeyFeatures';
 import ProductShowcase from './product-detail/ProductShowcase';
+import ProductQuote from './product-detail/ProductQuote';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import gen6 from '../../assets/gen6.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -120,42 +122,7 @@ function IntroSection({ isMobile }: { isMobile: boolean }) {
   );
 }
 
-// ── Section 2: Quote (pure gradient background, no image) ─────────────────
-function QuoteSection() {
-  return (
-    <section
-      style={{
-        width: '100%',
-        minHeight: '280px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background:
-          'linear-gradient(180deg, rgba(102,102,102,0.6) 0%, rgba(0,0,0,0.6) 62.5%)',
-        backgroundColor: '#0d1b3e',
-      }}
-    >
-      <p
-        style={{
-          fontFamily: satoshi,
-          fontWeight: 500,
-          fontSize: 'clamp(22px, 3vw, 40px)',
-          lineHeight: '150%',
-          letterSpacing: '-0.01em',
-          textAlign: 'center',
-          color: '#FFFFFF',
-          maxWidth: '1200px',
-          padding: '100px clamp(24px, 5vw, 80px)',
-          margin: 0,
-        }}
-        dangerouslySetInnerHTML={{
-          __html:
-            'A platform that provides educational tools and services to<br />students, teachers, and schools.',
-        }}
-      />
-    </section>
-  );
-}
+// ── Section 2: Quote ─────────────────────────────────────────────────────
 
 // ── Section 3: Pricing ────────────────────────────────────────────────────
 interface PlanCardProps {
@@ -460,7 +427,10 @@ export default function GoogleWorkspaceEducationPage() {
       <IntroSection isMobile={isMobile} />
 
       {/* Section 2 — Quote */}
-      <QuoteSection />
+      <ProductQuote
+        image={gen6}
+        quote="A platform that provides educational tools and services to students, teachers, and schools."
+      />
 
       {/* Section 3 — Pricing */}
       <PricingSection isMobile={isMobile} />

@@ -20,8 +20,9 @@ export default function ProductQuote({ image, quote }: ProductQuoteProps) {
         justifyContent: 'center',
         backgroundImage: `url(${image})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center 20%',
+        backgroundPosition: 'center center',
         backgroundRepeat: 'no-repeat',
+        overflow: 'hidden',
       }}
     >
       {/* Gradient overlay */}
@@ -45,7 +46,8 @@ export default function ProductQuote({ image, quote }: ProductQuoteProps) {
           letterSpacing: '-0.02em',
           textAlign: 'center',
           color: '#FFFFFF',
-          maxWidth: '900px',
+          maxWidth: '1100px',
+          width: '100%',
           padding: '80px clamp(24px, 5vw, 80px)',
         }}
       >

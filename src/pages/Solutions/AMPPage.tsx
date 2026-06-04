@@ -5,6 +5,7 @@ import ProductQuote from './product-detail/ProductQuote';
 import KeyFeatures from './product-detail/KeyFeatures';
 import ProductShowcase from './product-detail/ProductShowcase';
 import pdc from '../../assets/pdc.png';
+import gen2 from '../../assets/gen2.png';
 import pdcm2 from '../../assets/pdcm2.png';
 import pdcl3 from '../../assets/pdcl3.png';
 
@@ -62,7 +63,7 @@ export default function AMPPage() {
 
       {/* Section 2 — Quote with pdc.png */}
       <ProductQuote
-        image={pdc}
+        image={gen2}
         quote="Our skilled team collaborates with clients to understand their needs and deliver tailored software solutions that meet their goals."
       />
 

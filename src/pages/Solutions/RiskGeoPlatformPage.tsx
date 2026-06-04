@@ -9,6 +9,7 @@ import ProductQuote from './product-detail/ProductQuote';
 import KeyFeatures from './product-detail/KeyFeatures';
 import ProductShowcase from './product-detail/ProductShowcase';
 import pdc from '../../assets/pdc.png';
+import gen9 from '../../assets/gen9.png';
 import pdcm4 from '../../assets/pdcm4.png';
 import geo2 from '../../assets/geo2.png';
 
@@ -75,7 +76,7 @@ export default function RiskGeoPlatformPage() {
 
       {/* Section 2 — Quote */}
       <ProductQuote
-        image={pdc}
+        image={gen9}
         quote="A product that visualizes and assesses asset risk exposure using geospatial intelligence, real-time threat monitoring, and predictive analytics."
       />
 

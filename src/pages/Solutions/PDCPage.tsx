@@ -5,6 +5,7 @@ import ProductQuote from './product-detail/ProductQuote';
 import KeyFeatures from './product-detail/KeyFeatures';
 import ProductShowcase from './product-detail/ProductShowcase';
 import pdc from '../../assets/pdc.png';
+import gen1 from '../../assets/gen1.png';
 import pdcm1 from '../../assets/pdcm1.png';
 import pdcm3 from '../../assets/pdcm3.png';
 
@@ -32,7 +33,7 @@ export default function PDCPage() {
 
       {/* Section 2 — Quote with pdc.png */}
       <ProductQuote
-        image={pdc}
+        image={gen1}
         quote="Our skilled team collaborates with clients to understand their needs and deliver tailored software solutions that meet their goals."
       />
 

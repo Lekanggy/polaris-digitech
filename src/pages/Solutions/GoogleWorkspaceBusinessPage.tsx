@@ -6,9 +6,11 @@ import Navbar from '../../components/sections/Navbar';
 import Footer from '../../components/sections/Footer';
 import KeyFeatures from './product-detail/KeyFeatures';
 import ProductShowcase from './product-detail/ProductShowcase';
+import ProductQuote from './product-detail/ProductQuote';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import gen3 from '../../assets/gen3.png';
 
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -118,40 +120,7 @@ function IntroSection({ isMobile }: { isMobile: boolean }) {
   );
 }
 
-// ── Section 2: Quote (pure gradient background, no image) ─────────────────
-function QuoteSection() {
-  return (
-    <section
-      style={{
-        width: '100%',
-        minHeight: '280px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(180deg, rgba(102,102,102,0.6) 0%, rgba(0,0,0,0.6) 62.5%)',
-        // Solid dark base so the gradient reads correctly
-        backgroundColor: '#0d1b3e',
-      }}
-    >
-      <p
-        style={{
-          fontFamily: satoshi,
-          fontWeight: 500,
-          fontSize: 'clamp(22px, 3vw, 40px)',
-          lineHeight: '150%',
-          letterSpacing: '-0.01em',
-          textAlign: 'center',
-          color: '#FFFFFF',
-          maxWidth: '1200px',
-          padding: '100px clamp(24px, 5vw, 80px)',
-          margin: 0,
-        }}
-      >
-        A one-stop shop tool for everything your business needs in today's Digital world.
-      </p>
-    </section>
-  );
-}
+// ── Section 2: Quote ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 // ── Section 3: Pricing ────────────────────────────────────────────────────
 interface PlanCardProps {
@@ -436,8 +405,11 @@ export default function GoogleWorkspaceBusinessPage() {
       {/* Section 1 — Intro (wider placeholder box) */}
       <IntroSection isMobile={isMobile} />
 
-      {/* Section 2 — Quote (pure gradient, no image) */}
-      <QuoteSection />
+      {/* Section 2 — Quote */}
+      <ProductQuote
+        image={gen3}
+        quote="A one-stop shop tool for everything your business needs in today's Digital world."
+      />
 
       {/* Section 3 — Pricing */}
       <PricingSection isMobile={isMobile} />
