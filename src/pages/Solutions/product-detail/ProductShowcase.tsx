@@ -3,10 +3,9 @@ import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 
 interface ProductShowcaseProps {
   image?: string;
-  borderColor?: string;
 }
 
-export default function ProductShowcase({ image, borderColor = '#E2E5F0' }: ProductShowcaseProps) {
+export default function ProductShowcase({ image }: ProductShowcaseProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
 
   return (
@@ -31,22 +30,37 @@ export default function ProductShowcase({ image, borderColor = '#E2E5F0' }: Prod
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
           style={{
-            background: '#EEF0F8',
+            background: '#FFFFFF',
             borderRadius: '24px',
             width: '100%',
-            aspectRatio: '2 / 1',
-            border: `2px solid ${borderColor}`,
+            padding: '20px',
             boxSizing: 'border-box',
-            ...(image
-              ? {
-                  backgroundImage: `url(${image})`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center center',
-                }
-              : {}),
+            boxShadow: '0 2px 24px rgba(0,0,0,0.07)',
           }}
-        />
+        >
+          {image ? (
+            <img
+              src={image}
+              alt="Product showcase"
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                objectFit: 'cover',
+                borderRadius: '16px',
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: '100%',
+                aspectRatio: '16 / 7',
+                background: '#EEF0F8',
+                borderRadius: '16px',
+              }}
+            />
+          )}
+        </motion.div>
       </div>
     </section>
   );

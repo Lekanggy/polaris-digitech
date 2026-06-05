@@ -83,15 +83,20 @@ function IntroSection({ isMobile }: { isMobile: boolean }) {
             background: '#E8EAF6',
             borderRadius: '24px',
             overflow: 'hidden',
-            aspectRatio: '1 / 1',
             width: '100%',
-            boxSizing: 'border-box',
-            backgroundImage: `url(${top4})`,
-            backgroundSize: '96%',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
+            aspectRatio: '1 / 1',
           }}
-        />
+        >
+          <img
+            src={top4}
+            alt="Google Workspace for Business"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
         </motion.div>
 
         {/* Right — title + description */}
@@ -432,7 +437,7 @@ export default function GoogleWorkspaceBusinessPage() {
       />
 
       {/* Section 5 — Showcase */}
-      <ProductShowcase image={bot4} borderColor="#C8D0E8" />
+      <ProductShowcase image={bot4} />
 
       {/* Footer */}
       <Footer />

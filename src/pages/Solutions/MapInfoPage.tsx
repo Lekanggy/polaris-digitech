@@ -69,15 +69,21 @@ function IntroSection({ isMobile }: { isMobile: boolean }) {
             background: '#E8EAF6',
             borderRadius: '24px',
             overflow: 'hidden',
-            aspectRatio: '1 / 1',
             width: '100%',
-            boxSizing: 'border-box',
-            backgroundImage: `url(${top2})`,
-            backgroundSize: '96%',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
+            aspectRatio: '1 / 1',
           }}
-        />
+        >
+          <img
+            src={top2}
+            alt="Map Info"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
+        </motion.div>
 
         {/* Right — title + description */}
         <motion.div
@@ -151,7 +157,7 @@ export default function MapInfoPage() {
       />
 
       {/* Section 4 — Showcase */}
-      <ProductShowcase image={bot2} borderColor="#C8D0E8" />
+      <ProductShowcase image={bot2} />
 
       {/* Footer */}
       <Footer />
