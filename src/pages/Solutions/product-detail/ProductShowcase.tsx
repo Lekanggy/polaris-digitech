@@ -3,9 +3,10 @@ import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 
 interface ProductShowcaseProps {
   image?: string;
+  borderColor?: string;
 }
 
-export default function ProductShowcase({ image }: ProductShowcaseProps) {
+export default function ProductShowcase({ image, borderColor = '#E2E5F0' }: ProductShowcaseProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
 
   return (
@@ -33,18 +34,19 @@ export default function ProductShowcase({ image }: ProductShowcaseProps) {
             background: '#EEF0F8',
             borderRadius: '24px',
             width: '100%',
-            aspectRatio: '2/1',
-            overflow: 'hidden',
+            aspectRatio: '2 / 1',
+            border: `2px solid ${borderColor}`,
+            boxSizing: 'border-box',
+            ...(image
+              ? {
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center center',
+                }
+              : {}),
           }}
-        >
-          {image && (
-            <img
-              src={image}
-              alt="Product showcase"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          )}
-        </motion.div>
+        />
       </div>
     </section>
   );

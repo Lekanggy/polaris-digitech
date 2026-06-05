@@ -11,6 +11,8 @@ import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import gen7 from '../../assets/gen7.png';
+import top5 from '../../assets/top5.png';
+import bot5 from '../../assets/bot5.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -68,7 +70,7 @@ function IntroSection({ isMobile }: { isMobile: boolean }) {
           alignItems: 'stretch',
         }}
       >
-        {/* Left — placeholder box */}
+        {/* Left — top image, square-ish, no cropping */}
         <motion.div
           initial={{ opacity: 0, x: -32 }}
           animate={isVisible ? { opacity: 1, x: 0 } : {}}
@@ -76,9 +78,17 @@ function IntroSection({ isMobile }: { isMobile: boolean }) {
           style={{
             background: '#E8EAF6',
             borderRadius: '24px',
-            minHeight: isMobile ? '280px' : '380px',
+            overflow: 'hidden',
+            aspectRatio: '1 / 1',
+            width: '100%',
+            boxSizing: 'border-box',
+            backgroundImage: `url(${top5})`,
+            backgroundSize: '96%',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
           }}
         />
+        </motion.div>
 
         {/* Right — title + description */}
         <motion.div
@@ -150,7 +160,7 @@ export default function GoogleMapsPage() {
       />
 
       {/* Section 4 — Showcase */}
-      <ProductShowcase />
+      <ProductShowcase image={bot5} borderColor="#C8D0E8" />
 
       {/* Footer */}
       <Footer />

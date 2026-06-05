@@ -11,6 +11,8 @@ import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import gen6 from '../../assets/gen6.png';
+import top3 from '../../assets/top3.png';
+import bot3 from '../../assets/bot3.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -68,7 +70,7 @@ function IntroSection({ isMobile }: { isMobile: boolean }) {
           alignItems: 'stretch',
         }}
       >
-        {/* Left — larger placeholder box */}
+        {/* Left — top image, square-ish, no cropping */}
         <motion.div
           initial={{ opacity: 0, x: -32 }}
           animate={isVisible ? { opacity: 1, x: 0 } : {}}
@@ -76,9 +78,17 @@ function IntroSection({ isMobile }: { isMobile: boolean }) {
           style={{
             background: '#E8F5E9',
             borderRadius: '24px',
-            minHeight: isMobile ? '280px' : '380px',
+            overflow: 'hidden',
+            aspectRatio: '1 / 1',
+            width: '100%',
+            boxSizing: 'border-box',
+            backgroundImage: `url(${top3})`,
+            backgroundSize: '96%',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
           }}
         />
+        </motion.div>
 
         {/* Right — title + description */}
         <motion.div
@@ -443,7 +453,7 @@ export default function GoogleWorkspaceEducationPage() {
       />
 
       {/* Section 5 — Showcase */}
-      <ProductShowcase />
+      <ProductShowcase image={bot3} borderColor="#C8D0E8" />
 
       {/* Footer */}
       <Footer />
