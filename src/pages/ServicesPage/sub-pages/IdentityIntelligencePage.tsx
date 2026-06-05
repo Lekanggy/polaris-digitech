@@ -9,6 +9,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import Navbar from '../../../components/sections/Navbar';
 import Footer from '../../../components/sections/Footer';
 import ServiceSubHero from './ServiceSubHero';
@@ -58,11 +59,12 @@ const FEATURES = [
 // ── Section 3: placeholder card on red bg ────────────────────────────────
 function RedPlaceholderSection() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
       ref={ref}
-      style={{ background: '#FF0000', paddingTop: '80px', paddingBottom: '80px' }}
+      style={{ background: '#FF0000', paddingTop: isMobile ? '48px' : '80px', paddingBottom: isMobile ? '48px' : '80px' }}
     >
       <div
         style={{
@@ -78,7 +80,8 @@ function RedPlaceholderSection() {
           transition={{ duration: 0.7 }}
           style={{
             width: '100%',
-            borderRadius: '24px',
+            height: isMobile ? '220px' : '500px',
+            borderRadius: isMobile ? '16px' : '24px',
             overflow: 'hidden',
             background: '#EBECF6',
           }}
@@ -86,7 +89,7 @@ function RedPlaceholderSection() {
           <img
             src={fb1}
             alt="Identity Intelligence Management showcase"
-            style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
+            style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
           />
         </motion.div>
       </div>

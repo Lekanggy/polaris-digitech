@@ -9,6 +9,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import bgpro from '../../../assets/bgpro.png';
 import type { IconName } from '../../Project/sub-pages/ProjectKeyFeatures';
 
@@ -109,6 +110,7 @@ export default function ServiceSubStatsFeatures({
   featuresHeading = 'Key Features',
 }: ServiceSubStatsFeaturesProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -118,8 +120,8 @@ export default function ServiceSubStatsFeatures({
         backgroundSize: '100% 100%',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        paddingTop: '80px',
-        paddingBottom: '80px',
+        paddingTop: isMobile ? '48px' : '80px',
+        paddingBottom: isMobile ? '48px' : '80px',
       }}
     >
       <div
@@ -137,9 +139,9 @@ export default function ServiceSubStatsFeatures({
           transition={{ duration: 0.6 }}
           style={{
             display: 'grid',
-            gridTemplateColumns: `repeat(${stats.length}, 1fr)`,
-            gap: '40px',
-            marginBottom: '72px',
+            gridTemplateColumns: isMobile ? '1fr' : `repeat(${stats.length}, 1fr)`,
+            gap: isMobile ? '32px' : '40px',
+            marginBottom: isMobile ? '48px' : '72px',
           }}
         >
           {stats.map((stat, i) => (
@@ -148,7 +150,7 @@ export default function ServiceSubStatsFeatures({
                 style={{
                   fontFamily: satoshi,
                   fontWeight: 700,
-                  fontSize: 'clamp(40px, 5vw, 72px)',
+                  fontSize: 'clamp(36px, 5vw, 72px)',
                   lineHeight: '110%',
                   color: '#D7B56D',
                   margin: '0 0 8px 0',
@@ -180,22 +182,22 @@ export default function ServiceSubStatsFeatures({
           style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '64px',
+            fontSize: isMobile ? 'clamp(28px, 8vw, 40px)' : '64px',
             lineHeight: '120%',
             letterSpacing: '-0.02em',
             color: '#FFFFFF',
-            marginBottom: '48px',
+            marginBottom: isMobile ? '28px' : '48px',
           }}
         >
           {featuresHeading}
         </motion.h2>
 
-        {/* ── 3-column feature card grid ── */}
+        {/* ── Feature card grid ── */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '24px',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: isMobile ? '16px' : '24px',
           }}
         >
           {features.map((feat, i) => (
@@ -210,17 +212,17 @@ export default function ServiceSubStatsFeatures({
                 padding: '24px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '24px',
-                minHeight: '216px',
+                gap: '16px',
+                minHeight: isMobile ? 'auto' : '216px',
               }}
             >
-              <div style={{ width: '30px', height: '30px', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', top: '3px', left: '3px' }}>
+              <div style={{ width: '30px', height: '30px', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <FeatureIcon name={feat.icon} />
               </div>
               <h3 style={{ fontFamily: satoshi, fontWeight: 500, fontSize: '16px', lineHeight: '140%', color: '#FFFFFF', margin: 0 }}>
                 {feat.title}
               </h3>
-              <p style={{ fontFamily: satoshi, fontWeight: 400, fontSize: '16px', lineHeight: '150%', color: '#CCCCCC', margin: 0 }}>
+              <p style={{ fontFamily: satoshi, fontWeight: 400, fontSize: '15px', lineHeight: '150%', color: '#CCCCCC', margin: 0 }}>
                 {feat.description}
               </p>
             </motion.div>

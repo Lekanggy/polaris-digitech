@@ -5,6 +5,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import Navbar from '../../../components/sections/Navbar';
 import Footer from '../../../components/sections/Footer';
 import ServiceSubHero from './ServiceSubHero';
@@ -54,11 +55,12 @@ const FEATURES = [
 // ── Section 3: standalone full-width placeholder card ─────────────────────
 function PlaceholderSection() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
       ref={ref}
-      style={{ background: '#FFFFFF', paddingTop: '80px',   paddingBottom: '80px' }}
+      style={{ background: '#FFFFFF', paddingTop: isMobile ? '48px' : '80px', paddingBottom: isMobile ? '48px' : '80px' }}
     >
       <div
         style={{
@@ -74,8 +76,8 @@ function PlaceholderSection() {
           transition={{ duration: 0.7 }}
           style={{
             width: '100%',
-            height: '500px',
-            borderRadius: '24px',
+            height: isMobile ? '220px' : '500px',
+            borderRadius: isMobile ? '16px' : '24px',
             overflow: 'hidden',
             background: '#EBECF6',
           }}

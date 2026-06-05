@@ -9,6 +9,7 @@
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import Navbar from '../../../components/sections/Navbar';
 import Footer from '../../../components/sections/Footer';
 import ServiceSubHero from './ServiceSubHero';
@@ -71,6 +72,7 @@ const FEATURES = [
 // ── Section 2: Key Features (no stats) ───────────────────────────────────
 function KeyFeaturesSection() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
@@ -80,8 +82,8 @@ function KeyFeaturesSection() {
         backgroundSize: '100% 100%',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        paddingTop: '80px',
-        paddingBottom: '80px',
+        paddingTop: isMobile ? '48px' : '80px',
+        paddingBottom: isMobile ? '48px' : '80px',
       }}
     >
       <div
@@ -100,22 +102,22 @@ function KeyFeaturesSection() {
           style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '64px',
+            fontSize: isMobile ? 'clamp(28px, 8vw, 40px)' : '64px',
             lineHeight: '120%',
             letterSpacing: '-0.02em',
             color: '#FFFFFF',
-            marginBottom: '48px',
+            marginBottom: isMobile ? '28px' : '48px',
           }}
         >
           Key Features
         </motion.h2>
 
-        {/* 3-column card grid */}
+        {/* card grid — 1 col on mobile, 3 on desktop */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '24px',
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+            gap: isMobile ? '16px' : '24px',
           }}
         >
           {FEATURES.map((feat, i) => (
@@ -130,17 +132,17 @@ function KeyFeaturesSection() {
                 padding: '24px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '24px',
-                minHeight: '216px',
+                gap: '16px',
+                minHeight: isMobile ? 'auto' : '216px',
               }}
             >
-              <div style={{ width: '30px', height: '30px', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', top: '3px', left: '3px' }}>
+              <div style={{ width: '30px', height: '30px', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {feat.icon}
               </div>
               <h3 style={{ fontFamily: satoshi, fontWeight: 500, fontSize: '16px', lineHeight: '140%', color: '#FFFFFF', margin: 0 }}>
                 {feat.title}
               </h3>
-              <p style={{ fontFamily: satoshi, fontWeight: 400, fontSize: '16px', lineHeight: '150%', color: '#CCCCCC', margin: 0 }}>
+              <p style={{ fontFamily: satoshi, fontWeight: 400, fontSize: '15px', lineHeight: '150%', color: '#CCCCCC', margin: 0 }}>
                 {feat.description}
               </p>
             </motion.div>
@@ -154,11 +156,12 @@ function KeyFeaturesSection() {
 // ── Section 3: standalone placeholder card ────────────────────────────────
 function PlaceholderSection() {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
       ref={ref}
-      style={{ background: '#FFFFFF', paddingTop: '80px', paddingBottom: '80px' }}
+      style={{ background: '#FFFFFF', paddingTop: isMobile ? '48px' : '80px', paddingBottom: isMobile ? '48px' : '80px' }}
     >
       <div
         style={{
@@ -174,7 +177,8 @@ function PlaceholderSection() {
           transition={{ duration: 0.7 }}
           style={{
             width: '100%',
-            borderRadius: '24px',
+            height: isMobile ? '220px' : '500px',
+            borderRadius: isMobile ? '16px' : '24px',
             overflow: 'hidden',
             background: '#EBECF6',
           }}
@@ -182,7 +186,7 @@ function PlaceholderSection() {
           <img
             src={fb2}
             alt="Training and Technical Support showcase"
-            style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
+            style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
           />
         </motion.div>
       </div>

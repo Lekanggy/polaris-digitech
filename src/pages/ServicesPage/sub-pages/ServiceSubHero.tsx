@@ -1,28 +1,24 @@
 /**
  * ServiceSubHero — Section 1
  * White bg: service title (left-aligned), description paragraph,
- * full-width placeholder/image card, optional second paragraph below the card.
+ * full-width image card, optional second paragraph below the card.
  *
  * Reusable across all service sub-pages.
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
 export interface ServiceSubHeroProps {
   title: string;
   description: string;
-  /** Optional image — renders a placeholder card when omitted */
   image?: string;
   imageAlt?: string;
-  /** Optional second paragraph rendered below the card */
   bottomText?: string;
-  /** Section background colour (default #FFFFFF) */
   bg?: string;
-  /** Text colour override for title (default #010527) */
   titleColor?: string;
-  /** Text colour override for description (default #46485F) */
   textColor?: string;
 }
 
@@ -37,14 +33,15 @@ export default function ServiceSubHero({
   textColor = '#46485F',
 }: ServiceSubHeroProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <section
       ref={ref}
       style={{
         background: bg,
-        paddingTop: '140px',
-        paddingBottom: '80px',
+        paddingTop: isMobile ? '100px' : '140px',
+        paddingBottom: isMobile ? '48px' : '80px',
       }}
     >
       <div
@@ -63,11 +60,11 @@ export default function ServiceSubHero({
           style={{
             fontFamily: satoshi,
             fontWeight: 700,
-            fontSize: 'clamp(36px, 5vw, 64px)',
+            fontSize: 'clamp(28px, 5vw, 64px)',
             lineHeight: '115%',
             letterSpacing: '-0.02em',
             color: titleColor,
-            marginBottom: '24px',
+            marginBottom: '20px',
           }}
         >
           {title}
@@ -81,11 +78,11 @@ export default function ServiceSubHero({
           style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '16px',
+            fontSize: isMobile ? '14px' : '16px',
             lineHeight: '170%',
             color: textColor,
             maxWidth: '780px',
-            marginBottom: '48px',
+            marginBottom: isMobile ? '28px' : '48px',
           }}
         >
           {description}
@@ -98,11 +95,11 @@ export default function ServiceSubHero({
           transition={{ duration: 0.7, delay: 0.18 }}
           style={{
             width: '100%',
-            height: '500px',
-            borderRadius: '24px',
+            height: isMobile ? '240px' : '500px',
+            borderRadius: isMobile ? '16px' : '24px',
             overflow: 'hidden',
             background: image ? 'transparent' : '#EBECF6',
-            marginBottom: bottomText ? '48px' : '0',
+            marginBottom: bottomText ? (isMobile ? '28px' : '48px') : '0',
           }}
         >
           {image && (
@@ -123,7 +120,7 @@ export default function ServiceSubHero({
             style={{
               fontFamily: satoshi,
               fontWeight: 400,
-              fontSize: '16px',
+              fontSize: isMobile ? '14px' : '16px',
               lineHeight: '170%',
               color: textColor,
               maxWidth: '780px',
