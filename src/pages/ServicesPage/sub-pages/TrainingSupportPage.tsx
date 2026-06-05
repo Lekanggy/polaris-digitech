@@ -13,6 +13,8 @@ import Navbar from '../../../components/sections/Navbar';
 import Footer from '../../../components/sections/Footer';
 import ServiceSubHero from './ServiceSubHero';
 import bgpro from '../../../assets/bgpro.png';
+import ft2 from '../../../assets/ft2.png';
+import fb2 from '../../../assets/fb2.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -172,11 +174,17 @@ function PlaceholderSection() {
           transition={{ duration: 0.7 }}
           style={{
             width: '100%',
-            minHeight: '360px',
             borderRadius: '24px',
+            overflow: 'hidden',
             background: '#EBECF6',
           }}
-        />
+        >
+          <img
+            src={fb2}
+            alt="Training and Technical Support showcase"
+            style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
+          />
+        </motion.div>
       </div>
     </section>
   );
@@ -192,6 +200,8 @@ export default function TrainingSupportPage() {
         title="Training and Technical Support"
         description="Polaris Digitech Limited offers a comprehensive range of training services to help individuals, businesses and organisations enhance their productivity, efficiency, and profitability. With years of experience in the industry, Polaris Digitech Limited has developed a reputation for providing high-quality and effective training solutions that cater to the unique needs of each client. Our training services cover a wide range of areas, including technical training, software training, solutions training, business analysis, and many more. We work closely with our clients to understand their specific needs and deliver customised training programs that help them achieve their goals. One of the key benefits of training services offered by Polaris Digitech Limited is our ability to provide on-site as well as online training programs."
         bottomText="This flexibility allows clients to choose the best training option that fits their schedule and budget. Our team of expert trainers and industry professionals use the latest training techniques and technologies to provide engaging and interactive training sessions that keep learners motivated and informed. Moreover, we provide post-training support to ensure that learners can apply their newly acquired skills and knowledge to their job roles effectively. Overall, Polaris Digitech Limited's training services are an excellent choice for businesses and individuals looking to improve their workforce's skills and knowledge and achieve long-term success."
+        image={ft2}
+        imageAlt="Training and Technical Support"
       />
 
       {/* Section 2 — Key Features (3 cards, no stats) */}

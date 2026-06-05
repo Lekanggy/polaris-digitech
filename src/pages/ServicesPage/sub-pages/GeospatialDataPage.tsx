@@ -9,6 +9,8 @@ import Navbar from '../../../components/sections/Navbar';
 import Footer from '../../../components/sections/Footer';
 import ServiceSubHero from './ServiceSubHero';
 import ServiceSubStatsFeatures from './ServiceSubStatsFeatures';
+import ft3 from '../../../assets/ft3.png';
+import fb3 from '../../../assets/fb3.png';
 
 const STATS = [
   { value: '20+', label: 'No of Corporate Clients' },
@@ -72,11 +74,18 @@ function PlaceholderSection() {
           transition={{ duration: 0.7 }}
           style={{
             width: '100%',
-            minHeight: '360px',
+            height: '500px',
             borderRadius: '24px',
+            overflow: 'hidden',
             background: '#EBECF6',
           }}
-        />
+        >
+          <img
+            src={fb3}
+            alt="Geo-Spatial Data showcase"
+            style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
+          />
+        </motion.div>
       </div>
     </section>
   );
@@ -92,6 +101,8 @@ export default function GeospatialDataPage() {
         title="Geo-Spatial Data Acquisition Management"
         description="Our Mapping services involves the creation of digital maps that accurately represent a particular area's features, including its topography, contours, and elevations. These maps are created using aerial photography, satellite imagery, and GIS technology. Our Surveying services, on the other hand, utilizes the measurement and analysis of land, buildings, and infrastructure using specialized equipment and technology."
         bottomText="These services are used to create topographical maps, determine property boundaries, and survey construction sites. Similarly, our drone services are becoming increasingly popular in the mapping and surveying industry because of our willingness to incorporate drones as unmanned aerial vehicles that can capture high-quality aerial imagery and video footage. They are used in various applications, including land mapping, 3D modelling, building inspections, and surveying. Overall, Our mapping, survey, and drone services are essential in various industries, providing accurate data, and imagery that aids in decision-making processes, planning, and analysis."
+        image={ft3}
+        imageAlt="Geo-Spatial Data"
       />
 
       {/* Section 2 — Stats + Key Features (5 cards) */}

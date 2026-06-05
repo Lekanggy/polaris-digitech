@@ -13,6 +13,8 @@ import Navbar from '../../../components/sections/Navbar';
 import Footer from '../../../components/sections/Footer';
 import ServiceSubHero from './ServiceSubHero';
 import ServiceSubStatsFeatures from './ServiceSubStatsFeatures';
+import ft1 from '../../../assets/ft1.png';
+import fb1 from '../../../assets/fb1.png';
 
 const STATS = [
   { value: '20+', label: 'No of Corporate Clients' },
@@ -76,11 +78,17 @@ function RedPlaceholderSection() {
           transition={{ duration: 0.7 }}
           style={{
             width: '100%',
-            minHeight: '360px',
             borderRadius: '24px',
+            overflow: 'hidden',
             background: '#EBECF6',
           }}
-        />
+        >
+          <img
+            src={fb1}
+            alt="Identity Intelligence Management showcase"
+            style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
+          />
+        </motion.div>
       </div>
     </section>
   );
@@ -99,6 +107,8 @@ export default function IdentityIntelligencePage() {
         bg="#FF0000"
         titleColor="#FFFFFF"
         textColor="rgba(255,255,255,0.88)"
+        image={ft1}
+        imageAlt="Identity Intelligence Management"
       />
 
       {/* Section 2 — Stats + Key Features */}

@@ -98,7 +98,7 @@ export default function ServiceSubHero({
           transition={{ duration: 0.7, delay: 0.18 }}
           style={{
             width: '100%',
-            minHeight: '400px',
+            height: '500px',
             borderRadius: '24px',
             overflow: 'hidden',
             background: image ? 'transparent' : '#EBECF6',
