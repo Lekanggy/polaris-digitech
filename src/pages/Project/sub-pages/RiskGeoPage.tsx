@@ -16,8 +16,11 @@ import geo2 from '../../../assets/geo2.png';
 import geo3 from '../../../assets/geo3.jpg';
 import geo4 from '../../../assets/geo4.png';
 import geo5 from '../../../assets/geo5.jpg';
-import geo6 from '../../../assets/geo6.png';
-import geo7 from '../../../assets/geo7.png';
+
+import prk1 from '../../../assets/prk1.png';
+import prk2 from '../../../assets/prk2.png';
+import prk3 from '../../../assets/prk3.png';
+import prk4 from '../../../assets/prk4.png';
 
 // ── Key Features data (5 cards) ───────────────────────────────────────────
 const GEO_FEATURES = [
@@ -63,7 +66,7 @@ export default function RiskGeoPage() {
         subtitle="A tool for AXA Mansard to assess assets for insurance by current and potential customers, ensuring they have the right policies."
       />
 
-      {/* Section 2 — Metadata + plain coloured card (no image) */}
+      {/* Section 2 — Metadata + showcase image prk3 */}
       <ProjectMeta
         fields={[
           { label: 'Industry', value: 'Insurance' },
@@ -71,18 +74,18 @@ export default function RiskGeoPage() {
           { label: 'Year', value: '2016 - 2022' },
           { label: 'Website', value: '-' },
         ]}
-        showcaseCardBg="#EBECF6"
-        showcaseCardHeight={480}
+        showcaseImage={prk3}
+        showcaseAlt="Risk Geo-Platform showcase"
       />
 
-      {/* Section 3 — Description + images */}
+      {/* Section 3 — Description + prk images */}
       <ProjectDescription
         description="The GEO-Risk Platform is a specialized geospatial tool developed and deployed for AXA Mansard in Lagos by Polaris Digitech Limited. It is designed to evaluate and analyze assets within a geographic context to assist in insurance underwriting and risk assessment."
-        imageLeft={geo7}
-        imageRight={geo6}
+        imageLeft={prk4}
+        imageRight={prk2}
         imageLeftAlt="Risk assessment presentation"
         imageRightAlt="GEO-Risk dashboard"
-        imageFull={geo5}
+        imageFull={prk1}
         imageFullAlt="GEO-Risk map platform"
         cardBg="#E8E8F4"
       />
