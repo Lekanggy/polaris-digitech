@@ -35,21 +35,6 @@ export const productQuery = `
         }
         quote
       }
-      Pricing {
-        id
-        title
-        description
-        plans {
-          id
-          name
-          price
-          period
-          highlighted
-          features {
-            text
-          }
-        }
-      }
       KeyFeatures {
         sectionTitle
         sectionDescription
