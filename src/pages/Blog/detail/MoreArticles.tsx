@@ -8,6 +8,7 @@
  * Background: #EBECF6 (same as BlogGrid)
  */
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import { ARTICLES, FEATURED_ARTICLE } from '../blogData';
@@ -24,10 +25,12 @@ function ArticleCard({
   article,
   index,
   isVisible,
+  isMobile,
 }: {
   article: BlogArticle;
   index: number;
   isVisible: boolean;
+  isMobile: boolean;
 }) {
   return (
     <motion.div
@@ -110,8 +113,9 @@ function ArticleCard({
         {article.description}
       </p>
 
-      {/* Read More — no navigation for now */}
-      <button
+      {/* Read More */}
+      <Link
+        to={`/blog/${article.id}`}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -127,7 +131,17 @@ function ArticleCard({
           paddingLeft: 0,
           paddingRight: 0,
           width: 'fit-content',
-          cursor: 'default',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          transition: 'color 200ms, border-color 200ms',
+        }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLAnchorElement).style.color = '#D7B56D';
+          (e.currentTarget as HTMLAnchorElement).style.borderColor = '#D7B56D';
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLAnchorElement).style.color = '#010527';
+          (e.currentTarget as HTMLAnchorElement).style.borderColor = '#010527';
         }}
       >
         Read More
@@ -143,7 +157,7 @@ function ArticleCard({
         >
           <polyline points="4,2 10,7 4,12" />
         </svg>
-      </button>
+      </Link>
     </motion.div>
   );
 }
@@ -208,6 +222,7 @@ export default function MoreArticles({ currentId }: MoreArticlesProps) {
               article={article}
               index={i}
               isVisible={isVisible}
+              isMobile={isMobile}
             />
           ))}
         </div>
