@@ -6,10 +6,13 @@ import project1 from '../../assets/project1.png';
 import project2 from '../../assets/project2.png';
 import project3 from '../../assets/project3.png';
 import starlogo from '../../assets/starlogo.png';
+import type { ProjectItem } from '../../services/queries/homeQuery';
+import { strapiUrl } from '../../services/queries/homeQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-const projects = [
+// ── Hardcoded fallback projects — preserved ────────────────────────────────
+const fallbackProjects = [
   {
     id: 1,
     bg: '#2196D3',
@@ -48,6 +51,31 @@ const projects = [
   },
 ];
 
+// Card colour & style defaults cycled for CMS items
+const cardStyles = [
+  { bg: '#2196D3', btnBg: 'rgba(255,255,255,0.2)', btnColor: '#fff', textColor: '#fff', image: project2 },
+  { bg: '#1B2A6B', btnBg: 'rgba(255,255,255,0.15)', btnColor: '#fff', textColor: '#fff', image: project1 },
+  { bg: '#FFCC00', btnBg: 'rgba(0,0,0,0.15)', btnColor: '#1a1a1a', textColor: '#1a1a1a', image: project3 },
+];
+
+interface ProjectsProps {
+  data?: ProjectItem[];
+}
+
+// ── Shared card shape ──────────────────────────────────────────────────────
+interface ProjectCardData {
+  id: number;
+  bg: string;
+  logo: string;
+  title: string;
+  description: string;
+  btnBg: string;
+  btnColor: string;
+  btnBorder: string;
+  textColor: string;
+  image: string;
+}
+
 // ── Logo badge ─────────────────────────────────────────────────────────────
 function LogoBadge({ name, dark }: { name: string; dark?: boolean }) {
   return (
@@ -75,7 +103,7 @@ function LogoBadge({ name, dark }: { name: string; dark?: boolean }) {
 
 // ── Project card ───────────────────────────────────────────────────────────
 function ProjectCard({ project, delay, isVisible, height = '408px', showBorder = false }: {
-  project: typeof projects[0];
+  project: ProjectCardData;
   delay: number;
   isVisible: boolean;
   height?: string;
@@ -83,7 +111,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
 }) {
   const [hovered, setHovered] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const isDark = project.bg === '#FFCC00';
+  const isDark = project?.bg === '#FFCC00';
 
   return (
     <motion.div
@@ -93,7 +121,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        backgroundColor: project.bg,
+        backgroundColor: project?.bg,
         borderRadius: '24px',
         padding: '32px',
         position: 'relative',
@@ -115,7 +143,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
         position: 'relative',
       }}>
         <div>
-          <LogoBadge name={project.logo} dark={isDark} />
+          <LogoBadge name={project?.logo} dark={isDark} />
           <h3 style={{
             fontFamily: satoshi,
             fontWeight: 700,
@@ -124,7 +152,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
             color: project.textColor,
             marginBottom: '10px',
           }}>
-            {project.title}
+            {project?.title}
           </h3>
           <p style={{
             fontFamily: satoshi,
@@ -140,7 +168,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
           }}>
-            {project.description}
+            {project?.description}
           </p>
         </div>
 
@@ -150,9 +178,9 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
             display: 'inline-flex',
             alignItems: 'center',
             gap: '4px',
-            background: project.btnBg,
+            background: project?.btnBg,
             border: 'none',
-            color: project.btnColor,
+            color: project?.btnColor,
             fontFamily: satoshi,
             fontWeight: 600,
             fontSize: '13px',
@@ -201,8 +229,8 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
           boxSizing: 'border-box',
         }}>
           <img
-            src={project.image}
-            alt={project.title}
+            src={project?.image}
+            alt={project?.title}
             style={{
               width: '100%',
               height: '100%',
@@ -218,9 +246,35 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
 }
 
 // ── Main section ───────────────────────────────────────────────────────────
-export default function Projects() {
+export default function Projects({ data }: ProjectsProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Map CMS projectItems to the card shape, cycling style defaults
+  const projects =
+    data && data.length > 0
+      ? data.map((item, idx) => {
+          const style = cardStyles[idx % cardStyles.length];
+          const cmsImage = strapiUrl(item.image?.url);
+          return {
+            id: idx + 1,
+            bg: style.bg,
+            logo: item.logo,
+            title: item.title,
+            description: item.description,
+            btnBg: style.btnBg,
+            btnColor: style.btnColor,
+            btnBorder: '1px solid rgba(255,255,255,0.3)',
+            textColor: style.textColor,
+            image: cmsImage ?? style.image,
+          };
+        })
+      : fallbackProjects;
+
+  // Always ensure exactly 3 slots, filling missing positions with fallbacks
+  const p0 = projects[0] ?? fallbackProjects[0];
+  const p1 = projects[1] ?? fallbackProjects[1];
+  const p2 = projects[2] ?? fallbackProjects[2];
 
   return (
     <section id="projects" ref={ref} style={{ backgroundColor: '#fff', paddingTop: '80px', paddingBottom: '80px' }}>
@@ -268,13 +322,13 @@ export default function Projects() {
 
         {/* ── Row 1: two equal cards ── */}
         <div className="projects-row1" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '656px 656px', gap: '20px', justifyContent: 'center' }}>
-          <ProjectCard project={projects[0]} delay={0.1} isVisible={isVisible} height={isMobile ? '320px' : '408px'} showBorder />
-          <ProjectCard project={projects[1]} delay={0.2} isVisible={isVisible} height={isMobile ? '320px' : '408px'} showBorder />
+          <ProjectCard project={p0} delay={0.1} isVisible={isVisible} height={isMobile ? '320px' : '408px'} showBorder />
+          <ProjectCard project={p1} delay={0.2} isVisible={isVisible} height={isMobile ? '320px' : '408px'} showBorder />
         </div>
 
-        {/* ── Row 2: MTN + See All ── */}
+        {/* ── Row 2: third card + See All ── */}
         <div className="projects-row2" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '791px 521px', gap: '20px', justifyContent: 'center', marginTop: '20px' }}>
-          <ProjectCard project={projects[2]} delay={0.3} isVisible={isVisible} height={isMobile ? '320px' : '408px'} />
+          <ProjectCard project={p2} delay={0.3} isVisible={isVisible} height={isMobile ? '320px' : '408px'} />
 
           {/* See All Projects card */}
           <motion.a

@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import type { Testimonial } from '../../services/queries/homeQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-const testimonials = [
+// ── Hardcoded fallback testimonials — preserved ────────────────────────────
+const fallbackTestimonials = [
   {
     id: 1,
     text: 'Polaris Digitech delivered a powerful solution with the Coverage Locator Application, helping us bring network transparency closer to our customers and retail teams. The tool has been instrumental in accelerating 5G adoption by allowing users to check signal strength in real-time and make informed decisions. Their expertise in location intelligence and seamless execution made a real difference.',
@@ -31,6 +33,10 @@ const testimonials = [
   },
 ];
 
+interface TestimonialsProps {
+  data?: Testimonial[];
+}
+
 const QuoteIcon = () => (
   <svg width="32" height="32" viewBox="0 0 32 32" fill="#D7B56D">
     <path d="M9.333 21.333c-3.68 0-6.666-2.986-6.666-6.666C2.667 10.987 5.653 8 9.333 8c.747 0 1.467.12 2.134.347C10.4 9.6 9.333 11.52 9.333 13.333v8zm13.334 0c-3.68 0-6.667-2.986-6.667-6.666C16 10.987 18.987 8 22.667 8c.746 0 1.466.12 2.133.347C23.733 9.6 22.667 11.52 22.667 13.333v8z" />
@@ -38,7 +44,12 @@ const QuoteIcon = () => (
 );
 
 interface TestimonialCardProps {
-  testimonial: typeof testimonials[0];
+  testimonial: {
+    id?: string | number;
+    text?: string;
+    author?: string;
+    company?: string;
+  };
   delay: number;
   isVisible: boolean;
   large?: boolean;
@@ -91,9 +102,19 @@ function TestimonialCard({ testimonial, delay, isVisible, large = false }: Testi
   );
 }
 
-export default function Testimonials() {
+export default function Testimonials({ data }: TestimonialsProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Use CMS testimonials when available; fall back to hardcoded list.
+  // The layout expects at least 4 slots — pad with fallbacks if CMS has fewer.
+  const raw = data && data.length > 0 ? data : fallbackTestimonials;
+  const testimonials = [
+    raw[0] ?? fallbackTestimonials[0],
+    raw[1] ?? fallbackTestimonials[1],
+    raw[2] ?? fallbackTestimonials[2],
+    raw[3] ?? fallbackTestimonials[3],
+  ];
 
   return (
     <section id="testimonials" ref={ref} style={{ background: '#EBECF6' }}>

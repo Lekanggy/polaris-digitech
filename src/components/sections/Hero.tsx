@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import hero2 from '../../assets/hero2.png';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import type { HeroSection } from '../../services/queries/homeQuery';
+import { strapiUrl } from '../../services/queries/homeQuery';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -14,8 +16,23 @@ const fadeUp = {
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-export default function Hero() {
+// Hardcoded fallbacks — preserved as-is
+const FALLBACK_BADGE = '22+ years of excellence';
+const FALLBACK_HEADING = 'Enhancing Business Solutions with Geo-Spatial Technology';
+const FALLBACK_DESCRIPTION =
+  'We deliver innovative cloud and on-premise solutions using advanced location intelligence, GIS, and mapping technologies across Nigeria.';
+
+interface HeroProps {
+  data?: HeroSection;
+}
+
+export default function Hero({ data }: HeroProps) {
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  const badge = data?.badage ?? FALLBACK_BADGE;
+  const heading = data?.mainDescription ?? FALLBACK_HEADING;
+  const description = data?.bottomDescription ?? FALLBACK_DESCRIPTION;
+  const bgImage = strapiUrl(data?.bgImage?.url) ?? hero2;
   return (
     <section
       id="hero"
@@ -25,7 +42,7 @@ export default function Hero() {
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        backgroundImage: `url(${hero2})`,
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center center',
       }}
@@ -75,7 +92,7 @@ export default function Hero() {
               marginBottom: '24px',
             }}
           >
-            22+ years of excellence
+            {badge}
           </motion.span>
 
           {/* Heading */}
@@ -96,7 +113,7 @@ export default function Hero() {
               textAlign: 'center',
             }}
           >
-            Enhancing Business Solutions with Geo-Spatial Technology
+            {heading}
           </motion.h1>
 
           {/* Description */}
@@ -117,7 +134,7 @@ export default function Hero() {
               textAlign: 'center',
             }}
           >
-            We deliver innovative cloud and on-premise solutions using advanced location intelligence, GIS, and mapping technologies across Nigeria.
+            {description}
           </motion.p>
 
           {/* Buttons */}

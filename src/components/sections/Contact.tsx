@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import type { ContactItem } from '../../services/queries/homeQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-const contactItems = [
+// ── Hardcoded fallback contact items — preserved ───────────────────────────
+const fallbackContactItems = [
   {
     label: 'You can email us here',
     value: 'info@polarisdigitech.net',
@@ -37,22 +39,62 @@ const contactItems = [
   },
 ];
 
+// Pick an appropriate icon based on the label string
+function iconForLabel(label: string): React.ReactNode {
+  const l = label.toLowerCase();
+  if (l.includes('email') || l.includes('mail')) {
+    return (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <polyline points="22,6 12,13 2,6" />
+      </svg>
+    );
+  }
+  if (l.includes('call') || l.includes('phone')) {
+    return (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+      </svg>
+    );
+  }
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+      <circle cx="12" cy="9" r="2.5" />
+    </svg>
+  );
+}
+
+interface ContactProps {
+  data?: ContactItem[];
+}
+
 const ArrowIcon = () => (
   <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8">
     <path d="M3 11L11 3M11 3H5M11 3V9" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-export default function Contact() {
+export default function Contact({ data }: ContactProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
+
+  // Use CMS contacts when available, otherwise fall back to hardcoded list
+  const contactItems =
+    data && data.length > 0
+      ? data.map((item) => ({
+          label: item.label,
+          value: item.value,
+          icon: iconForLabel(item.label),
+        }))
+      : fallbackContactItems;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert('Message sent! We will get back to you soon.');
     setForm({ name: '', email: '', message: '' });

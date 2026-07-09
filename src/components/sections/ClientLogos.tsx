@@ -5,8 +5,11 @@ import cli4 from '../../assets/cli4.png';
 import cli5 from '../../assets/cli5.png';
 import cli6 from '../../assets/cli6.png';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import type { ClientData } from '../../services/queries/homeQuery';
+import { strapiUrl } from '../../services/queries/homeQuery';
 
-const logos = [
+// Hardcoded fallback logos — preserved
+const fallbackLogos = [
   { src: cli1, alt: 'Google' },
   { src: cli2, alt: 'Precisely' },
   { src: cli3, alt: 'Here' },
@@ -15,11 +18,24 @@ const logos = [
   { src: cli6, alt: 'Airbus' },
 ];
 
-// Triple for seamless infinite loop
-const track = [...logos, ...logos, ...logos];
+interface ClientLogosProps {
+  data?: ClientData;
+}
 
-export default function ClientLogos() {
+export default function ClientLogos({ data }: ClientLogosProps) {
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Use CMS images when available, otherwise fall back to local assets
+  const logos =
+    data?.clientImage && data.clientImage.length > 0
+      ? data.clientImage.map((img) => ({
+          src: strapiUrl(img.url) ?? img.url,
+          alt: img.name ?? 'Client logo',
+        }))
+      : fallbackLogos;
+
+  // Triple for seamless infinite loop
+  const track = [...logos, ...logos, ...logos];
   return (
     /* Section: height 172px, bg #EBECF6, px 122px, py 47px */
     <section

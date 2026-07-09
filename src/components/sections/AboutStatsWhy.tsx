@@ -4,8 +4,21 @@ import { useCounter } from '../../hooks/useCounter';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { WHY_CHOOSE_US } from '../../utils/constants';
 import bgpro from '../../assets/bgpro.png';
+import type { AboutState } from '../../services/queries/homeQuery';
+import { strapiUrl } from '../../services/queries/homeQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
+
+// Hardcoded fallback stats — preserved
+const FALLBACK_STATS = [
+  { value: 40, label: 'No of Corporate Clients' },
+  { value: 300, label: 'Full-time & Field Employees' },
+  { value: 85, label: 'Projects, Products, Services' },
+];
+
+interface AboutStatsWhyProps {
+  data?: AboutState;
+}
 
 // ── Animated counter ───────────────────────────────────────────────────────
 function StatItem({ value, label, start }: { value: number; label: string; start: boolean }) {
@@ -62,16 +75,38 @@ const icons: Record<string, React.ReactNode> = {
 };
 
 // ── Main component ─────────────────────────────────────────────────────────
-export default function AboutStatsWhy() {
+export default function AboutStatsWhy({ data }: AboutStatsWhyProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  const badge = data?.badage ?? 'About Polaris Digitech Limited';
+  const description =
+    data?.description ??
+    'We help organizations make smarter decisions with geospatial technology, trusted expertise, and solutions built for impact.';
+  const bgImage = strapiUrl(data?.bgImage?.url) ?? bgpro;
+
+  // Parse stat values; fall back to hardcoded numbers if CMS not available
+  const stats =
+    data?.stats && data.stats.length > 0
+      ? data.stats.map((s) => ({ value: parseInt(s.value, 10) || 0, label: s.label }))
+      : FALLBACK_STATS;
+
+  // Use CMS key features if available, otherwise fall back to constants
+  const whyFeatures =
+    data?.chooseusKeyFeatures && data.chooseusKeyFeatures.length > 0
+      ? data.chooseusKeyFeatures.map((f) => ({
+          title: f.title,
+          description: f.description,
+          icon: f.Icon ?? 'location',
+        }))
+      : WHY_CHOOSE_US;
 
   return (
     <section
       id="about"
       ref={ref}
       style={{
-        backgroundImage: `url(${bgpro})`,
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: '100% 100%',
         backgroundPosition: 'center center',
         backgroundRepeat: 'no-repeat',
@@ -117,10 +152,10 @@ export default function AboutStatsWhy() {
               marginBottom: '32px',
             }}
           >
-            About Polaris Digitech Limited
+            {badge}
           </motion.span>
 
-          {/* Main statement — Task 1: 48px, weight 400, 3 lines */}
+          {/* Main statement */}
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -137,7 +172,7 @@ export default function AboutStatsWhy() {
               textAlign: 'center',
             }}
           >
-            We help organizations make smarter decisions with geospatial technology, trusted expertise, and solutions built for impact.
+            {description}
           </motion.h2>
 
           {/* CTA */}
@@ -194,9 +229,7 @@ export default function AboutStatsWhy() {
           }}
         >
           {[
-            { value: 40, label: 'No of Corporate Clients' },
-            { value: 300, label: 'Full-time & Field Employees' },
-            { value: 85, label: 'Projects, Products, Services' },
+            ...stats,
           ].map((stat) => (
             <StatItem key={stat.label} value={stat.value} label={stat.label} start={isVisible} />
           ))}
@@ -237,7 +270,7 @@ export default function AboutStatsWhy() {
 
             {/* Right — 3 cards — fill remaining width equally */}
             <div className="why-cards-row" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px', flex: 1, minWidth: 0 }}>
-              {WHY_CHOOSE_US.map((item, i) => (
+              {whyFeatures.map((item, i) => (
                 <motion.div
                   key={item.title}
                   initial={{ opacity: 0, y: 30 }}

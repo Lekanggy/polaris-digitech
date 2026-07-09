@@ -6,16 +6,23 @@ import soft from '../../assets/soft.png';
 import soft1 from '../../assets/soft1.png';
 import soft2 from '../../assets/soft2.png';
 import soft3 from '../../assets/soft3.png';
+import type { Service } from '../../services/queries/homeQuery';
+import { strapiUrl } from '../../services/queries/homeQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-const services = [
+// Hardcoded fallback services — preserved
+const fallbackServices = [
   { title: 'Software\nDevelopment', image: soft },
   { title: 'Land\nSurveying', image: soft1 },
   { title: 'Geospatial Data\nAcquisition Management', image: soft2 },
   { title: 'Identity Intelligence\nManagement', image: soft3 },
   { title: 'Software\nDevelopment', image: soft },
 ];
+
+interface ServicesProps {
+  data?: Service;
+}
 
 // Arrow SVG
 const ArrowIcon = ({ dir }: { dir: 'left' | 'right' }) => (
@@ -34,11 +41,25 @@ const ArrowIcon = ({ dir }: { dir: 'left' | 'right' }) => (
   </svg>
 );
 
-export default function Services() {
+export default function Services({ data }: ServicesProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<number | null>(null);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Build service cards from CMS data or fall back to hardcoded list
+  const services =
+    data?.serviceItem && data.serviceItem.length > 0
+      ? data.serviceItem.map((item) => ({
+          title: item.title,
+          image: strapiUrl(item.bgImage?.[0]?.url) ?? soft,
+        }))
+      : fallbackServices;
+
+  const sectionTitle = data?.title ?? 'Expert Geospatial and Mapping Services';
+  const sectionDescription =
+    data?.description ??
+    'We provide geospatial solutions that help businesses and governments make informed decisions, improve operations, and deliver results. From GIS and land surveying to cloud-based mapping and location intelligence, we offer services that bring clarity to complex challenges.';
 
   // On mobile show 1 card per view; on desktop 4
   const cardWidth = isMobile ? '85vw' : '25vw';
@@ -119,7 +140,7 @@ export default function Services() {
               margin: 0,
             }}
           >
-            Expert Geospatial and<br />Mapping Services
+            {sectionTitle}
           </motion.h2>
 
           <motion.p
@@ -136,7 +157,7 @@ export default function Services() {
               paddingTop: '4px',
             }}
           >
-            We provide geospatial solutions that help businesses and governments make informed decisions, improve operations, and deliver results. From GIS and land surveying to cloud-based mapping and location intelligence, we offer services that bring clarity to complex challenges.
+            {sectionDescription}
           </motion.p>
         </div>
       </div>

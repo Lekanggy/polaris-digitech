@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import type { Product } from '../../services/queries/homeQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
@@ -116,44 +117,37 @@ function ProductCard({ bg, icon, title, description, delay, isVisible, offsetTop
 }
 
 // ── Main section ───────────────────────────────────────────────────────────
-export default function Products() {
+export default function Products({ data }: { data?: Product }) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const products = [
-    {
-      id: 1,
-      bg: '#F0E2FF',
-      icon: 'database',
-      title: 'Polaris Data Collector (PDC)',
-      description: 'A digital tool for real-time data gathering using custom forms, enabling efficient electronic data collection and storage.',
-      col: 'left',
-    },
-    {
-      id: 2,
-      bg: '#CCECFF',
-      icon: 'address',
-      title: 'Address Management Portal',
-      description: 'A user-friendly platform that streamlines address verification and management, improving data accuracy and customer experience.',
-      col: 'right',
-    },
-    {
-      id: 3,
-      bg: '#FFF2D7',
-      icon: 'google',
-      title: 'Google Workspace',
-      description: 'Polaris Digitech offers seamless integration of Google Workspace apps and Google Cloud Platform to enhance client productivity and experience.',
-      col: 'left',
-    },
-    {
-      id: 4,
-      bg: '#DAE4FF',
-      icon: 'risk',
-      title: 'Risk Geo-Platform',
-      description: 'An advanced tool that analyzes and visualizes geospatial data to help organizations manage risks proactively and support business growth.',
-      col: 'right',
-    },
+  // Card background colours — cycled for CMS items that don't supply one
+  const bgCycle = ['#F0E2FF', '#CCECFF', '#FFF2D7', '#DAE4FF'];
+
+  // Hardcoded fallback products — preserved
+  const fallbackProducts = [
+    { id: 1, bg: '#F0E2FF', icon: 'database', title: 'Polaris Data Collector (PDC)', description: 'A digital tool for real-time data gathering using custom forms, enabling efficient electronic data collection and storage.', col: 'left' as const },
+    { id: 2, bg: '#CCECFF', icon: 'address', title: 'Address Management Portal', description: 'A user-friendly platform that streamlines address verification and management, improving data accuracy and customer experience.', col: 'right' as const },
+    { id: 3, bg: '#FFF2D7', icon: 'google', title: 'Google Workspace', description: 'Polaris Digitech offers seamless integration of Google Workspace apps and Google Cloud Platform to enhance client productivity and experience.', col: 'left' as const },
+    { id: 4, bg: '#DAE4FF', icon: 'risk', title: 'Risk Geo-Platform', description: 'An advanced tool that analyzes and visualizes geospatial data to help organizations manage risks proactively and support business growth.', col: 'right' as const },
   ];
+
+  const products =
+    data?.item && data.item.length > 0
+      ? data.item.map((item, idx) => ({
+          id: idx + 1,
+          bg: bgCycle[idx % bgCycle.length],
+          icon: item.icon ?? item.icons ?? 'database',
+          title: item.title,
+          description: item.description,
+          col: idx % 2 === 0 ? ('left' as const) : ('right' as const),
+        }))
+      : fallbackProducts;
+
+  const sectionTitle = data?.title ?? 'Solutions You Can Rely On.';
+  const sectionDescription =
+    data?.description ??
+    'Discover our in-house products—designed and developed to help you collect data faster, manage addresses accurately, and assess geographical risk effectively. We also support seamless integration with platforms like Google Workspace to streamline your operations.';
 
   const leftCards = products.filter(p => p.col === 'left');
   const rightCards = products.filter(p => p.col === 'right');
@@ -199,7 +193,7 @@ export default function Products() {
               marginBottom: '20px',
               maxWidth: '380px',
             }}>
-              Solutions You Can Rely On.
+              {sectionTitle}
             </h2>
 
             {/* Description */}
@@ -212,7 +206,7 @@ export default function Products() {
               color: '#4b5563',
               marginBottom: '36px',
             }}>
-              Discover our in-house products—designed and developed to help you collect data faster, manage addresses accurately, and assess geographical risk effectively. We also support seamless integration with platforms like Google Workspace to streamline your operations.
+              {sectionDescription}
             </p>
 
             {/* CTA button */}
