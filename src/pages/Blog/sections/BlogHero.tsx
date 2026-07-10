@@ -29,10 +29,9 @@ export default function BlogHero({ article }: BlogHeroProps) {
     >
       <div
         style={{
-          maxWidth: '1280px',
+          width: isMobile ? '92%' : '80%',
+          maxWidth: '1600px',
           margin: '0 auto',
-          paddingLeft: 'clamp(24px, 5vw, 80px)',
-          paddingRight: 'clamp(24px, 5vw, 80px)',
         }}
       >
         {/* ── Contained image card with rounded corners ── */}
@@ -40,7 +39,7 @@ export default function BlogHero({ article }: BlogHeroProps) {
           style={{
             position: 'relative',
             width: '100%',
-            height: isMobile ? '320px' : '603px',
+            height: isMobile ? '380px' : 'clamp(600px, 70vh, 860px)',
             borderRadius: '40px',
             overflow: 'hidden',
             background: article.image

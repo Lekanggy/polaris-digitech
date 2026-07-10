@@ -1,8 +1,11 @@
 /**
  * CareersHero — Section 1
  * Centred title + description, then a 2-column image layout:
- *   Left:  car2.png  — tall card (w:656 h:584 border-radius:20px)
- *   Right: car1.png (top) + car3.png (bottom) — each w:656 h:280 border-radius:20px
+ *   Left:  images[1] (car2) — tall card
+ *   Right: images[0] (car1, top) + images[2] (car3, bottom)
+ *
+ * The API returns images in order: car1, car2, car3.
+ * Layout uses: car2 on the left, car1 top-right, car3 bottom-right.
  */
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
@@ -10,12 +13,34 @@ import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import car1 from '../../../assets/car1.png';
 import car2 from '../../../assets/car2.png';
 import car3 from '../../../assets/car3.png';
+import type { CareerImage } from '../../../services/queries/careerQuery';
+import { strapiUrl } from '../../../services/queries/careerQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-export default function CareersHero() {
+// ── Fallbacks ──────────────────────────────────────────────────────────────
+const FALLBACK_HEADER = 'Join Our PDL Team';
+const FALLBACK_DESCRIPTION =
+  "At Polaris Digitech, we're redefining how businesses and governments use geospatial and cloud technology in Nigeria. If you're driven by innovation, problem-solving, and purpose, we want you on our team.";
+
+interface CareersHeroProps {
+  header?: string;
+  headerDescription?: string;
+  images?: CareerImage[];
+}
+
+export default function CareersHero({ header, headerDescription, images }: CareersHeroProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  const title       = header            ?? FALLBACK_HEADER;
+  const description = headerDescription ?? FALLBACK_DESCRIPTION;
+
+  // API order: [0]=car1, [1]=car2, [2]=car3
+  // Layout: left=car2, top-right=car1, bottom-right=car3
+  const imgLeft        = strapiUrl(images?.[1]?.url) ?? car2;
+  const imgTopRight    = strapiUrl(images?.[0]?.url) ?? car1;
+  const imgBottomRight = strapiUrl(images?.[2]?.url) ?? car3;
 
   return (
     <section
@@ -52,7 +77,7 @@ export default function CareersHero() {
               marginBottom: '24px',
             }}
           >
-            Join Our PDL Team
+            {title}
           </h1>
           <p
             style={{
@@ -66,9 +91,7 @@ export default function CareersHero() {
               margin: '0 auto',
             }}
           >
-            At Polaris Digitech, we're redefining how businesses and governments use geospatial
-            and cloud technology in Nigeria. If you're driven by innovation, problem-solving, and purpose,
-            we want you on our team.
+            {description}
           </p>
         </motion.div>
 
@@ -93,7 +116,7 @@ export default function CareersHero() {
             }}
           >
             <img
-              src={car2}
+              src={imgLeft}
               alt="Polaris team field work"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
@@ -102,27 +125,27 @@ export default function CareersHero() {
           {/* Right — two stacked images */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div
-                style={{
-                  borderRadius: '20px',
-                  overflow: 'hidden',
-                  height: isMobile ? '180px' : '280px',
-                }}
+              style={{
+                borderRadius: '20px',
+                overflow: 'hidden',
+                height: isMobile ? '180px' : '280px',
+              }}
             >
               <img
-                src={car1}
+                src={imgTopRight}
                 alt="Polaris team collaboration"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
             </div>
             <div
-                style={{
-                  borderRadius: '20px',
-                  overflow: 'hidden',
-                  height: isMobile ? '180px' : '280px',
-                }}
+              style={{
+                borderRadius: '20px',
+                overflow: 'hidden',
+                height: isMobile ? '180px' : '280px',
+              }}
             >
               <img
-                src={car3}
+                src={imgBottomRight}
                 alt="Polaris team geospatial work"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />

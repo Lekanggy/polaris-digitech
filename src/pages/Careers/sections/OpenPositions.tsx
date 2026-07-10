@@ -2,6 +2,9 @@
  * OpenPositions — Section 2
  * Filter tabs + 2-column job card grid.
  * Clicking a filter tab shows only cards in that category.
+ *
+ * Data source: CMS via props (categories + jobs).
+ * Falls back to static JOBS / CATEGORIES when CMS data is unavailable.
  */
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -9,12 +12,12 @@ import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import { JOBS } from '../jobsData';
-import type { Category, Job } from '../jobsData';
+import type { CareerCategory, CareerJob } from '../../../services/queries/careerQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-// ── Category counts ───────────────────────────────────────────────────────
-const CATEGORIES: Category[] = [
+// ── Fallback category list ────────────────────────────────────────────────
+const FALLBACK_CATEGORIES = [
   'All',
   'Customer Address Verification',
   'Engineering',
@@ -22,9 +25,46 @@ const CATEGORIES: Category[] = [
   'Human Resource',
 ];
 
-function getCategoryCount(cat: Category): number {
-  if (cat === 'All') return JOBS.length;
-  return JOBS.filter((j) => j.category === cat).length;
+// ── Normalise a CMS job into a display-ready shape ────────────────────────
+interface DisplayJob {
+  id: string;       // slug used in the URL (/careers/:id)
+  title: string;
+  description: string;
+  type: string;
+  mode: string;
+  location: string;
+  category: string;
+}
+
+function normaliseJobs(cmsJobs?: CareerJob[]): DisplayJob[] {
+  if (!cmsJobs || cmsJobs.length === 0) {
+    // Fall back to static data — map to DisplayJob shape
+    return JOBS.map((j) => ({
+      id:          j.id,
+      title:       j.title,
+      description: j.description,
+      type:        j.type,
+      mode:        j.mode,
+      location:    j.location,
+      category:    j.category,
+    }));
+  }
+
+  return cmsJobs.map((j) => ({
+    id:          j.href ?? j.id ?? '',
+    title:       j.title ?? '',
+    description: j.description ?? '',
+    type:        formatLabel(j.type),
+    mode:        formatLabel(j.mode),
+    location:    (j.location ?? '').replace(/'/g, ''), // strip stray apostrophes
+    category:    j.Category ?? '',
+  }));
+}
+
+/** Convert snake_case / underscore API values to display labels */
+function formatLabel(value?: string): string {
+  if (!value) return '';
+  return value.replace(/_/g, '-');
 }
 
 // ── Chevron icon ──────────────────────────────────────────────────────────
@@ -37,7 +77,7 @@ function ChevronRight() {
 }
 
 // ── Single job card ───────────────────────────────────────────────────────
-function JobCard({ job, index, isVisible }: { job: Job; index: number; isVisible: boolean }) {
+function JobCard({ job, index, isVisible }: { job: DisplayJob; index: number; isVisible: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -145,16 +185,41 @@ function JobCard({ job, index, isVisible }: { job: Job; index: number; isVisible
   );
 }
 
+// ── Props ─────────────────────────────────────────────────────────────────
+interface OpenPositionsProps {
+  categories?: CareerCategory[];
+  jobs?: CareerJob[];
+}
+
 // ── Main section ──────────────────────────────────────────────────────────
-export default function OpenPositions() {
+export default function OpenPositions({ categories, jobs }: OpenPositionsProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const [activeCategory, setActiveCategory] = useState<Category>('All');
+
+  // Build category label list — CMS first, fallback to static
+  const categoryLabels: string[] =
+    categories && categories.length > 0
+      ? categories.map((c) => c.text ?? '').filter(Boolean)
+      : FALLBACK_CATEGORIES;
+
+  const displayJobs = normaliseJobs(jobs);
+
+  const [activeCategory, setActiveCategory] = useState<string>('All');
 
   const filteredJobs =
     activeCategory === 'All'
-      ? JOBS
-      : JOBS.filter((j) => j.category === activeCategory);
+      ? displayJobs
+      : displayJobs.filter((j) =>
+          j.category.toLowerCase() === activeCategory.toLowerCase()
+        );
+
+  // Count per category
+  function getCategoryCount(cat: string): number {
+    if (cat === 'All') return displayJobs.length;
+    return displayJobs.filter(
+      (j) => j.category.toLowerCase() === cat.toLowerCase()
+    ).length;
+  }
 
   return (
     <section
@@ -178,15 +243,15 @@ export default function OpenPositions() {
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-            style={{
-              fontFamily: satoshi,
-              fontWeight: 500,
-              fontSize: isMobile ? 'clamp(28px, 6vw, 40px)' : '40px',
-              lineHeight: '150%',
-              letterSpacing: '-0.02em',
-              color: '#010527',
-              marginBottom: '24px',
-            }}
+          style={{
+            fontFamily: satoshi,
+            fontWeight: 500,
+            fontSize: isMobile ? 'clamp(28px, 6vw, 40px)' : '40px',
+            lineHeight: '150%',
+            letterSpacing: '-0.02em',
+            color: '#010527',
+            marginBottom: '24px',
+          }}
         >
           Open Positions
         </motion.h2>
@@ -203,7 +268,7 @@ export default function OpenPositions() {
             marginBottom: '40px',
           }}
         >
-          {CATEGORIES.map((cat) => {
+          {categoryLabels.map((cat) => {
             const isActive = activeCategory === cat;
             return (
               <button
@@ -258,7 +323,7 @@ export default function OpenPositions() {
         >
           {filteredJobs.map((job, i) => (
             <JobCard
-              key={job.title + i}
+              key={job.id + i}
               job={job}
               index={i}
               isVisible={isVisible}

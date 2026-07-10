@@ -7,41 +7,22 @@ import val3 from '../../../assets/val3.png';
 import val4 from '../../../assets/val4.png';
 import val5 from '../../../assets/val5.png';
 import val6 from '../../../assets/val6.png';
+import type { SetusApart } from '../../../services/queries/aboutusQuery';
+import { strapiUrl } from '../../../services/queries/aboutusQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-const VALUES = [
-  {
-    image: val1,
-    title: 'Partnered Solutions',
-    description: 'We co-create tailored GIS and business solutions through strategic industry partnerships.',
-  },
-  {
-    image: val2,
-    title: 'High Standards',
-    description: 'Our solutions are efficient, flexible, and built on deep analysis and best practices.',
-  },
-  {
-    image: val3,
-    title: 'Best Value',
-    description: 'We deliver results-driven services that exceed expectations and boost client success.',
-  },
-  {
-    image: val4,
-    title: 'Product Variety',
-    description: 'We offer a broad range of trusted solutions and OEM products to meet diverse needs.',
-  },
-  {
-    image: val5,
-    title: 'Industry Experience',
-    description: 'Our experts deliver tailored solutions with deep, cross-industry experience.',
-  },
-  {
-    image: val6,
-    title: 'Timely Delivery',
-    description: 'We ensure fast, reliable delivery of solutions across all industries and locations.',
-  },
+// ── Fallback items (val1–val6 as images) ──────────────────────────────────
+const FALLBACK_VALUES = [
+  { image: val1, title: 'Partnered Solutions',  description: 'We co-create tailored GIS and business solutions through strategic industry partnerships.' },
+  { image: val2, title: 'High Standards',        description: 'Our solutions are efficient, flexible, and built on deep analysis and best practices.' },
+  { image: val3, title: 'Best Value',            description: 'We deliver results-driven services that exceed expectations and boost client success.' },
+  { image: val4, title: 'Product Variety',       description: 'We offer a broad range of trusted solutions and OEM products to meet diverse needs.' },
+  { image: val5, title: 'Industry Experience',   description: 'Our experts deliver tailored solutions with deep, cross-industry experience.' },
+  { image: val6, title: 'Timely Delivery',        description: 'We ensure fast, reliable delivery of solutions across all industries and locations.' },
 ];
+
+const FALLBACK_IMAGES = [val1, val2, val3, val4, val5, val6];
 
 // ── Single value item ──────────────────────────────────────────────────────
 interface ValueItemProps {
@@ -101,7 +82,7 @@ function ValueItem({ image, title, description, index, isVisible, isMobile, isLa
         {title}
       </h3>
 
-      {/* Description — 2 lines, centered */}
+      {/* Description */}
       <p
         style={{
           fontFamily: satoshi,
@@ -121,12 +102,38 @@ function ValueItem({ image, title, description, index, isVisible, isMobile, isLa
   );
 }
 
-export default function WhatSetsUsApart() {
+// ── Props ──────────────────────────────────────────────────────────────────
+interface WhatSetsUsApartProps {
+  data?: SetusApart;
+}
+
+export default function WhatSetsUsApart({ data }: WhatSetsUsApartProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const topRow = VALUES.slice(0, 3);
-  const bottomRow = VALUES.slice(3, 6);
+  // Section header
+  const sectionTitle       = data?.title       ?? 'What Sets Us Apart';
+  const sectionDescription = data?.description ?? 'From strategic partnerships to expert delivery, we offer tailored solutions, reliable execution, and deep industry expertise that drive measurable impact.';
+
+  // Merge CMS items with fallbacks:
+  // CMS items come first (with their API images), then fill remaining slots from fallback
+  const cmsItems = (data?.items ?? []).map((item, i) => ({
+    image:       strapiUrl(item.image?.url) ?? FALLBACK_IMAGES[i] ?? val1,
+    title:       item.title       ?? FALLBACK_VALUES[i]?.title ?? '',
+    description: item.description ?? FALLBACK_VALUES[i]?.description ?? '',
+  }));
+
+  // If CMS has fewer than 6 items, pad with fallback items not already covered
+  const values =
+    cmsItems.length >= 6
+      ? cmsItems.slice(0, 6)
+      : [
+          ...cmsItems,
+          ...FALLBACK_VALUES.slice(cmsItems.length),
+        ];
+
+  const topRow    = values.slice(0, 3);
+  const bottomRow = values.slice(3, 6);
 
   return (
     <section
@@ -161,7 +168,7 @@ export default function WhatSetsUsApart() {
               marginBottom: '16px',
             }}
           >
-            What Sets Us Apart
+            {sectionTitle}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -177,7 +184,7 @@ export default function WhatSetsUsApart() {
               margin: '0 auto',
             }}
           >
-            From strategic partnerships to expert delivery, we offer tailored solutions, reliable execution, and deep industry expertise that drive measurable impact.
+            {sectionDescription}
           </motion.p>
         </div>
 

@@ -2,7 +2,7 @@
  * JobDetailPage
  * Layout:
  *   • Navbar
- *   • "< Back to Blogs" back link
+ *   • "< Back to Careers" back link
  *   • Two-column layout:
  *       Left (flex:1): job title, meta tags, intro, sections with radio-bullet timeline
  *       Right (sticky, ~320px): "Interested in this role?" application form
@@ -15,6 +15,9 @@
  *     Outer circle bg = section bg (#FFFFFF) → inner ring bg #B9CFE2 → dot bg #0B1353
  *   Bullet items:
  *     Outer ring bg #B9CFE2 → inner dot bg #0B1353
+ *
+ * Data: fetches the career query and finds the job by href === :id param.
+ * Falls back to static JOBS if CMS data is unavailable or job not found there.
  */
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/sections/Navbar';
@@ -23,16 +26,82 @@ import { JOBS } from './jobsData';
 import type { JobSection } from './jobsData';
 import { useState } from 'react';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { useGraphQLQuery } from '../../hooks/useGraphQLQuery';
+import { careerQuery } from '../../services/queries/careerQuery';
+import type { CareerData, CareerJob } from '../../services/queries/careerQuery';
+import { gql } from '../../services/apolloClient';
 
+const CAREER_QUERY = gql(careerQuery);
 const satoshi = 'Satoshi, Inter, sans-serif';
+
+// ── Normalise a CMS job into the JobSection[] shape used by the renderer ──
+function cmsJobToSections(job: CareerJob): JobSection[] {
+  if (!job.sections || job.sections.length === 0) return [];
+  return job.sections.map((s) => {
+    const items = (s.items ?? []).map((it) => (it.text ?? '').trim()).filter(Boolean);
+    // "How to apply" sections typically have a single item that acts as plain text
+    const isApply = (s.heading ?? '').toLowerCase().includes('apply');
+    return {
+      heading:   s.heading ?? '',
+      items:     isApply ? [] : items,
+      plainText: isApply ? items[0] : undefined,
+    };
+  });
+}
+
+// ── Build display job from CMS or static fallback ─────────────────────────
+interface DisplayDetail {
+  id: string;
+  title: string;
+  mode: string;
+  type: string;
+  location: string;
+  category: string;
+  intro: string;
+  sections: JobSection[];
+}
+
+function buildDetail(id: string, cmsData?: CareerData): DisplayDetail | null {
+  // 1. Try CMS jobs first
+  const cmsJob = cmsData?.career?.jobs?.find((j) => j.href === id || j.id === id);
+  if (cmsJob) {
+    return {
+      id:       cmsJob.href ?? cmsJob.id ?? id,
+      title:    cmsJob.title ?? '',
+      mode:     (cmsJob.mode ?? '').replace(/_/g, '-'),
+      type:     (cmsJob.type ?? '').replace(/_/g, '-'),
+      location: (cmsJob.location ?? '').replace(/'/g, ''),
+      category: cmsJob.Category ?? '',
+      intro:    cmsJob.description ?? '',
+      sections: cmsJobToSections(cmsJob),
+    };
+  }
+
+  // 2. Fall back to static JOBS
+  const staticJob = JOBS.find((j) => j.id === id);
+  if (staticJob) {
+    return {
+      id:       staticJob.id,
+      title:    staticJob.title,
+      mode:     staticJob.mode,
+      type:     staticJob.type,
+      location: staticJob.location,
+      category: staticJob.category,
+      intro:    staticJob.intro,
+      sections: staticJob.sections,
+    };
+  }
+
+  return null;
+}
 
 // ── Radio circle for section headings ─────────────────────────────────────
 function SectionRadio({ isFirst, isMobile }: { isFirst: boolean; isMobile: boolean }) {
   const outer = isMobile ? 24 : 28;
-  const ring = isMobile ? 15 : 18;
-  const dot = isMobile ? 7 : 8;
+  const ring  = isMobile ? 15 : 18;
+  const dot   = isMobile ? 7  : 8;
+
   if (isFirst) {
-    // Outer: #0B1353 | Ring: #D7B56D | Dot: #0B1353
     return (
       <div
         style={{
@@ -58,22 +127,14 @@ function SectionRadio({ isFirst, isMobile }: { isFirst: boolean; isMobile: boole
             justifyContent: 'center',
           }}
         >
-          <div
-            style={{
-              width: `${dot}px`,
-              height: `${dot}px`,
-              borderRadius: '50%',
-              background: '#0B1353',
-            }}
-          />
+          <div style={{ width: `${dot}px`, height: `${dot}px`, borderRadius: '50%', background: '#0B1353' }} />
         </div>
       </div>
     );
   }
 
-  // Outer: white (section bg) | Ring: #B9CFE2 | Dot: #0B1353
   const ring2 = isMobile ? 12 : 14;
-  const dot2 = isMobile ? 5 : 6;
+  const dot2  = isMobile ? 5  : 6;
   return (
     <div
       style={{
@@ -100,14 +161,7 @@ function SectionRadio({ isFirst, isMobile }: { isFirst: boolean; isMobile: boole
           justifyContent: 'center',
         }}
       >
-        <div
-          style={{
-            width: `${dot2}px`,
-            height: `${dot2}px`,
-            borderRadius: '50%',
-            background: '#0B1353',
-          }}
-        />
+        <div style={{ width: `${dot2}px`, height: `${dot2}px`, borderRadius: '50%', background: '#0B1353' }} />
       </div>
     </div>
   );
@@ -115,8 +169,8 @@ function SectionRadio({ isFirst, isMobile }: { isFirst: boolean; isMobile: boole
 
 // ── Bullet circle for list items ──────────────────────────────────────────
 function BulletCircle({ isMobile }: { isMobile: boolean }) {
-  const size = isMobile ? 14 : 16;
-  const inner = isMobile ? 6 : 7;
+  const size  = isMobile ? 14 : 16;
+  const inner = isMobile ? 6  : 7;
   return (
     <div
       style={{
@@ -131,14 +185,7 @@ function BulletCircle({ isMobile }: { isMobile: boolean }) {
         marginTop: '4px',
       }}
     >
-      <div
-        style={{
-          width: `${inner}px`,
-          height: `${inner}px`,
-          borderRadius: '50%',
-          background: '#0B1353',
-        }}
-      />
+      <div style={{ width: `${inner}px`, height: `${inner}px`, borderRadius: '50%', background: '#0B1353' }} />
     </div>
   );
 }
@@ -197,7 +244,6 @@ function SectionBlock({
           {section.heading}
         </h3>
 
-        {/* Plain text (e.g. "How to apply") */}
         {section.plainText && (
           <p
             style={{
@@ -213,7 +259,6 @@ function SectionBlock({
           </p>
         )}
 
-        {/* Bullet list */}
         {section.items.length > 0 && (
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: isMobile ? '10px' : '12px' }}>
             {section.items.map((item, i) => (
@@ -268,7 +313,6 @@ function ApplicationForm() {
         Interested in this role?
       </h3>
 
-      {/* Full name */}
       <input
         type="text"
         placeholder="Full Name"
@@ -285,7 +329,6 @@ function ApplicationForm() {
         }}
       />
 
-      {/* Email */}
       <input
         type="email"
         placeholder="Email"
@@ -302,7 +345,6 @@ function ApplicationForm() {
         }}
       />
 
-      {/* Upload CV */}
       <label
         style={{
           display: 'flex',
@@ -334,7 +376,6 @@ function ApplicationForm() {
         />
       </label>
 
-      {/* Apply Now */}
       <button
         style={{
           width: '100%',
@@ -386,7 +427,9 @@ export default function JobDetailPage() {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const job = JOBS.find((j) => j.id === id);
+  const { data } = useGraphQLQuery<CareerData>(CAREER_QUERY);
+
+  const job = buildDetail(id ?? '', data);
 
   if (!job) {
     return (
@@ -433,23 +476,23 @@ export default function JobDetailPage() {
         }}
       >
         {/* ── Back link ── */}
-          <button
-            onClick={() => navigate('/careers')}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontFamily: satoshi,
-              fontWeight: 400,
-              fontSize: '14px',
-              color: '#46485F',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              marginBottom: isMobile ? '12px' : '32px',
-              transition: 'color 200ms',
-            }}
+        <button
+          onClick={() => navigate('/careers')}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontFamily: satoshi,
+            fontWeight: 400,
+            fontSize: '14px',
+            color: '#46485F',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            marginBottom: isMobile ? '12px' : '32px',
+            transition: 'color 200ms',
+          }}
           onMouseEnter={e => (e.currentTarget.style.color = '#0B1353')}
           onMouseLeave={e => (e.currentTarget.style.color = '#46485F')}
         >

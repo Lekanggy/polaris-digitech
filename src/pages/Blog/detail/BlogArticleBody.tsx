@@ -87,7 +87,7 @@ function ArticleSection({
             overflow: 'hidden',
             marginBottom: paragraphs.length > 1 ? '20px' : 0,
             // Aspect-ratio-like height
-            height: 'clamp(180px, 28vw, 340px)',
+            height: 'clamp(320px, 45vw, 560px)',
           }}
         >
           <img
@@ -138,10 +138,9 @@ export default function BlogArticleBody({ article }: BlogArticleBodyProps) {
     >
       <div
         style={{
-          maxWidth: '1280px',
+          width: isMobile ? '92%' : '80%',
+          maxWidth: '1600px',
           margin: '0 auto',
-          paddingLeft: 'clamp(24px, 5vw, 80px)',
-          paddingRight: 'clamp(24px, 5vw, 80px)',
           paddingTop: '48px',
         }}
       >

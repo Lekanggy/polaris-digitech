@@ -43,7 +43,8 @@ function ArticleCard({
       <div
         style={{
           width: '100%',
-          height: isMobile ? '160px' : '220px',
+          height: undefined,
+          aspectRatio: '4 / 3',
           borderRadius: '20px',
           overflow: 'hidden',
           background: '#D0D5E8',
@@ -184,10 +185,9 @@ export default function MoreArticles({ currentId }: MoreArticlesProps) {
     >
       <div
         style={{
-          maxWidth: '1280px',
+          width: isMobile ? '92%' : '80%',
+          maxWidth: '1600px',
           margin: '0 auto',
-          paddingLeft: 'clamp(24px, 5vw, 80px)',
-          paddingRight: 'clamp(24px, 5vw, 80px)',
         }}
       >
         {/* Heading */}

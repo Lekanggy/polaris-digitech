@@ -4,24 +4,56 @@ import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import StatItem from '../../../components/shared/StatItem';
 import herob from '../../../assets/herob.png';
 import pol2 from '../../../assets/pol2.png';
+import type { AboutSection } from '../../../services/queries/aboutusQuery';
+import { strapiUrl } from '../../../services/queries/aboutusQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-const STATS = [
+// ── Fallbacks ──────────────────────────────────────────────────────────────
+const FALLBACK_BADGE = 'Polaris Digitech Limited';
+const FALLBACK_DESCRIPTION =
+  'We use geospatial technology and smart solutions to drive meaningful development across Nigeria.';
+const FALLBACK_RIGHT_TEXT = [
+  'Polaris Digitech Limited (PDL) is a Nigerian company specializing in Geographic Information Systems (GIS), land surveying, and geospatial consulting, offering innovative solutions like location intelligence, mapping services, and Google Cloud onboarding for both businesses and educational institutions.',
+  'With a team of over 40 professionals and 250 project personnel, PDL delivers high-quality, scalable mapping and decision-support systems across Nigeria. The company supports rural and urban development projects, ensuring timely execution for both government and commercial clients.',
+];
+const FALLBACK_STATS = [
   { value: 40,  label: 'No of Corporate Clients' },
   { value: 300, label: 'Full-time & Field Employees' },
   { value: 85,  label: 'Projects, Products, Services' },
 ];
 
-export default function AboutHero() {
+interface AboutHeroProps {
+  data?: AboutSection;
+}
+
+export default function AboutHero({ data }: AboutHeroProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // CMS values with fallbacks
+  const badge       = data?.badage ?? FALLBACK_BADGE;
+  const description = data?.description ?? FALLBACK_DESCRIPTION;
+  const bgImage     = strapiUrl(data?.bgImage?.url) ?? herob;
+  const heroImage   = strapiUrl(data?.image?.url) ?? pol2;
+
+  // Split rightText on double-newline into paragraphs; fallback to two static paragraphs
+  const rightParagraphs: string[] =
+    data?.rightText
+      ? data.rightText.split(/\n\n+/).map((p) => p.trim()).filter(Boolean)
+      : FALLBACK_RIGHT_TEXT;
+
+  // Stats — parse string values from CMS, fallback to hardcoded numbers
+  const stats =
+    data?.stats && data.stats.length > 0
+      ? data.stats.map((s) => ({ value: parseInt(s.value ?? '0', 10) || 0, label: s.label ?? '' }))
+      : FALLBACK_STATS;
 
   return (
     <section
       ref={ref}
       style={{
-        backgroundImage: `url(${herob})`,
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         position: 'relative',
@@ -51,7 +83,7 @@ export default function AboutHero() {
             width: '100%',
           }}
         >
-          {/* Small spaced label — no border/badge */}
+          {/* Small spaced label */}
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -66,10 +98,10 @@ export default function AboutHero() {
               marginBottom: '20px',
             }}
           >
-            Polaris Digitech Limited
+            {badge}
           </motion.p>
 
-          {/* Gold headline — 40px, weight 400, line-height 120% */}
+          {/* Gold headline */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -85,7 +117,7 @@ export default function AboutHero() {
               maxWidth: '860px',
             }}
           >
-            We use geospatial technology and smart solutions to drive meaningful development across Nigeria.
+            {description}
           </motion.h1>
         </div>
 
@@ -104,7 +136,7 @@ export default function AboutHero() {
             alignItems: 'center',
           }}
         >
-          {/* Left — pol2 image */}
+          {/* Left — hero image */}
           <motion.div
             initial={{ opacity: 0, x: isMobile ? 0 : -32 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
@@ -119,47 +151,38 @@ export default function AboutHero() {
             }}
           >
             <img
-              src={pol2}
+              src={heroImage}
               alt="Polaris Digitech"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </motion.div>
 
-          {/* Right — two paragraphs */}
+          {/* Right — paragraphs from rightText */}
           <motion.div
             initial={{ opacity: 0, x: isMobile ? 0 : 32 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.25 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
           >
-            <p
-              style={{
-                fontFamily: satoshi,
-                fontWeight: 400,
-                fontSize: isMobile ? '16px' : '20px',
-                lineHeight: '175%',
-                letterSpacing: '-0.01em',
-                color: '#DBDBDB',
-              }}
-            >
-              Polaris Digitech Limited (PDL) is a Nigerian company specializing in Geographic Information Systems (GIS), land surveying, and geospatial consulting, offering innovative solutions like location intelligence, mapping services, and Google Cloud onboarding for both businesses and educational institutions.
-            </p>
-            <p
-              style={{
-                fontFamily: satoshi,
-                fontWeight: 400,
-                fontSize: isMobile ? '16px' : '20px',
-                lineHeight: '175%',
-                letterSpacing: '-0.01em',
-                color: '#DBDBDB',
-              }}
-            >
-              With a team of over 40 professionals and 250 project personnel, PDL delivers high-quality, scalable mapping and decision-support systems across Nigeria. The company supports rural and urban development projects, ensuring timely execution for both government and commercial clients.
-            </p>
+            {rightParagraphs.map((paragraph, i) => (
+              <p
+                key={i}
+                style={{
+                  fontFamily: satoshi,
+                  fontWeight: 400,
+                  fontSize: isMobile ? '16px' : '20px',
+                  lineHeight: '175%',
+                  letterSpacing: '-0.01em',
+                  color: '#DBDBDB',
+                }}
+              >
+                {paragraph}
+              </p>
+            ))}
           </motion.div>
         </div>
 
-        {/* ── Part C: Stats — no divider ── */}
+        {/* ── Part C: Stats ── */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -177,7 +200,7 @@ export default function AboutHero() {
             gap: isMobile ? '40px' : '0',
           }}
         >
-          {STATS.map((stat) => (
+          {stats.map((stat) => (
             <StatItem key={stat.label} value={stat.value} label={stat.label} start={isVisible} />
           ))}
         </motion.div>

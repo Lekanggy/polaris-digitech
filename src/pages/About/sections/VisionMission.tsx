@@ -2,8 +2,20 @@ import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import pol1 from '../../../assets/pol1.png';
+import type { VisionItem, AboutImage } from '../../../services/queries/aboutusQuery';
+import { strapiUrl } from '../../../services/queries/aboutusQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
+
+// ── Fallback content ───────────────────────────────────────────────────────
+const FALLBACK_MISSION =
+  'Our mission is to enhance the quality of relationships with our clients in order to promote a high level of integrity, customer satisfaction, and employee empowerment to achieve optimal organizational productivity. We are committed to building long-term relationships based on sustainable values, providing technical support, training, customized applications development and project consulting services.';
+
+const FALLBACK_CULTURE =
+  'Our culture revolves around harnessing the potential of location intelligence, Geo-spatial solutions, Software Development, and Geographic Information Systems. We are dedicated to delivering innovative, reliable, and User-Centric solutions that empower businesses and enables better decision making in a rapidly evolving technological landscape.';
+
+const FALLBACK_VISION =
+  'Our Vision is to be a dominant Twenty-First Century Surveying and Geographical Information Technology Company, spearheading the growth of a new phenomenon in the Nigerian Geo-Spatial Data Industry by using Location and Information-rich Data to revolutionize the way individuals and organizations conduct business.';
 
 // ── Icons ──────────────────────────────────────────────────────────────────
 function MissionIcon() {
@@ -109,7 +121,15 @@ function VMCard({ icon, title, body, delay, isVisible, isMobile }: VMCardProps) 
 }
 
 // ── Center image card ──────────────────────────────────────────────────────
-function CultureCard({ isVisible, isMobile }: { isVisible: boolean; isMobile: boolean }) {
+interface CultureCardProps {
+  isVisible: boolean;
+  isMobile: boolean;
+  title: string;
+  body: string;
+  imageUrl: string;
+}
+
+function CultureCard({ isVisible, isMobile, title, body, imageUrl }: CultureCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -128,12 +148,12 @@ function CultureCard({ isVisible, isMobile }: { isVisible: boolean; isMobile: bo
     >
       {/* Photo */}
       <img
-        src={pol1}
+        src={imageUrl}
         alt="Our Culture"
         style={{ width: '100%', display: 'block', objectFit: 'cover' }}
       />
 
-      {/* Bottom overlay — icon + title + text */}
+      {/* Bottom overlay */}
       <div
         style={{
           position: 'absolute',
@@ -165,7 +185,7 @@ function CultureCard({ isVisible, isMobile }: { isVisible: boolean; isMobile: bo
               margin: 0,
             }}
           >
-            Our Culture
+            {title}
           </h3>
         </div>
 
@@ -181,17 +201,41 @@ function CultureCard({ isVisible, isMobile }: { isVisible: boolean; isMobile: bo
             margin: 0,
           }}
         >
-          Our culture revolves around harnessing the potential of location intelligence, Geo-spatial solutions, Software Development, and Geographic Information Systems. We are dedicated to delivering innovative, reliable, and User-Centric solutions that empower businesses and enables better decision making in a rapidly evolving technological landscape.
+          {body}
         </p>
       </div>
     </motion.div>
   );
 }
 
+// ── Props ──────────────────────────────────────────────────────────────────
+interface VisionMissionProps {
+  vision?: VisionItem[];
+  cultureImage?: AboutImage;
+}
+
 // ── Main section ───────────────────────────────────────────────────────────
-export default function VisionMission() {
+export default function VisionMission({ vision, cultureImage }: VisionMissionProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Map CMS vision items by title (case-insensitive) with fallbacks
+  const findItem = (keyword: string) =>
+    vision?.find((v) => v.title?.toLowerCase().includes(keyword.toLowerCase()));
+
+  const missionItem  = findItem('mission');
+  const cultureItem  = findItem('culture');
+  const visionItem   = findItem('vision');
+
+  const missionTitle = missionItem?.title  ?? 'Our Mission';
+  const missionBody  = missionItem?.description ?? FALLBACK_MISSION;
+
+  const cultureTitle = cultureItem?.title ?? 'Our Culture';
+  const cultureBody  = cultureItem?.description ?? FALLBACK_CULTURE;
+  const cultureImg   = strapiUrl(cultureImage?.url) ?? pol1;
+
+  const visionTitle  = visionItem?.title  ?? 'Our Vision';
+  const visionBody   = visionItem?.description ?? FALLBACK_VISION;
 
   return (
     <section
@@ -229,21 +273,27 @@ export default function VisionMission() {
           {/* Mission */}
           <VMCard
             icon={<MissionIcon />}
-            title="Our Mission"
-            body="Our mission is to enhance the quality of relationships with our clients in order to promote a high level of integrity, customer satisfaction, and employee empowerment to achieve optimal organizational productivity. We are committed to building long-term relationships based on sustainable values, providing technical support, training, customized applications development and project consulting services."
+            title={missionTitle}
+            body={missionBody}
             delay={0.1}
             isVisible={isVisible}
             isMobile={isMobile}
           />
 
           {/* Culture — center, taller, rises above */}
-          <CultureCard isVisible={isVisible} isMobile={isMobile} />
+          <CultureCard
+            isVisible={isVisible}
+            isMobile={isMobile}
+            title={cultureTitle}
+            body={cultureBody}
+            imageUrl={cultureImg}
+          />
 
           {/* Vision */}
           <VMCard
             icon={<VisionIcon />}
-            title="Our Vision"
-            body="Our Vision is to be a dominant Twenty-First Century Surveying and Geographical Information Technology Company, spearheading the growth of a new phenomenon in the Nigerian Geo-Spatial Data Industry by using Location and Information-rich Data to revolutionize the way individuals and organizations conduct business."
+            title={visionTitle}
+            body={visionBody}
             delay={0.3}
             isVisible={isVisible}
             isMobile={isMobile}

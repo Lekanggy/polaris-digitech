@@ -8,10 +8,13 @@ import locationimg from '../../../assets/location.png';
 import pdcollect from '../../../assets/pdcollect.png';
 import pmd from '../../../assets/pmd.png';
 import globbed from '../../../assets/glob.png';
+import type { KeyAchievement } from '../../../services/queries/aboutusQuery';
+import { strapiUrl } from '../../../services/queries/aboutusQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-const ACHIEVEMENTS = [
+// ── Hardcoded fallback achievements ───────────────────────────────────────
+const FALLBACK_ACHIEVEMENTS = [
   {
     year: '2021',
     title: 'The first Certified Google Cloud Platform (GCP) reseller in Nigeria',
@@ -20,31 +23,61 @@ const ACHIEVEMENTS = [
   },
   {
     year: '2017',
-    title: 'Developed and deployed one of the first public-facing Spatial Data Infrastructure (SDI) in Nigeria​',
-    body: "Polaris Digitech developed one of the country’s first public-facing Spatial Data Infrastructures (SDI). This platform offers users access to accurate maps, imagery, and geospatial data for better analysis and decision-making. It supports data integration and sharing across sectors, improving planning and monitoring of development efforts. Widely embraced by both government and private entities, the SDI strengthens Nigeria’s data capabilities and governance. Polaris remains committed to innovation and leveraging advanced technologies to serve national and client needs.",
+    title: 'Developed and deployed one of the first public-facing Spatial Data Infrastructure (SDI) in Nigeria',
+    body: "Polaris Digitech developed one of the country's first public-facing Spatial Data Infrastructures (SDI). This platform offers users access to accurate maps, imagery, and geospatial data for better analysis and decision-making. It supports data integration and sharing across sectors, improving planning and monitoring of development efforts. Widely embraced by both government and private entities, the SDI strengthens Nigeria's data capabilities and governance.",
     logo: globbed,
   },
   {
     year: '2016',
     title: 'Technical partner for the Google Street View (GSV) project in Nigeria',
-    body: "Polaris Digitech Limited is the technical partner for the Google Street View (GSV) project in Nigeria, helping capture high-quality street imagery across the country. This collaboration enhances user experience on Google Maps by offering immersive visuals of Nigerian cities and towns. The project marks a major milestone for Polaris, reinforcing its status as a top tech company in Nigeria. Through its skilled teams, Polaris ensured image quality and accuracy, enabling broader access to geographic insights and aiding navigation, planning, and exploration for the Nigerian public.",
+    body: "Polaris Digitech Limited is the technical partner for the Google Street View (GSV) project in Nigeria, helping capture high-quality street imagery across the country. This collaboration enhances user experience on Google Maps by offering immersive visuals of Nigerian cities and towns.",
     logo: locationimg,
   },
-   {
+  {
     year: '',
     title: 'The OEM of the Address Management Portal Service',
-    body: "Polaris Digitech Limited takes great pride in offering an innovative Address Verification & Standardization Service that has been designed to cater to the unique needs of our clients. As the OEM provider for this service, we are committed to providing exceptional quality and unparalleled accuracy that is unmatched in the industry. Our Address Verification & Standardization Service leverages cutting-edge technology to standardize addresses, correct any inconsistencies in spelling or formatting, and ensure that all addresses are validated for accuracy. By partnering with us, our clients can enjoy a seamless experience that is both efficient and reliable.",
+    body: "Polaris Digitech Limited takes great pride in offering an innovative Address Verification & Standardization Service that has been designed to cater to the unique needs of our clients. As the OEM provider for this service, we are committed to providing exceptional quality and unparalleled accuracy that is unmatched in the industry.",
     logo: pdcollect,
   },
   {
     year: '',
     title: 'The OEM for the first indigenous Field Force Application (Polaris Data Collector) relevant to different business sectors',
-    body: "Polaris Digitech Limited offers advanced tech solutions across industries and is the OEM of the first Indian-made Field Force Application, the Polaris Data Collector. This app streamlines field operations by enabling real-time data collection and communication between field staff and management. It boosts decision-making, customer service, and ROI, positioning Polaris as a reliable partner for businesses seeking operational efficiency and innovation.",
+    body: "Polaris Digitech Limited offers advanced tech solutions across industries and is the OEM of the first Indian-made Field Force Application, the Polaris Data Collector. This app streamlines field operations by enabling real-time data collection and communication between field staff and management.",
     logo: pmd,
   },
 ];
 
-// ── Arrow button — sits outside the card ──────────────────────────────────
+// ── Normalise CMS achievements into a display-ready shape ─────────────────
+interface DisplayAchievement {
+  year: string;
+  title: string;
+  body: string;
+  logo: string; // always a resolved URL or local asset path
+}
+
+function buildAchievements(data?: KeyAchievement[]): DisplayAchievement[] {
+  if (!data || data.length === 0) return FALLBACK_ACHIEVEMENTS;
+
+  const cmsItems: DisplayAchievement[] = data.map((item, i) => ({
+    year:  item.year != null ? String(item.year) : '',
+    title: item.title ?? FALLBACK_ACHIEVEMENTS[i]?.title ?? '',
+    body:  item.body  ?? FALLBACK_ACHIEVEMENTS[i]?.body  ?? '',
+    // Use CMS logo URL if present, otherwise fall back to the matching local asset
+    logo:  strapiUrl(item.logo?.url) ?? FALLBACK_ACHIEVEMENTS[i]?.logo ?? gonew,
+  }));
+
+  // If CMS provided fewer entries than the fallback list, append the rest from fallback
+  if (cmsItems.length < FALLBACK_ACHIEVEMENTS.length) {
+    return [
+      ...cmsItems,
+      ...FALLBACK_ACHIEVEMENTS.slice(cmsItems.length),
+    ];
+  }
+
+  return cmsItems;
+}
+
+// ── Arrow button ───────────────────────────────────────────────────────────
 interface ArrowBtnProps {
   dir: 'left' | 'right';
   onClick: () => void;
@@ -88,15 +121,23 @@ function ArrowBtn({ dir, onClick }: ArrowBtnProps) {
   );
 }
 
-export default function KeyAchievements() {
+// ── Props ──────────────────────────────────────────────────────────────────
+interface KeyAchievementsProps {
+  data?: KeyAchievement[];
+}
+
+// ── Main component ─────────────────────────────────────────────────────────
+export default function KeyAchievements({ data }: KeyAchievementsProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  const achievements = buildAchievements(data);
   const [current, setCurrent] = useState(0);
 
-  const prev = () => setCurrent((c) => (c - 1 + ACHIEVEMENTS.length) % ACHIEVEMENTS.length);
-  const next = () => setCurrent((c) => (c + 1) % ACHIEVEMENTS.length);
+  const prev = () => setCurrent((c) => (c - 1 + achievements.length) % achievements.length);
+  const next = () => setCurrent((c) => (c + 1) % achievements.length);
 
-  const achievement = ACHIEVEMENTS[current];
+  const achievement = achievements[current];
 
   return (
     <section
@@ -134,13 +175,12 @@ export default function KeyAchievements() {
           Our Key Achievements and Success
         </motion.h2>
 
-        {/* ── Carousel — card with arrows inside at both ends ── */}
+        {/* ── Carousel ── */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          {/* Achievement card — responsive height, arrows inside */}
           <div
             style={{
               borderRadius: '30px',
@@ -150,7 +190,7 @@ export default function KeyAchievements() {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               width: '100%',
-              minHeight: isMobile ? '480px' : '480px',
+              minHeight: '480px',
             }}
           >
             {/* Left arrow */}
@@ -254,7 +294,6 @@ export default function KeyAchievements() {
                         fontSize: 'clamp(100px, 12vw, 160px)',
                         lineHeight: '150%',
                         letterSpacing: '0',
-                        color: '',
                         WebkitTextStroke: '1px rgba(255,255,255,0.3)',
                         userSelect: 'none',
                         whiteSpace: 'nowrap',
@@ -291,7 +330,7 @@ export default function KeyAchievements() {
 
         {/* ── Dot indicators ── */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '28px' }}>
-          {ACHIEVEMENTS.map((_, i) => (
+          {achievements.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}

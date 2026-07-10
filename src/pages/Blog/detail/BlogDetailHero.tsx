@@ -89,10 +89,9 @@ export default function BlogDetailHero({
     >
       <div
         style={{
-          maxWidth: '1280px',
+          width: isMobile ? '92%' : '80%',
+          maxWidth: '1600px',
           margin: '0 auto',
-          paddingLeft: 'clamp(24px, 5vw, 80px)',
-          paddingRight: 'clamp(24px, 5vw, 80px)',
         }}
       >
         {/* ── Back link ── */}
@@ -286,7 +285,7 @@ export default function BlogDetailHero({
           transition={{ duration: 0.65, delay: 0.2 }}
           style={{
             width: '100%',
-            height: 'clamp(280px, 42vw, 540px)',
+            height: isMobile ? '380px' : 'clamp(600px, 70vh, 860px)',
             borderRadius: '20px',
             overflow: 'hidden',
             background: '#D0D5E8',
