@@ -9,10 +9,15 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
-import { ARTICLES, CATEGORIES } from '../blogData';
+import { CATEGORIES } from '../blogData';
 import type { BlogArticle } from '../blogData';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
+
+interface BlogGridProps {
+  /** CMS-sourced articles; falls back to nothing if empty */
+  articles: BlogArticle[];
+}
 
 // ── Single article item ───────────────────────────────────────────────────
 function ArticleItem({ article, index, isVisible, isMobile }: { article: BlogArticle; index: number; isVisible: boolean; isMobile: boolean }) {
@@ -123,14 +128,18 @@ function ArticleItem({ article, index, isVisible, isMobile }: { article: BlogArt
 }
 
 // ── Main section ──────────────────────────────────────────────────────────
-export default function BlogGrid() {
+export default function BlogGrid({ articles }: BlogGridProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
-  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMobile  = useMediaQuery('(max-width: 768px)');
+  const isTablet  = useMediaQuery('(max-width: 1024px)');
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filtered = activeCategory === 'All'
-    ? ARTICLES
-    : ARTICLES.filter(a => a.category === activeCategory);
+    ? articles
+    : articles.filter(a => a.category === activeCategory);
+
+  // Responsive grid: 1 col phone → 2 col tablet → 3 col desktop
+  const gridCols = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)';
 
   return (
     <section
@@ -260,8 +269,8 @@ export default function BlogGrid() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-            gap: isMobile ? '24px' : '32px 24px',
+            gridTemplateColumns: gridCols,
+            gap: isMobile ? '28px' : '32px 24px',
           }}
         >
           {filtered.map((article, i) => (

@@ -6,7 +6,10 @@
  *   2. BlogArticleBody — article content (left) + sticky TOC (right)
  *   3. MoreArticles    — related articles grid
  *
- * Route: /blog/:id
+ * Route: /blog/:id  (id = slug)
+ *
+ * Data: fetches the blogs query. Finds the article by slug (= :id param).
+ * Falls back to static FEATURED_ARTICLE + ARTICLES when CMS is unavailable.
  */
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../../components/sections/Navbar';
@@ -15,19 +18,29 @@ import BlogDetailHero from './BlogDetailHero';
 import BlogArticleBody from './BlogArticleBody';
 import MoreArticles from './MoreArticles';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
-import { FEATURED_ARTICLE, ARTICLES } from '../blogData';
+import { FEATURED_ARTICLE, ARTICLES, normaliseBlog } from '../blogData';
+import type { BlogArticle } from '../blogData';
+import { useGraphQLQuery } from '../../../hooks/useGraphQLQuery';
+import { blogsQuery } from '../../../services/queries/blogQuery';
+import type { BlogsData } from '../../../services/queries/blogQuery';
+import { gql } from '../../../services/apolloClient';
 
+const BLOGS_QUERY = gql(blogsQuery);
 const satoshi = 'Satoshi, Inter, sans-serif';
-
-// Combine all articles into one lookup pool
-const ALL_ARTICLES = [FEATURED_ARTICLE, ...ARTICLES];
 
 export default function BlogDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const article = ALL_ARTICLES.find(a => a.id === id);
+  const { data } = useGraphQLQuery<BlogsData>(BLOGS_QUERY);
+
+  // Normalise all CMS posts; Apollo cache means no extra network request
+  const cmsPosts: BlogArticle[] = (data?.blogs ?? []).map(normaliseBlog);
+  const allCms = cmsPosts.length > 0 ? cmsPosts : [FEATURED_ARTICLE, ...ARTICLES];
+
+  // Find the article whose slug matches the URL param
+  const article = allCms.find(a => a.id === id);
 
   // ── 404 state ──
   if (!article) {
@@ -45,14 +58,7 @@ export default function BlogDetailPage() {
             padding: isMobile ? '100px 24px 60px' : '160px 80px 80px',
           }}
         >
-          <p
-            style={{
-              fontFamily: satoshi,
-              fontSize: '20px',
-              color: '#46485F',
-              textAlign: 'center',
-            }}
-          >
+          <p style={{ fontFamily: satoshi, fontSize: '20px', color: '#46485F', textAlign: 'center' }}>
             Article not found.
           </p>
           <button
@@ -83,16 +89,9 @@ export default function BlogDetailPage() {
   return (
     <div className="min-h-screen" style={{ background: '#FFFFFF' }}>
       <Navbar />
-
-      {/* Section 1: Hero */}
       <BlogDetailHero article={article} readTime="10 min" />
-
-      {/* Section 2 + 3: Article body with sticky TOC */}
       <BlogArticleBody article={article} />
-
-      {/* Section 4: More articles */}
-      <MoreArticles currentId={article.id} />
-
+      <MoreArticles currentId={article.id} allArticles={allCms} />
       <Footer />
     </div>
   );

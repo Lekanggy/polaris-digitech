@@ -86,8 +86,7 @@ function ArticleSection({
             borderRadius: '14px',
             overflow: 'hidden',
             marginBottom: paragraphs.length > 1 ? '20px' : 0,
-            // Aspect-ratio-like height
-            height: 'clamp(320px, 45vw, 560px)',
+            height: 'clamp(200px, 40vw, 560px)',
           }}
         >
           <img
@@ -126,34 +125,33 @@ function ArticleSection({
 // ── Main section ──────────────────────────────────────────────────────────
 export default function BlogArticleBody({ article }: BlogArticleBodyProps) {
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(max-width: 1024px)');
   const sections = article.sections ?? [];
+
+  // On tablet show a narrower TOC; on mobile stack vertically
+  const gridCols = isMobile ? '1fr' : isTablet ? '1fr 220px' : '1fr 260px';
 
   return (
     <section
       style={{
         background: '#FFFFFF',
         paddingTop: '0',
-        paddingBottom: isMobile ? '48px' : '80px',
+        paddingBottom: isMobile ? '40px' : '80px',
       }}
     >
       <div
         style={{
-          width: isMobile ? '92%' : '80%',
+          width: isMobile ? '94%' : '80%',
           maxWidth: '1600px',
           margin: '0 auto',
-          paddingTop: '48px',
+          paddingTop: isMobile ? '28px' : '48px',
         }}
       >
-        {/*
-         * Two-column grid:
-         *   Left  — article content (takes remaining space)
-         *   Right — sticky TOC card (fixed 260px)
-         */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : '1fr 260px',
-            gap: isMobile ? '32px' : '48px',
+            gridTemplateColumns: gridCols,
+            gap: isMobile ? '0' : '48px',
             alignItems: 'start',
           }}
         >
@@ -172,8 +170,16 @@ export default function BlogArticleBody({ article }: BlogArticleBodyProps) {
             ))}
           </div>
 
-          {/* ── RIGHT: sticky TOC ── */}
-          <TableOfContents sections={sections} />
+          {/* ── RIGHT / BOTTOM: TOC — top-border separator on mobile ── */}
+          <div
+            style={{
+              marginTop: isMobile ? '36px' : '0',
+              paddingTop: isMobile ? '36px' : '0',
+              borderTop: isMobile ? '1px solid #E0E6EF' : 'none',
+            }}
+          >
+            <TableOfContents sections={sections} />
+          </div>
         </div>
       </div>
     </section>

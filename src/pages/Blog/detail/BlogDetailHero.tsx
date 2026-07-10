@@ -1,15 +1,9 @@
 /**
  * BlogDetailHero — Section 1 of the Blog Detail Page
- *
- * Layout (matches design):
- *   • "< Back to Blogs" link
- *   • Large article title (full width, no cap)
- *   • Meta row — four labeled columns:
- *       "Post By"    → author avatar + name
- *       "Published"  → date
- *       "Read time"  → "X min"
- *       "Follow us"  → gold social icons (LinkedIn, Facebook, Twitter, Instagram)
- *   • Full-width hero image with rounded corners
+ * Mobile-responsive:
+ *   • Meta row wraps into 2×2 on mobile; "Follow us" no longer floats right
+ *   • Hero image height scales with viewport
+ *   • Container uses 94% width on mobile
  */
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -23,7 +17,6 @@ interface BlogDetailHeroProps {
   readTime?: string;
 }
 
-// ── Gold social icon link ─────────────────────────────────────────────────
 function SocialLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a
@@ -46,14 +39,7 @@ function SocialLink({ href, children }: { href: string; children: React.ReactNod
   );
 }
 
-// ── Meta column: label on top, value below ────────────────────────────────
-function MetaColumn({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function MetaColumn({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
       <span
@@ -63,6 +49,7 @@ function MetaColumn({
           fontSize: '12px',
           color: '#8A93B2',
           letterSpacing: '0.01em',
+          whiteSpace: 'nowrap',
         }}
       >
         {label}
@@ -76,20 +63,24 @@ export default function BlogDetailHero({
   article,
   readTime = '10 min',
 }: BlogDetailHeroProps) {
-  const navigate = useNavigate();
-  const isMobile = useMediaQuery('(max-width: 768px)');
+  const navigate  = useNavigate();
+  const isMobile  = useMediaQuery('(max-width: 768px)');
+  const isTablet  = useMediaQuery('(max-width: 1024px)');
+
+  const containerWidth  = isMobile ? '94%' : '80%';
+  const imageHeight     = isMobile ? '220px' : isTablet ? '380px' : 'clamp(600px, 70vh, 860px)';
 
   return (
     <section
       style={{
         background: '#FFFFFF',
-        paddingTop: isMobile ? '80px' : '120px',
-        paddingBottom: isMobile ? '32px' : '48px',
+        paddingTop: isMobile ? '72px' : '120px',
+        paddingBottom: isMobile ? '24px' : '48px',
       }}
     >
       <div
         style={{
-          width: isMobile ? '92%' : '80%',
+          width: containerWidth,
           maxWidth: '1600px',
           margin: '0 auto',
         }}
@@ -112,23 +103,13 @@ export default function BlogDetailHero({
             border: 'none',
             cursor: 'pointer',
             padding: 0,
-            marginBottom: isMobile ? '16px' : '24px',
+            marginBottom: isMobile ? '14px' : '24px',
             transition: 'color 200ms',
           }}
           onMouseEnter={e => (e.currentTarget.style.color = '#010527')}
           onMouseLeave={e => (e.currentTarget.style.color = '#46485F')}
         >
-          {/* Chevron left */}
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9,2 4,7 9,12" />
           </svg>
           Back to Blogs
@@ -142,11 +123,11 @@ export default function BlogDetailHero({
           style={{
             fontFamily: satoshi,
             fontWeight: 700,
-            fontSize: 'clamp(30px, 4.5vw, 56px)',
+            fontSize: isMobile ? 'clamp(22px, 5.5vw, 32px)' : 'clamp(30px, 4.5vw, 56px)',
             lineHeight: '115%',
             letterSpacing: '-0.02em',
             color: '#010527',
-            marginBottom: '24px',
+            marginBottom: isMobile ? '16px' : '24px',
           }}
         >
           {article.title}
@@ -158,17 +139,17 @@ export default function BlogDetailHero({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.14 }}
           style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: isMobile ? '24px' : '48px',
-            flexWrap: 'wrap',
-            marginBottom: isMobile ? '20px' : '28px',
+            display: 'grid',
+            // 2×2 grid on mobile; all in one row on desktop
+            gridTemplateColumns: isMobile ? '1fr 1fr' : 'auto auto auto 1fr',
+            gap: isMobile ? '16px 24px' : '0 48px',
+            marginBottom: isMobile ? '16px' : '28px',
+            alignItems: 'start',
           }}
         >
           {/* Post By */}
           <MetaColumn label="Post By">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {/* Author avatar */}
               <div
                 style={{
                   width: '28px',
@@ -185,27 +166,13 @@ export default function BlogDetailHero({
                 }}
               >
                 {!article.authorAvatar && (
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                  >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
                   </svg>
                 )}
               </div>
-              <span
-                style={{
-                  fontFamily: satoshi,
-                  fontWeight: 500,
-                  fontSize: '14px',
-                  color: '#010527',
-                }}
-              >
+              <span style={{ fontFamily: satoshi, fontWeight: 500, fontSize: '13px', color: '#010527', wordBreak: 'break-word' }}>
                 {article.author ?? 'Polaris Team'}
               </span>
             </div>
@@ -213,59 +180,38 @@ export default function BlogDetailHero({
 
           {/* Published */}
           <MetaColumn label="Published">
-            <span
-              style={{
-                fontFamily: satoshi,
-                fontWeight: 600,
-                fontSize: '14px',
-                color: '#010527',
-              }}
-            >
+            <span style={{ fontFamily: satoshi, fontWeight: 600, fontSize: '13px', color: '#010527' }}>
               {article.date}
             </span>
           </MetaColumn>
 
           {/* Read time */}
           <MetaColumn label="Read time">
-            <span
-              style={{
-                fontFamily: satoshi,
-                fontWeight: 600,
-                fontSize: '14px',
-                color: '#010527',
-              }}
-            >
+            <span style={{ fontFamily: satoshi, fontWeight: 600, fontSize: '13px', color: '#010527' }}>
               {readTime}
             </span>
           </MetaColumn>
 
-          {/* Follow us — pushed to the right */}
-          <div style={{ marginLeft: 'auto' }}>
+          {/* Follow us — right-aligned only on desktop, normal flow on mobile */}
+          <div style={{ justifySelf: isMobile ? 'start' : 'end' }}>
             <MetaColumn label="Follow us">
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                {/* LinkedIn */}
                 <SocialLink href="#">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
                     <circle cx="4" cy="4" r="2" />
                   </svg>
                 </SocialLink>
-
-                {/* Facebook */}
                 <SocialLink href="#">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                   </svg>
                 </SocialLink>
-
-                {/* Twitter / X */}
                 <SocialLink href="#">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </SocialLink>
-
-                {/* Instagram */}
                 <SocialLink href="#">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -285,8 +231,8 @@ export default function BlogDetailHero({
           transition={{ duration: 0.65, delay: 0.2 }}
           style={{
             width: '100%',
-            height: isMobile ? '380px' : 'clamp(600px, 70vh, 860px)',
-            borderRadius: '20px',
+            height: imageHeight,
+            borderRadius: isMobile ? '16px' : '20px',
             overflow: 'hidden',
             background: '#D0D5E8',
           }}
@@ -295,12 +241,7 @@ export default function BlogDetailHero({
             <img
               src={article.image}
               alt={article.title}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-              }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
           )}
         </motion.div>

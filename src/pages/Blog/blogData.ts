@@ -444,3 +444,34 @@ export const ARTICLES: BlogArticle[] = [
 ];
 
 export const CATEGORIES = ['All', 'GIS', 'Technology', 'Surveying', 'Software'];
+
+// ── CMS → BlogArticle normaliser ──────────────────────────────────────────
+// Converts a raw API BlogPost into the BlogArticle shape used throughout the UI.
+// Falls back gracefully when any field is missing.
+import type { BlogPost } from '../../services/queries/blogQuery';
+import { strapiUrl } from '../../services/queries/homeQuery';
+
+export function normaliseBlog(post: BlogPost): BlogArticle {
+  return {
+    // Use slug as the URL id; fall back to documentId
+    id:          post.slug ?? post.documentId ?? '',
+    title:       post.title ?? '',
+    description: post.description ?? '',
+    // Format the ISO date string into a readable form; fallback to raw value
+    date:        post.date
+                   ? new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+                   : '',
+    category:    post.category ?? '',
+    image:       strapiUrl(post.image?.url) ?? '',
+    author:      post.author ?? 'Polaris Team',
+    authorAvatar: '',
+    sections: (post.article ?? []).map((art) => ({
+      // Use the article's own slug/id for TOC scroll-spy anchors
+      id:         art.slug ?? art.id ?? '',
+      // Strip surrounding quotes from headings like `""` → treat as empty (intro)
+      heading:    (art.heading ?? '').replace(/^["']+|["']+$/g, '').trim(),
+      paragraphs: (art.paragraph ?? []).map((p) => (p.text ?? '').trim()).filter(Boolean),
+      image:      art.articleImage?.url ? strapiUrl(art.articleImage.url) : undefined,
+    })),
+  };
+}

@@ -11,13 +11,14 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
-import { ARTICLES, FEATURED_ARTICLE } from '../blogData';
 import type { BlogArticle } from '../blogData';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
 interface MoreArticlesProps {
   currentId: string;
+  /** Full pool of articles (CMS or static) passed from the detail page */
+  allArticles: BlogArticle[];
 }
 
 // ── Single article card ───────────────────────────────────────────────────
@@ -164,15 +165,17 @@ function ArticleCard({
 }
 
 // ── Section ───────────────────────────────────────────────────────────────
-export default function MoreArticles({ currentId }: MoreArticlesProps) {
+export default function MoreArticles({ currentId, allArticles }: MoreArticlesProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(max-width: 1024px)');
 
-  // Pool: FEATURED + ARTICLES, exclude current
-  const pool = [FEATURED_ARTICLE, ...ARTICLES].filter(a => a.id !== currentId);
+  const pool      = allArticles.filter(a => a.id !== currentId);
   const displayed = pool.slice(0, 3);
 
   if (displayed.length === 0) return null;
+
+  const gridCols = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)';
 
   return (
     <section
@@ -185,7 +188,7 @@ export default function MoreArticles({ currentId }: MoreArticlesProps) {
     >
       <div
         style={{
-          width: isMobile ? '92%' : '80%',
+          width: isMobile ? '94%' : '80%',
           maxWidth: '1600px',
           margin: '0 auto',
         }}
@@ -208,12 +211,12 @@ export default function MoreArticles({ currentId }: MoreArticlesProps) {
           More Articles
         </motion.h2>
 
-        {/* 3-column grid */}
+        {/* 3-column grid → 2 on tablet → 1 on mobile */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-            gap: isMobile ? '24px' : '32px 24px',
+            gridTemplateColumns: gridCols,
+            gap: isMobile ? '28px' : '32px 24px',
           }}
         >
           {displayed.map((article, i) => (
