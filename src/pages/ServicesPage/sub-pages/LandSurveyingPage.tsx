@@ -59,6 +59,10 @@ const FEATURES = [
 function PlaceholderSection() {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(max-width: 1024px)');
+
+  const containerWidth = isMobile ? '94%' : '90%';
+  const imageHeight = isMobile ? '240px' : isTablet ? '380px' : 'clamp(560px, 70vh, 860px)';
 
   return (
     <section
@@ -71,10 +75,9 @@ function PlaceholderSection() {
     >
       <div
         style={{
-          maxWidth: '1280px',
+          width: containerWidth,
+          maxWidth: '1600px',
           margin: '0 auto',
-          paddingLeft: 'clamp(24px, 5vw, 80px)',
-          paddingRight: 'clamp(24px, 5vw, 80px)',
         }}
       >
         <motion.div
@@ -83,7 +86,7 @@ function PlaceholderSection() {
           transition={{ duration: 0.7 }}
           style={{
             width: '100%',
-            height: isMobile ? '220px' : '500px',
+            height: imageHeight,
             borderRadius: isMobile ? '16px' : '24px',
             overflow: 'hidden',
             background: '#EBECF6',
@@ -92,7 +95,7 @@ function PlaceholderSection() {
           <img
             src={fb4}
             alt="Land Surveying showcase"
-            style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
+            style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover', objectPosition: 'center' }}
           />
         </motion.div>
       </div>

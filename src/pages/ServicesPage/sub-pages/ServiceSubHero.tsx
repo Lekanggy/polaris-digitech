@@ -34,6 +34,10 @@ export default function ServiceSubHero({
 }: ServiceSubHeroProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(max-width: 1024px)');
+
+  const containerWidth = isMobile ? '94%' : '90%';
+  const imageHeight = isMobile ? '240px' : isTablet ? '380px' : 'clamp(560px, 70vh, 860px)';
 
   return (
     <section
@@ -46,10 +50,9 @@ export default function ServiceSubHero({
     >
       <div
         style={{
-          maxWidth: '1280px',
+          width: containerWidth,
+          maxWidth: '1600px',
           margin: '0 auto',
-          paddingLeft: 'clamp(24px, 5vw, 80px)',
-          paddingRight: 'clamp(24px, 5vw, 80px)',
         }}
       >
         {/* Title */}
@@ -81,7 +84,8 @@ export default function ServiceSubHero({
             fontSize: isMobile ? '14px' : '16px',
             lineHeight: '170%',
             color: textColor,
-            maxWidth: '780px',
+            width: isMobile ? '100%' : 'min(100%, 86%)',
+            maxWidth: '100%',
             marginBottom: isMobile ? '28px' : '48px',
           }}
         >
@@ -95,7 +99,7 @@ export default function ServiceSubHero({
           transition={{ duration: 0.7, delay: 0.18 }}
           style={{
             width: '100%',
-            height: isMobile ? '240px' : '500px',
+            height: imageHeight,
             borderRadius: isMobile ? '16px' : '24px',
             overflow: 'hidden',
             background: image ? 'transparent' : '#EBECF6',
@@ -106,7 +110,7 @@ export default function ServiceSubHero({
             <img
               src={image}
               alt={imageAlt}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
             />
           )}
         </motion.div>
@@ -123,7 +127,8 @@ export default function ServiceSubHero({
               fontSize: isMobile ? '14px' : '16px',
               lineHeight: '170%',
               color: textColor,
-              maxWidth: '780px',
+              width: '100%',
+              maxWidth: '100%',
               marginTop: '0',
             }}
           >
