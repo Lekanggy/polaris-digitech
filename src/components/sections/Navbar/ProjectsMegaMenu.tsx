@@ -104,7 +104,7 @@ export default function ProjectsMegaMenu({ items }: ProjectsMegaMenuProps) {
             {/* Logo + title row */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
               <img
-                src={PROJECT_LOGOS[item.logo]}
+                src={item.logo.startsWith('http') || item.logo.startsWith('/') ? item.logo : PROJECT_LOGOS[item.logo]}
                 alt={item.title}
                 style={{ width: '28px', height: '28px', objectFit: 'contain', flexShrink: 0, borderRadius: '4px' }}
               />

@@ -2,14 +2,47 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_LINKS } from '../../../utils/constants';
+import type { NavProductItem, NavProjectItem } from '../../../utils/constants';
 import whitelogo from '../../../assets/whitelogo.png';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
+import { useGraphQLQuery } from '../../../hooks/useGraphQLQuery';
+import { productQuery } from '../../../services/queries/productQuery';
+import type { ProductsData } from '../../../services/queries/productQuery';
+import { useProjectsQuery } from '../../../hooks/useProjectsQuery';
+import { strapiUrl } from '../../../services/queries/projectQuery';
+import { gql } from '../../../services/apolloClient';
 
 // Sub-components (modularized)
 import CenteredDropdownWrapper from './CenteredDropdownWrapper';
 import ProjectsMegaMenu from './ProjectsMegaMenu';
 import ProductsMegaMenu from './ProductsMegaMenu';
 import ServicesMegaMenu from './ServicesMegaMenu';
+
+const PRODUCTS_QUERY = gql(productQuery);
+
+// ── Icon mapping: CMS Icons string → NavProductItem icon key ──────────────
+// Falls back to the icon from the static constant matching by slug/title
+const STATIC_PRODUCTS = NAV_LINKS.find(l => l.label === 'Products')?.products ?? [];
+
+function cmsIconToNavIcon(icon?: string): string {
+  if (!icon) return 'database';
+  // CMS uses values like "database", "monitor", "location" etc — pass through
+  return icon.toLowerCase();
+}
+
+// ── Slug sort order for the mega menu ────────────────────────────────────
+const SLUG_ORDER = ['pdc','risk-geo', 'amp'];
+
+function sortBySlug<T extends { slug?: string }>(items: T[]): T[] {
+  return [...items].sort((a, b) => {
+    const ai = SLUG_ORDER.indexOf(a.slug ?? '');
+    const bi = SLUG_ORDER.indexOf(b.slug ?? '');
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+  });
+}
+
+// ── BG palette to assign card backgrounds in the mega menu ────────────────
+const BG_PALETTE = ['#F0E2FF', '#DAE4FF', '#CCECFF', '#FFF2D7'];
 
 // ── Main Navbar Component ─────────────────────────────────────────────────────
 export default function Navbar() {
@@ -20,7 +53,46 @@ export default function Navbar() {
   const location = useLocation();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const activeLink = NAV_LINKS.find((l) => l.label === activeDropdown);
+  // Fetch CMS products for the mega menu
+  const { data: productsData } = useGraphQLQuery<ProductsData>(PRODUCTS_QUERY);
+
+  // Fetch CMS projects for the mega menu
+  const { projects: cmsProjectsArr } = useProjectsQuery();
+
+  // Build NavProjectItem[] — one entry per project, using project_item card data
+  const STATIC_PROJECTS = NAV_LINKS.find(l => l.label === 'Projects')?.projects ?? [];
+  const cmsNavProjects: NavProjectItem[] = (() => {
+    if (!cmsProjectsArr || cmsProjectsArr.length === 0) return STATIC_PROJECTS;
+    return cmsProjectsArr.map((entry, i) => {
+      const p  = entry.project_item;
+      const fb = STATIC_PROJECTS[i];
+      return {
+        logo:        p?.cardLogo?.url ? (strapiUrl(p.cardLogo.url) ?? fb?.logo ?? '') : (fb?.logo ?? ''),
+        title:       p?.title       ?? fb?.title       ?? '',
+        description: p?.description ?? fb?.description ?? '',
+        href:        p?.href        ?? fb?.href        ?? '#',
+      };
+    });
+  })();
+
+  // Build NavProductItem[] from CMS, falling back to static data per item
+  const cmsNavProducts: NavProductItem[] = (() => {
+    const cms = productsData?.products;
+    if (!cms || cms.length === 0) return STATIC_PRODUCTS;
+
+    const sorted = sortBySlug(cms as Array<{ slug?: string } & typeof cms[0]>);
+
+    return sorted.map((p, i) => {
+      const staticFallback = STATIC_PRODUCTS[i];
+      return {
+        icon:        cmsIconToNavIcon(p.Icons) ?? staticFallback?.icon ?? 'database',
+        title:       p.title            ?? staticFallback?.title       ?? '',
+        description: p.shortDescription ?? staticFallback?.description ?? '',
+        bg:          BG_PALETTE[i % BG_PALETTE.length],
+        href:        p.route ? `/solutions/${p.route}` : staticFallback?.href ?? `/solutions/${p.slug ?? ''}`,
+      };
+    });
+  })();
 
   // Mark a link active if the current pathname matches or starts with the link's href
   const isLinkActive = (href: string) =>
@@ -43,6 +115,8 @@ export default function Navbar() {
     setMobileOpen(false);
     setExpanded(null);
   };
+
+  const activeLink = NAV_LINKS.find((l) => l.label === activeDropdown);
 
   return (
     <>
@@ -159,12 +233,12 @@ export default function Navbar() {
         <AnimatePresence>
           {activeLink?.projects && (
             <CenteredDropdownWrapper key="projects">
-              <ProjectsMegaMenu items={activeLink.projects} />
+              <ProjectsMegaMenu items={cmsNavProjects} />
             </CenteredDropdownWrapper>
           )}
           {activeLink?.products && (
             <CenteredDropdownWrapper key="products">
-              <ProductsMegaMenu items={activeLink.products} partnerProducts={activeLink.partnerProducts ?? []} />
+              <ProductsMegaMenu items={cmsNavProducts} partnerProducts={activeLink.partnerProducts ?? []} />
             </CenteredDropdownWrapper>
           )}
           {activeLink?.services && (
@@ -304,7 +378,7 @@ export default function Navbar() {
                   {hasDropdown && isExpanded && (
                     <div className="pb-4 text-center">
                       {link.products &&
-                        link.products.map((item) => (
+                        cmsNavProducts.map((item) => (
                           <Link
                             key={item.title}
                             to={item.href || '#'}

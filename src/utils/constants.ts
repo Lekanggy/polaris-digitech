@@ -48,7 +48,7 @@ export const NAV_LINKS: NavLink[] = [
         title: 'Risk Geo-Platform',
         description: 'An advanced tool that analyzes and visualizes geospatial data to help organizations manage risks proactively and support business growth.',
         bg: '#DAE4FF',
-        href: "/projects/risk-geo-platform"
+        href: "/solutions/risk-geo-platform"
       },
       {
         icon: 'address',

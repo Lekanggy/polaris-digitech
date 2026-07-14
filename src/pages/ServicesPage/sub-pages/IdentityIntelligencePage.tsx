@@ -64,7 +64,7 @@ function RedPlaceholderSection() {
   return (
     <section
       ref={ref}
-      style={{ background: '#FF0000', paddingTop: isMobile ? '48px' : '80px', paddingBottom: isMobile ? '48px' : '80px' }}
+      style={{  background: '#FFFFFF', paddingTop: isMobile ? '48px' : '80px', paddingBottom: isMobile ? '48px' : '80px' }}
     >
       <div
         style={{
@@ -107,9 +107,9 @@ export default function IdentityIntelligencePage() {
         title="Identity Intelligence Management"
         description="Our Identity Intelligence Management service leverages advanced geospatial and data analytics technologies to help organisations verify, track, and manage identities with precision. We integrate location-based intelligence with identity data to provide comprehensive insights that support security, compliance, and operational efficiency."
         bottomText="Polaris Digitech Limited works closely with clients to understand their specific identity management challenges and deliver customised solutions that meet their goals. Our team of experts uses the latest technologies to provide accurate and reliable identity intelligence services that help organisations make informed decisions and achieve long-term success."
-        bg="#FF0000"
-        titleColor="#FFFFFF"
-        textColor="rgba(255,255,255,0.88)"
+        //bg="#FF0000"
+        // titleColor="#FFFFFF"
+        // textColor="rgba(255,255,255,0.88)"
         image={ft1}
         imageAlt="Identity Intelligence Management"
       />

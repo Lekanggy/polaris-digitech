@@ -1,14 +1,24 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
+import { useGraphQLQuery } from '../../../hooks/useGraphQLQuery';
+import { productQuery } from '../../../services/queries/productQuery';
+import type { ProductsData } from '../../../services/queries/productQuery';
+import { strapiUrl } from '../../../services/queries/productQuery';
+import { gql } from '../../../services/apolloClient';
 import pdcl1 from '../../../assets/pdcl1.png';
 import pdcl2 from '../../../assets/pdcl2.png';
 import pdcl3 from '../../../assets/pdcl3.png';
 
+const PRODUCTS_QUERY = gql(productQuery);
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-// ── Product data ───────────────────────────────────────────────────────────
-const PRODUCTS = [
+// ── Card background palette (cycles if CMS has more products) ─────────────
+const BG_PALETTE = ['#F0E2FF', '#DAE4FF', '#CCECFF', '#FFF2D7', '#D4EDDA'];
+const BOX_PALETTE = ['#9B6FD8', '#6B9FD8', '#5AAFCC', '#D4A84B', '#5AAF7A'];
+
+// ── Fallback products (hardcoded) — PDC → Risk Geo → AMP ─────────────────
+const FALLBACK_PRODUCTS = [
   {
     title: 'Polaris Data Collector (PDC)',
     description: 'PDC is a digital tool for real-time data gathering using custom forms, enabling efficient electronic data collection and storage.',
@@ -53,6 +63,56 @@ const PRODUCTS = [
   },
 ];
 
+const FALLBACK_IMAGES = [pdcl1, pdcl3, pdcl2];
+
+// ── Normalise a CMS product into display shape ─────────────────────────────
+interface DisplayProduct {
+  title: string;
+  description: string;
+  features: string[];
+  bg: string;
+  boxBg: string;
+  boxPosition: 'left' | 'right';
+  route: string;
+  overlayImage: string;
+}
+
+// ── Slug sort order: PDC → Risk Geo → AMP ─────────────────────────────────
+const SLUG_ORDER = ['pdc', 'risk-geo', 'amp'];
+
+function sortProducts<T extends { slug?: string }>(items: T[]): T[] {
+  return [...items].sort((a, b) => {
+    const ai = SLUG_ORDER.indexOf(a.slug ?? '');
+    const bi = SLUG_ORDER.indexOf(b.slug ?? '');
+    const an = ai === -1 ? 999 : ai;
+    const bn = bi === -1 ? 999 : bi;
+    return an - bn;
+  });
+}
+
+function normaliseProducts(cmsProducts: ProductsData['products']): DisplayProduct[] {
+  if (!cmsProducts || cmsProducts.length === 0) return FALLBACK_PRODUCTS;
+
+  // Sort CMS products into the desired order before normalising
+  const sorted = sortProducts(cmsProducts as Array<{ slug?: string }>);
+
+  return sorted.map((p: ProductsData['products'][0], i) => {
+    const fallback = FALLBACK_PRODUCTS[i];
+    return {
+      title:       p.title        ?? fallback?.title        ?? '',
+      description: p.shortDescription ?? fallback?.description ?? '',
+      features:    (p.features ?? []).map(f => f.text ?? '').filter(Boolean).length > 0
+                     ? (p.features ?? []).map(f => f.text ?? '').filter(Boolean)
+                     : fallback?.features ?? [],
+      bg:          BG_PALETTE[i % BG_PALETTE.length],
+      boxBg:       BOX_PALETTE[i % BOX_PALETTE.length],
+      boxPosition: (p.boxPosition === 'right' ? 'right' : 'left') as 'left' | 'right',
+      route:       p.route ? `/solutions/${p.route}` : fallback?.route ?? `/solutions/${p.slug ?? ''}`,
+      overlayImage: strapiUrl(p.overlayImage?.url) ?? fallback?.overlayImage ?? FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
+    };
+  });
+}
+
 // ── Bullet icon ────────────────────────────────────────────────────────────
 function BulletDot({ cardBg }: { cardBg: string }) {
   return (
@@ -75,24 +135,16 @@ function BulletDot({ cardBg }: { cardBg: string }) {
 }
 
 // ── Product card ───────────────────────────────────────────────────────────
-interface ProductCardProps {
-  title: string;
-  description: string;
-  features: string[];
-  bg: string;
-  boxBg: string;
-  boxPosition: 'left' | 'right';
-  route: string;
+interface ProductCardProps extends DisplayProduct {
   stickyTop: number;
   zIndex: number;
-  isMobile?: boolean;
-  overlayImage?: string;
+  isMobile: boolean;
 }
 
 function ProductCard({
-  title, description, features, bg, boxBg, boxPosition, route, stickyTop, zIndex,
-  isMobile, overlayImage,
-}: ProductCardProps & { isMobile: boolean }) {
+  title, description, features, bg, boxBg, boxPosition, route,
+  stickyTop, zIndex, isMobile, overlayImage,
+}: ProductCardProps) {
   return (
     <div
       style={{
@@ -116,7 +168,7 @@ function ProductCard({
           boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
         }}
       >
-        {/* Colored box — image sits inside with padding so the color shows as a border/frame */}
+        {/* Colored box with product image */}
         <div
           style={{
             background: boxBg,
@@ -166,8 +218,8 @@ function ProductCard({
           </p>
 
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {features.map((feat) => (
-              <li key={feat} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            {features.map((feat, fi) => (
+              <li key={fi} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                 <BulletDot cardBg={boxBg} />
                 <span style={{ fontFamily: satoshi, fontWeight: 400, fontSize: '15px', lineHeight: '150%', color: '#46485F' }}>
                   {feat}
@@ -203,14 +255,18 @@ function ProductCard({
 export default function ProductsHero() {
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  // Each card sticks at a slightly lower top value so the card beneath it
-  // peeks out by ~20px — giving the "deck of cards" stacking visual.
+  const { data, loading, error } = useGraphQLQuery<ProductsData>(PRODUCTS_QUERY);
+
+  if (loading) console.log('[Products] Loading CMS data...');
+  if (error)   console.error('[Products] GraphQL error:', error);
+
+  const products = normaliseProducts(data?.products as ProductsData['products']);
+
   const NAVBAR_H = 100;
-  const PEEK     = 20; // px each card peeks above the one stacked on it
+  const PEEK     = 20;
 
   return (
     <section style={{ background: '#fff', paddingTop: '160px', paddingBottom: '80px' }}>
-      {/* ── Header ── */}
       <div
         style={{
           maxWidth: '1280px',
@@ -219,6 +275,7 @@ export default function ProductsHero() {
           paddingRight: 'clamp(24px, 5vw, 80px)',
         }}
       >
+        {/* ── Header ── */}
         <div style={{ textAlign: 'center', marginBottom: '64px' }}>
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
@@ -264,10 +321,9 @@ export default function ProductsHero() {
           </motion.a>
         </div>
 
-        {/* ── Cards — each is position:sticky, stacking as user scrolls ── */}
+        {/* ── Sticky-stacking product cards ── */}
         <div>
-          {PRODUCTS.map((product, i) => (
-            
+          {products.map((product, i) => (
             <ProductCard
               key={product.title}
               {...product}
