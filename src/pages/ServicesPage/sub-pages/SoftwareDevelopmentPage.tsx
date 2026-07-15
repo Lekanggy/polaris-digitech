@@ -26,6 +26,10 @@ export default function SoftwareDevelopmentPage() {
   const svc = useServiceData(HREF);
   const stats    = svc.stats.length    > 0 ? svc.stats    : FB_STATS;
   const features = svc.features.length > 0 ? svc.features : FB_FEATURES;
+  const aboutLeadText = 'We are a software development company offering services like design, development, testing, deployment, and maintenance.';
+  const aboutEmphasisText = (svc.quoteText ?? 'Our skilled team collaborates with clients to understand their needs and deliver tailored software solutions that meet their goals.')
+    .replace(/^We are a software development company offering services like design, development, testing, deployment, and maintenance\.\s*/i, '')
+    .trim();
 
   return (
     <div className="min-h-screen">
@@ -38,9 +42,9 @@ export default function SoftwareDevelopmentPage() {
       />
       <ServiceSubStatsFeatures stats={stats} features={features} featuresHeading="Key Features" />
       <ServiceSubAbout
-        image={svc.showcaseImages[1]}
-        leadText="We are a software development company offering services like design, development, testing, deployment, and maintenance."
-        emphasisText={svc.quoteText ?? 'Our skilled team collaborates with clients to understand their needs and deliver tailored software solutions that meet their goals.'}
+        image={svc.quoteImage ?? svc.showcaseImages[1]}
+        leadText={aboutLeadText}
+        emphasisText={aboutEmphasisText || 'Our skilled team collaborates with clients to understand their needs and deliver tailored software solutions that meet their goals.'}
       />
       <ServiceSubClients bottomImage={svc.showcaseImages[0]} />
       <Footer />

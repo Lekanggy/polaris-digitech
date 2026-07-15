@@ -11,6 +11,13 @@ import fb1 from '../../../assets/fb1.png';
 
 const HREF = '/services/identity-intelligence';
 
+function normalizeServiceHref(href?: string) {
+  if (href === '/services/intelligence-management') {
+    return HREF;
+  }
+  return href ?? HREF;
+}
+
 const FB_STATS = [
   { value: '20+', label: 'No of Corporate Clients' },
   { value: '10+', label: 'Products shipped' },
@@ -44,7 +51,7 @@ function ShowcaseSection({ image }: { image: string }) {
 }
 
 export default function IdentityIntelligencePage() {
-  const svc = useServiceData(HREF);
+  const svc = useServiceData(normalizeServiceHref(HREF));
   const stats    = svc.stats.length    > 0 ? svc.stats    : FB_STATS;
   const features = svc.features.length > 0 ? svc.features : FB_FEATURES;
   const showcaseImg = svc.showcaseImages[0] ?? fb1;

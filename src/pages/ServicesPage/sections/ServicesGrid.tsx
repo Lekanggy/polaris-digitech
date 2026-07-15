@@ -62,10 +62,14 @@ export default function ServicesGrid() {
     if (!cmsServices || cmsServices.length === 0) return FALLBACK_SERVICES;
     return cmsServices.map((entry, i) => {
       const fb = FALLBACK_SERVICES[i];
+      const href = entry.intro?.href ?? fb?.href ?? '#';
+      const normalizedHref = href === '/services/intelligence-management'
+        ? '/services/identity-intelligence'
+        : href;
       return {
         title: entry.intro?.title ?? fb?.title ?? '',
         image: strapiUrl(entry.intro?.image?.url) ?? FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
-        href:  entry.intro?.href  ?? fb?.href  ?? '#',
+        href: normalizedHref,
       };
     });
   })();
