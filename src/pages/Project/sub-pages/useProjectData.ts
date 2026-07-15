@@ -59,11 +59,15 @@ export function useProjectData(href: string): CmsProjectData {
   const heroBgImage  = strapiUrl(raw?.project_intro?.leftImage?.url);
 
   // ── Meta ──────────────────────────────────────────────────────────────
-  const metaFields = (raw?.projectMeta?.project_meta ?? [])
-    .map(f => ({ label: f.label ?? '', value: f.value ?? '' }))
-    .filter(f => f.label);
+  const rawMetaFields = Array.isArray(raw?.projectMeta?.project_meta)
+    ? raw.projectMeta?.project_meta ?? []
+    : [];
+  const metaFields = rawMetaFields
+    .map((f: { label?: string; value?: string }) => ({ label: f.label ?? '', value: f.value ?? '' }))
+    .filter((f) => f.label);
 
-  const metaImages = raw?.projectMeta?.image ?? [];
+  const metaImagesRaw = raw?.projectMeta?.image;
+  const metaImages = Array.isArray(metaImagesRaw) ? metaImagesRaw : [];
   const metaImage  = metaImages.length > 0 ? strapiUrl(metaImages[0].image?.url) : undefined;
 
   // ── Description ───────────────────────────────────────────────────────
@@ -77,13 +81,14 @@ export function useProjectData(href: string): CmsProjectData {
   const objectiveImage = strapiUrl(raw?.projectObjectives?.image?.url);
 
   // ── Key Features ──────────────────────────────────────────────────────
-  const features = (raw?.KeyFeatures ?? [] as ProjectKeyFeatureData[])
-    .map(f => ({
+  const rawFeatures = Array.isArray(raw?.KeyFeatures) ? raw.KeyFeatures : [];
+  const features = rawFeatures
+    .map((f: ProjectKeyFeatureData) => ({
       icon:        toIcon(f.Icon),
       title:       f.title       ?? '',
       description: f.description ?? '',
     }))
-    .filter(f => f.title);
+    .filter((f) => f.title);
 
   // ── Gallery ───────────────────────────────────────────────────────────
   const galleryLarge = strapiUrl(raw?.projectGallery?.ImageLarge?.url);

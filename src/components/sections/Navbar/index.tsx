@@ -9,6 +9,7 @@ import { useGraphQLQuery } from '../../../hooks/useGraphQLQuery';
 import { productQuery } from '../../../services/queries/productQuery';
 import type { ProductsData } from '../../../services/queries/productQuery';
 import { useProjectsQuery } from '../../../hooks/useProjectsQuery';
+import { useServicesQuery } from '../../../hooks/useServicesQuery';
 import { strapiUrl } from '../../../services/queries/projectQuery';
 import { gql } from '../../../services/apolloClient';
 
@@ -58,6 +59,25 @@ export default function Navbar() {
 
   // Fetch CMS projects for the mega menu
   const { projects: cmsProjectsArr } = useProjectsQuery();
+
+  // Fetch CMS services for the mega menu
+  const { services: cmsServicesArr } = useServicesQuery();
+
+  // Build NavServiceItem[] from CMS, falling back to static data per item
+  const STATIC_SERVICES = NAV_LINKS.find(l => l.label === 'Services')?.services ?? [];
+  const cmsNavServices: typeof STATIC_SERVICES = (() => {
+    if (!cmsServicesArr || cmsServicesArr.length === 0) return STATIC_SERVICES;
+    return cmsServicesArr.map((entry, i) => {
+      const intro = entry.intro;
+      const fb    = STATIC_SERVICES[i];
+      return {
+        icon:        intro?.icons ?? fb?.icon  ?? 'monitor',
+        title:       intro?.title ?? fb?.title ?? '',
+        description: intro?.description ?? fb?.description ?? '',
+        href:        intro?.href  ?? fb?.href  ?? '#',
+      };
+    });
+  })();
 
   // Build NavProjectItem[] — one entry per project, using project_item card data
   const STATIC_PROJECTS = NAV_LINKS.find(l => l.label === 'Projects')?.projects ?? [];
@@ -243,7 +263,7 @@ export default function Navbar() {
           )}
           {activeLink?.services && (
             <CenteredDropdownWrapper key="services">
-              <ServicesMegaMenu items={activeLink.services} />
+              <ServicesMegaMenu items={cmsNavServices} />
             </CenteredDropdownWrapper>
           )}
           {activeLink?.dropdown && (
@@ -390,7 +410,7 @@ export default function Navbar() {
                           </Link>
                         ))}
                       {link.services &&
-                        link.services.map((item) => (
+                        cmsNavServices.map((item) => (
                           <Link
                             key={item.title}
                             to={item.href}

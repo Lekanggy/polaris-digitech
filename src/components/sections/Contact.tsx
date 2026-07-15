@@ -79,6 +79,8 @@ export default function Contact({ data }: ContactProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
 
   // Use CMS contacts when available, otherwise fall back to hardcoded list
   const contactItems =
@@ -86,7 +88,7 @@ export default function Contact({ data }: ContactProps) {
       ? data.map((item) => ({
           label: item.label,
           value: item.value,
-          icon: iconForLabel(item.label),
+          icon: iconForLabel(item.label!),
         }))
       : fallbackContactItems;
 
@@ -94,10 +96,38 @@ export default function Contact({ data }: ContactProps) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert('Message sent! We will get back to you soon.');
-    setForm({ name: '', email: '', message: '' });
+    setLoading(true);
+    setStatusMessage(''); // Clear previous messages
+
+    try {
+      const response = await fetch('http://34.42.83.83:1337/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: form.name, // Mapping 'name' to 'username' for the backend
+          email: form.email,
+          message: form.message,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.ok) {
+        setStatusMessage('Message sent! We will get back to you soon.');
+        setForm({ name: '', email: '', message: '' }); // Clear form on success
+      } else {
+        setStatusMessage(data.message || 'Failed to send message.');
+      }
+    } catch (error) {
+      setStatusMessage('Error connecting to the server.');
+      console.error('Submission error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputStyle: React.CSSProperties = {
@@ -295,6 +325,7 @@ export default function Contact({ data }: ContactProps) {
 
                 <button
                   type="submit"
+                  disabled={loading} // Disable button while loading
                   style={{
                     width: '100%',
                     padding: '16px',
@@ -305,14 +336,28 @@ export default function Contact({ data }: ContactProps) {
                     fontSize: '14px',
                     borderRadius: '8px',
                     border: 'none',
-                    cursor: 'pointer',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    opacity: loading ? 0.7 : 1,
                     transition: 'opacity 200ms',
                   }}
-                  onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
-                  onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+                  onMouseEnter={e => !loading && (e.currentTarget.style.opacity = '0.88')}
+                  onMouseLeave={e => !loading && (e.currentTarget.style.opacity = '1')}
                 >
-                  Send a message
+                  {loading ? 'Sending...' : 'Send a message'}
                 </button>
+
+                {/* Add this right below the button to show feedback */}
+                {statusMessage && (
+                  <p style={{ 
+                    fontFamily: satoshi, 
+                    fontSize: '14px', 
+                    color: statusMessage.includes('sent') ? 'green' : 'red',
+                    textAlign: 'center',
+                    marginTop: '10px'
+                  }}>
+                    {statusMessage}
+                  </p>
+                )}
               </form>
             </div>
           </motion.div>
