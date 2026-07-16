@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { useFormSubmission } from '../../hooks/useFormSubmission';
 import type { ContactItem } from '../../services/queries/homeQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
@@ -78,9 +78,30 @@ const ArrowIcon = () => (
 export default function Contact({ data }: ContactProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [loading, setLoading] = useState(false);
-  const [statusMessage, setStatusMessage] = useState('');
+  const {
+    formData,
+    handleInputChange,
+    submit,
+    isSubmitting,
+    submissionMessage,
+    submissionSuccess,
+  } = useFormSubmission({
+    endpoint: '/contact',
+    initialValues: { name: '', email: '', message: '' },
+    validate: (values) => {
+      if (!values.name || !values.email || !values.message) {
+        return 'Please fill in all fields before sending your message.';
+      }
+      return undefined;
+    },
+    getPayload: (values) => ({
+      username: values.name,
+      email: values.email,
+      message: values.message,
+    }),
+    successMessage: () => 'Message sent! We will get back to you soon.',
+    errorMessage: (payload) => payload?.message || 'Failed to send message.',
+  });
 
   // Use CMS contacts when available, otherwise fall back to hardcoded list
   const contactItems =
@@ -92,42 +113,8 @@ export default function Contact({ data }: ContactProps) {
         }))
       : fallbackContactItems;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setStatusMessage(''); // Clear previous messages
-
-    try {
-      const response = await fetch('http://34.42.83.83:1337/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: form.name, // Mapping 'name' to 'username' for the backend
-          email: form.email,
-          message: form.message,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.ok) {
-        setStatusMessage('Message sent! We will get back to you soon.');
-        setForm({ name: '', email: '', message: '' }); // Clear form on success
-      } else {
-        setStatusMessage(data.message || 'Failed to send message.');
-      }
-    } catch (error) {
-      setStatusMessage('Error connecting to the server.');
-      console.error('Submission error:', error);
-    } finally {
-      setLoading(false);
-    }
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    submit(e);
   };
 
   const inputStyle: React.CSSProperties = {
@@ -290,8 +277,8 @@ export default function Contact({ data }: ContactProps) {
                     name="name"
                     type="text"
                     placeholder="Enter your name"
-                    value={form.name}
-                    onChange={handleChange}
+                    value={formData.name}
+                    onChange={handleInputChange}
                     required
                     style={inputStyle}
                   />
@@ -303,8 +290,8 @@ export default function Contact({ data }: ContactProps) {
                     name="email"
                     type="email"
                     placeholder="Enter your e-mail address"
-                    value={form.email}
-                    onChange={handleChange}
+                    value={formData.email}
+                    onChange={handleInputChange}
                     required
                     style={inputStyle}
                   />
@@ -315,8 +302,8 @@ export default function Contact({ data }: ContactProps) {
                   <textarea
                     name="message"
                     placeholder="Let us know what you are interested in"
-                    value={form.message}
-                    onChange={handleChange}
+                    value={formData.message}
+                    onChange={handleInputChange}
                     rows={4}
                     required
                     style={{ ...inputStyle, resize: 'none' }}
@@ -325,7 +312,7 @@ export default function Contact({ data }: ContactProps) {
 
                 <button
                   type="submit"
-                  disabled={loading} // Disable button while loading
+                  disabled={isSubmitting}
                   style={{
                     width: '100%',
                     padding: '16px',
@@ -336,26 +323,25 @@ export default function Contact({ data }: ContactProps) {
                     fontSize: '14px',
                     borderRadius: '8px',
                     border: 'none',
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    opacity: loading ? 0.7 : 1,
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                    opacity: isSubmitting ? 0.7 : 1,
                     transition: 'opacity 200ms',
                   }}
-                  onMouseEnter={e => !loading && (e.currentTarget.style.opacity = '0.88')}
-                  onMouseLeave={e => !loading && (e.currentTarget.style.opacity = '1')}
+                  onMouseEnter={e => !isSubmitting && (e.currentTarget.style.opacity = '0.88')}
+                  onMouseLeave={e => !isSubmitting && (e.currentTarget.style.opacity = '1')}
                 >
-                  {loading ? 'Sending...' : 'Send a message'}
+                  {isSubmitting ? 'Sending...' : 'Send a message'}
                 </button>
 
-                {/* Add this right below the button to show feedback */}
-                {statusMessage && (
+                {submissionMessage && (
                   <p style={{ 
                     fontFamily: satoshi, 
                     fontSize: '14px', 
-                    color: statusMessage.includes('sent') ? 'green' : 'red',
+                    color: submissionSuccess ? 'green' : 'red',
                     textAlign: 'center',
                     marginTop: '10px'
                   }}>
-                    {statusMessage}
+                    {submissionMessage}
                   </p>
                 )}
               </form>

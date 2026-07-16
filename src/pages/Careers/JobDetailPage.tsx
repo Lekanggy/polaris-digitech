@@ -24,7 +24,6 @@ import Navbar from '../../components/sections/Navbar';
 import Footer from '../../components/sections/Footer';
 import { JOBS } from './jobsData';
 import type { JobSection } from './jobsData';
-import { useState } from 'react';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useGraphQLQuery } from '../../hooks/useGraphQLQuery';
 import { careerQuery } from '../../services/queries/careerQuery';
@@ -284,10 +283,10 @@ function SectionBlock({
   );
 }
 
-// ── Application form (right sticky panel) ────────────────────────────────
-function ApplicationForm() {
+// ── Apply action card (right panel) ───────────────────────────────────
+function ApplyCard() {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const [fileName, setFileName] = useState<string | null>(null);
+  const email = 'careers@polarisdigitech.net';
 
   return (
     <div
@@ -313,70 +312,20 @@ function ApplicationForm() {
         Interested in this role?
       </h3>
 
-      <input
-        type="text"
-        placeholder="Full Name"
+      <p
         style={{
-          width: '100%',
-          padding: isMobile ? '10px 12px' : '10px 14px',
-          borderRadius: '8px',
-          border: '1px solid #D0D5E8',
           fontFamily: satoshi,
           fontSize: isMobile ? '13px' : '14px',
-          color: '#010527',
-          outline: 'none',
-          boxSizing: 'border-box',
-        }}
-      />
-
-      <input
-        type="email"
-        placeholder="Email"
-        style={{
-          width: '100%',
-          padding: isMobile ? '10px 12px' : '10px 14px',
-          borderRadius: '8px',
-          border: '1px solid #D0D5E8',
-          fontFamily: satoshi,
-          fontSize: isMobile ? '13px' : '14px',
-          color: '#010527',
-          outline: 'none',
-          boxSizing: 'border-box',
-        }}
-      />
-
-      <label
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: isMobile ? '6px' : '8px',
-          padding: isMobile ? '10px 12px' : '10px 14px',
-          borderRadius: '8px',
-          border: '1px solid #D0D5E8',
-          fontFamily: satoshi,
-          fontSize: isMobile ? '13px' : '14px',
+          lineHeight: '1.6',
           color: '#46485F',
-          cursor: 'pointer',
-          background: '#F8F9FC',
-          minHeight: isMobile ? '40px' : 'auto',
+          margin: 0,
         }}
       >
-        <svg width={isMobile ? '14' : '16'} height={isMobile ? '14' : '16'} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-          <polyline points="17 8 12 3 7 8" />
-          <line x1="12" y1="3" x2="12" y2="15" />
-        </svg>
-        {fileName ?? 'Upload CV'}
-        <input
-          type="file"
-          accept=".pdf,.doc,.docx"
-          style={{ display: 'none' }}
-          onChange={e => setFileName(e.target.files?.[0]?.name ?? null)}
-        />
-      </label>
+        Send your credentials and a short note about your experience to the email below.
+      </p>
 
-      <button
+      <a
+        href={`mailto:${email}`}
         style={{
           width: '100%',
           padding: isMobile ? '10px' : '12px',
@@ -390,12 +339,28 @@ function ApplicationForm() {
           cursor: 'pointer',
           transition: 'opacity 200ms',
           minHeight: isMobile ? '40px' : 'auto',
+          textDecoration: 'none',
+          textAlign: 'center',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
         onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
         onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
       >
         Apply Now
-      </button>
+      </a>
+
+      <p
+        style={{
+          fontFamily: satoshi,
+          fontSize: isMobile ? '12px' : '13px',
+          color: '#6B7280',
+          margin: 0,
+        }}
+      >
+        {email}
+      </p>
     </div>
   );
 }
@@ -596,7 +561,7 @@ export default function JobDetailPage() {
 
           {/* ── RIGHT: sticky application form ── */}
           <div style={{ position: isMobile ? 'static' : 'sticky', top: '120px' }}>
-            <ApplicationForm />
+            <ApplyCard />
           </div>
         </div>
       </div>

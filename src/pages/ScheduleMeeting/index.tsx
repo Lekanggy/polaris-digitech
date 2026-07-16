@@ -1,12 +1,23 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/sections/Navbar';
 import Footer from '../../components/sections/Footer';
 import FAQAccordion from '../../components/shared/FAQAccordion';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { useFormSubmission } from '../../hooks/useFormSubmission';
 import met from '../../assets/met.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
+
+const emptyFormData = {
+  fullName: '',
+  companyEmail: '',
+  companyName: '',
+  service: '',
+  date: '',
+  time: '',
+  projectBrief: '',
+  message: ''
+};
 
 const SCHEDULE_FAQS = [
   {
@@ -33,35 +44,38 @@ const SCHEDULE_FAQS = [
 
 export default function ScheduleMeetingPage() {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const [formData, setFormData] = useState({
-    fullName: '',
-    companyEmail: '',
-    companyName: '',
-    service: '',
-    date: '',
-    time: '',
-    projectBrief: '',
-    message: ''
+  const {
+    formData,
+    handleInputChange,
+    submit,
+    isSubmitting,
+    submissionMessage,
+    submissionSuccess,
+  } = useFormSubmission({
+    endpoint: '/schedule-meeting',
+    initialValues: emptyFormData,
+    validate: (values) => {
+      if (!values.fullName || !values.companyEmail || !values.companyName || !values.service) {
+        return 'Please fill in all required fields.';
+      }
+      return undefined;
+    },
+    getPayload: (values) => ({
+      fullName: values.fullName,
+      companyEmail: values.companyEmail,
+      companyName: values.companyName,
+      service: values.service,
+      date: values.date,
+      time: values.time,
+      projectBrief: values.projectBrief,
+      message: values.message,
+    }),
+    successMessage: () => 'Meeting request sent successfully. We will reach out shortly.',
+    errorMessage: (payload) => payload?.message || payload?.error || 'Unable to send your meeting request right now. Please try again later.',
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Basic validation
-    if (!formData.fullName || !formData.companyEmail || !formData.companyName || !formData.service) {
-      alert('Please fill in all required fields');
-      return;
-    }
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    alert('Meeting scheduled successfully!');
+    submit(e);
   };
 
   return (
@@ -541,27 +555,50 @@ export default function ScheduleMeetingPage() {
               />
             </div>
 
+            {submissionMessage && (
+              <div
+                aria-live="polite"
+                style={{
+                  padding: '12px 14px',
+                  borderRadius: '8px',
+                  fontFamily: satoshi,
+                  fontSize: '14px',
+                  backgroundColor: submissionSuccess ? '#ECFDF3' : '#FEF2F2',
+                  color: submissionSuccess ? '#065F46' : '#991B1B',
+                  border: `1px solid ${submissionSuccess ? '#A7F3D0' : '#FECACA'}`
+                }}
+              >
+                {submissionMessage}
+              </div>
+            )}
+
             {/* Submit Button */}
             <button
               type="submit"
+              disabled={isSubmitting}
               style={{
                 width: '100%',
                 padding: '14px 18px',
-                backgroundColor: '#1a1f3c',
+                backgroundColor: isSubmitting ? '#6B7280' : '#1a1f3c',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '8px',
                 fontFamily: satoshi,
                 fontSize: '16px',
                 fontWeight: 600,
-                cursor: 'pointer',
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
                 transition: 'background-color 200ms',
-                marginBottom: isMobile ? '20px' : 0
+                marginBottom: isMobile ? '20px' : 0,
+                opacity: isSubmitting ? 0.9 : 1,
               }}
-              onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#2a2f4c')}
-              onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#1a1f3c')}
+              onMouseEnter={e => {
+                if (!isSubmitting) e.currentTarget.style.backgroundColor = '#2a2f4c';
+              }}
+              onMouseLeave={e => {
+                if (!isSubmitting) e.currentTarget.style.backgroundColor = '#1a1f3c';
+              }}
             >
-              Submit
+              {isSubmitting ? 'Submitting...' : 'Submit'}
             </button>
           </form>
         </div>
