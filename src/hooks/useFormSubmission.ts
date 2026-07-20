@@ -54,7 +54,7 @@ export function useFormSubmission<TFormData extends Record<string, unknown>>({
     setSubmissionSuccess(false);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_STRAPI_API_URL}${endpoint}`, {
+      const response = await fetch(`${import.meta.env.VITE_STRAPI_API_URL}/api${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

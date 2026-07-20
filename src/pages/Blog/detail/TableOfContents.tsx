@@ -83,9 +83,9 @@ export default function TableOfContents({ sections }: TableOfContentsProps) {
         background: CARD_BG,
         borderRadius: '20px',
         padding: isMobile ? '20px 16px 18px' : '28px 22px 24px',
-        // Sticky only on desktop
-        position: isMobile ? 'static' : 'sticky',
-        top: isMobile ? 'auto' : '120px',
+        width: '100%',
+        maxHeight: isMobile ? 'none' : 'calc(100vh - 140px)',
+        overflowY: isMobile ? 'visible' : 'auto',
       }}
     >
       {/* ── Heading ── */}

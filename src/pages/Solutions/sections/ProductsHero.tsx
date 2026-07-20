@@ -94,19 +94,21 @@ function normaliseProducts(cmsProducts: ProductsData['products']): DisplayProduc
   if (!cmsProducts || cmsProducts.length === 0) return FALLBACK_PRODUCTS;
 
   // Sort CMS products into the desired order before normalising
-  const sorted = sortProducts(cmsProducts as Array<{ slug?: string }>);
+  const sorted = sortProducts(cmsProducts);
 
-  return sorted.map((p: ProductsData['products'][0], i) => {
+  return sorted.map((p, i) => {
     const fallback = FALLBACK_PRODUCTS[i];
+    const features = (p.features ?? [])
+      .map((f) => f.text ?? '')
+      .filter((text): text is string => Boolean(text));
+
     return {
       title:       p.title        ?? fallback?.title        ?? '',
       description: p.shortDescription ?? fallback?.description ?? '',
-      features:    (p.features ?? []).map(f => f.text ?? '').filter(Boolean).length > 0
-                     ? (p.features ?? []).map(f => f.text ?? '').filter(Boolean)
-                     : fallback?.features ?? [],
+      features:    features.length > 0 ? features : fallback?.features ?? [],
       bg:          BG_PALETTE[i % BG_PALETTE.length],
       boxBg:       BOX_PALETTE[i % BOX_PALETTE.length],
-      boxPosition: (p.boxPosition === 'right' ? 'right' : 'left') as 'left' | 'right',
+      boxPosition: p.boxPosition === 'right' ? 'right' : 'left',
       route:       p.route ? `/solutions/${p.route}` : fallback?.route ?? `/solutions/${p.slug ?? ''}`,
       overlayImage: strapiUrl(p.overlayImage?.url) ?? fallback?.overlayImage ?? FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
     };

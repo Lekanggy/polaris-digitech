@@ -51,7 +51,7 @@ export default function Services({ data }: ServicesProps) {
   const services =
     data?.serviceItem && data.serviceItem.length > 0
       ? data.serviceItem.map((item) => ({
-          title: item.title,
+          title: item.title ?? '',
           image: strapiUrl(item.bgImage?.[0]?.url) ?? soft,
         }))
       : fallbackServices;

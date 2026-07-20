@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import type { NavProductItem } from '../../../utils/constants';
 import ShortArrow from './ShortArrow';

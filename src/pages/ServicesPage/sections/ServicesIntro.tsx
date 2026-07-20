@@ -73,7 +73,7 @@ export default function ServicesIntro() {
           transition={{ duration: 0.6, delay: 0.22 }}
         >
           <a
-            href="#contact"
+            href="/schedule"
             style={{
               display: 'inline-flex',
               alignItems: 'center',

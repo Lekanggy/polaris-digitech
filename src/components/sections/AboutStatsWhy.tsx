@@ -88,7 +88,7 @@ export default function AboutStatsWhy({ data }: AboutStatsWhyProps) {
   // Parse stat values; fall back to hardcoded numbers if CMS not available
   const stats =
     data?.stats && data.stats.length > 0
-      ? data.stats.map((s) => ({ value: parseInt(s.value, 10) || 0, label: s.label }))
+      ? data.stats.map((s) => ({ value: parseInt(s.value ?? '0', 10) || 0, label: s.label ?? '' }))
       : FALLBACK_STATS;
 
   // Use CMS key features if available, otherwise fall back to constants
@@ -230,8 +230,8 @@ export default function AboutStatsWhy({ data }: AboutStatsWhyProps) {
         >
           {[
             ...stats,
-          ].map((stat) => (
-            <StatItem key={stat.label} value={stat.value} label={stat.label} start={isVisible} />
+          ].map((stat, idx) => (
+            <StatItem key={`${stat.label}-${idx}`} value={stat.value} label={stat.label} start={isVisible} />
           ))}
         </motion.div>
 

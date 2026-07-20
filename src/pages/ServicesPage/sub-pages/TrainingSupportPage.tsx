@@ -4,8 +4,8 @@ import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import Navbar from '../../../components/sections/Navbar';
 import Footer from '../../../components/sections/Footer';
 import ServiceSubHero from './ServiceSubHero';
-import ServiceSubStatsFeatures from './ServiceSubStatsFeatures';
 import { useServiceData } from './useServiceData';
+import type { IconName } from '../../Project/sub-pages/ProjectKeyFeatures';
 import bgpro from '../../../assets/bgpro.png';
 import ft2 from '../../../assets/ft2.png';
 import fb2 from '../../../assets/fb2.png';
@@ -30,7 +30,7 @@ function MonitorIcon() { return <svg {...ICON_SIZE} viewBox="0 0 24 24" fill="no
 
 const ICON_NODES: Record<string, React.ReactNode> = { geo: <GeoIcon />, globe: <GlobeIcon />, monitor: <MonitorIcon /> };
 
-function KeyFeaturesSection({ features }: { features: typeof FB_FEATURES }) {
+function KeyFeaturesSection({ features }: { features: Array<{ icon: IconName; title: string; description: string }> }) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
   return (

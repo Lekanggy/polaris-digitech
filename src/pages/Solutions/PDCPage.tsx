@@ -9,7 +9,6 @@ import { productQuery } from '../../services/queries/productQuery';
 import type { ProductsData } from '../../services/queries/productQuery';
 import { strapiUrl } from '../../services/queries/productQuery';
 import { gql } from '../../services/apolloClient';
-import pdc from '../../assets/pdc.png';
 import gen1 from '../../assets/gen1.png';
 import pdcm1 from '../../assets/pdcm1.png';
 import pdcm3 from '../../assets/pdcm3.png';

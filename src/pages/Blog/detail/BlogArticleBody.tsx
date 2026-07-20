@@ -176,6 +176,10 @@ export default function BlogArticleBody({ article }: BlogArticleBodyProps) {
               marginTop: isMobile ? '36px' : '0',
               paddingTop: isMobile ? '36px' : '0',
               borderTop: isMobile ? '1px solid #E0E6EF' : 'none',
+              position: isMobile ? 'static' : 'sticky',
+              top: isMobile ? 'auto' : '120px',
+              alignSelf: 'start',
+              zIndex: 2,
             }}
           >
             <TableOfContents sections={sections} />

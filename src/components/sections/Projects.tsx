@@ -210,7 +210,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
           top: '15%',
           bottom: '-20px',
           width: '48%',
-          transform: hovered || isMobile ? 'translateX(0)' : 'translateX(40%)',
+          transform: hovered || isMobile ? 'translateX(0) rotate(0deg)' : 'translateX(40%) rotate(0deg)',
           transition: 'transform 0.4s ease',
         }}
       >
@@ -236,6 +236,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
               height: '100%',
               objectFit: 'cover',
               objectPosition: 'left center',
+              transform: 'rotate(0deg)',
             }}
             loading="lazy"
           />
@@ -259,9 +260,9 @@ export default function Projects({ data }: ProjectsProps) {
           return {
             id: idx + 1,
             bg: style.bg,
-            logo: item.logo,
-            title: item.title,
-            description: item.description,
+            logo: item.logo ?? '',
+            title: item.title ?? '',
+            description: item.description ?? '',
             btnBg: style.btnBg,
             btnColor: style.btnColor,
             btnBorder: '1px solid rgba(255,255,255,0.3)',

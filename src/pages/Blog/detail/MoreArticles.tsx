@@ -26,7 +26,6 @@ function ArticleCard({
   article,
   index,
   isVisible,
-  isMobile,
 }: {
   article: BlogArticle;
   index: number;

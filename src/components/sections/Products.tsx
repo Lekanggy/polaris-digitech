@@ -138,8 +138,8 @@ export default function Products({ data }: { data?: Product }) {
           id: idx + 1,
           bg: bgCycle[idx % bgCycle.length],
           icon: item.icon ?? item.icons ?? 'database',
-          title: item.title,
-          description: item.description,
+          title: item.title ?? '',
+          description: item.description ?? '',
           col: idx % 2 === 0 ? ('left' as const) : ('right' as const),
         }))
       : fallbackProducts;

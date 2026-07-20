@@ -4,7 +4,6 @@ import ProductIntro from './product-detail/ProductIntro';
 import ProductQuote from './product-detail/ProductQuote';
 import KeyFeatures from './product-detail/KeyFeatures';
 import ProductShowcase from './product-detail/ProductShowcase';
-import pdc from '../../assets/pdc.png';
 import gen2 from '../../assets/gen2.png';
 import pdcm2 from '../../assets/pdcm2.png';
 import pdcl3 from '../../assets/pdcl3.png';
@@ -52,8 +51,7 @@ const AMP_FEATURES = [
 
 export default function AMPPage() {
   // Use the GraphQL hook to fetch product data for AMP
-  // We're using a placeholder documentId of "1" - in a real app, this would come from the route or context
-  const { data, loading, error } = useGraphQLQuery(productQuery, { documentId: '1' });
+  const { data, error } = useGraphQLQuery(productQuery);
 
   // Log the result when data is available
   if (data) {
