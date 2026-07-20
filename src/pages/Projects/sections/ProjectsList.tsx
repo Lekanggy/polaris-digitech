@@ -41,6 +41,11 @@ const FALLBACK_BGS     = ['#4A90D9','#00008E','#F5C518','#2B295B','#2E7D32','#B0
 
 interface DisplayProject { logo: string; title: string; description: string; bg: string; image: string; href: string; }
 
+function getText(value?: string | null, fallback?: string): string {
+  const text = value?.trim();
+  return text ? text : (fallback ?? '');
+}
+
 // ── Arrow helper ──────────────────────────────────────────────────────────
 function ChevronRight() {
   return (
@@ -110,11 +115,11 @@ export default function ProjectsList() {
       const fb = FALLBACK_PROJECTS[i];
       return {
         logo:        p?.cardLogo?.url ? (strapiUrl(p.cardLogo.url) ?? FALLBACK_LOGOS[i]) : FALLBACK_LOGOS[i],
-        title:       p?.title       ?? fb?.title       ?? '',
-        description: p?.description ?? fb?.description ?? '',
+        title:       getText(p?.title, fb?.title),
+        description: getText(p?.description, fb?.description),
         bg:          FALLBACK_BGS[i % FALLBACK_BGS.length],
         image:       p?.image?.url ? (strapiUrl(p.image.url) ?? FALLBACK_IMAGES[i]) : FALLBACK_IMAGES[i],
-        href:        p?.href        ?? fb?.href        ?? '#',
+        href:        getText(p?.href, fb?.href) || '#',
       };
     });
   })();

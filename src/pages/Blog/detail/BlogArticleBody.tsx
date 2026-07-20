@@ -171,19 +171,21 @@ export default function BlogArticleBody({ article }: BlogArticleBodyProps) {
           </div>
 
           {/* ── RIGHT / BOTTOM: TOC — top-border separator on mobile ── */}
-          <div
-            style={{
-              marginTop: isMobile ? '36px' : '0',
-              paddingTop: isMobile ? '36px' : '0',
-              borderTop: isMobile ? '1px solid #E0E6EF' : 'none',
-              position: isMobile ? 'static' : 'sticky',
-              top: isMobile ? 'auto' : '120px',
-              alignSelf: 'start',
-              zIndex: 2,
-            }}
-          >
-            <TableOfContents sections={sections} />
-          </div>
+          {!isMobile && (
+            <div
+              style={{
+                marginTop: '0',
+                paddingTop: '0',
+                borderTop: 'none',
+                position: 'sticky',
+                top: '120px',
+                alignSelf: 'start',
+                zIndex: 2,
+              }}
+            >
+              <TableOfContents sections={sections} />
+            </div>
+          )}
         </div>
       </div>
     </section>

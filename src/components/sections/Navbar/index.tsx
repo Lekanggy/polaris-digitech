@@ -394,16 +394,16 @@ export default function Navbar() {
                     )}
                   </div>
 
-                  {/* Submenu items (centered, lighter) */}
+                  {/* Submenu items (centered, lighter, with more spacing for touch use) */}
                   {hasDropdown && isExpanded && (
-                    <div className="pb-4 text-center">
+                    <div className="px-4 pb-6 text-center flex flex-col gap-2">
                       {link.products &&
                         cmsNavProducts.map((item) => (
                           <Link
                             key={item.title}
                             to={item.href || '#'}
                             onClick={closeMobileNav}
-                            className="block py-2.5 text-[15px] text-white/70 active:text-white active:bg-white/5 rounded transition-colors"
+                            className="flex min-h-11 items-center justify-center rounded-xl px-4 py-3 text-[15px] text-white/70 active:text-white active:bg-white/10 transition-colors"
                             style={{ fontFamily: 'Satoshi, Inter, sans-serif' }}
                           >
                             {item.title}
@@ -415,7 +415,7 @@ export default function Navbar() {
                             key={item.title}
                             to={item.href}
                             onClick={closeMobileNav}
-                            className="block py-2.5 text-[15px] text-white/70 active:text-white active:bg-white/5 rounded transition-colors"
+                            className="flex min-h-11 items-center justify-center rounded-xl px-4 py-3 text-[15px] text-white/70 active:text-white active:bg-white/10 transition-colors"
                             style={{ fontFamily: 'Satoshi, Inter, sans-serif' }}
                           >
                             {item.title}
@@ -427,7 +427,7 @@ export default function Navbar() {
                             key={item.title}
                             to={item.href}
                             onClick={closeMobileNav}
-                            className="block py-2.5 text-[15px] text-white/70 active:text-white active:bg-white/5 rounded transition-colors"
+                            className="flex min-h-11 items-center justify-center rounded-xl px-4 py-3 text-[15px] text-white/70 active:text-white active:bg-white/10 transition-colors"
                             style={{ fontFamily: 'Satoshi, Inter, sans-serif' }}
                           >
                             {item.title}
