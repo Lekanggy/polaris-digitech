@@ -13,11 +13,11 @@ const satoshi = 'Satoshi, Inter, sans-serif';
 
 // Hardcoded fallback services — preserved
 const fallbackServices = [
-  { title: 'Software\nDevelopment', image: soft },
-  { title: 'Land\nSurveying', image: soft1 },
-  { title: 'Geospatial Data\nAcquisition Management', image: soft2 },
-  { title: 'Identity Intelligence\nManagement', image: soft3 },
-  { title: 'Software\nDevelopment', image: soft },
+  { title: 'Software\nDevelopment', image: soft, route: '/services/software-development' },
+  { title: 'Land\nSurveying', image: soft1, route: '/services/land-surveying' },
+  { title: 'Geospatial Data\nAcquisition Management', image: soft2, route: '/services/geospatial-data-acquisition' },
+  { title: 'Identity Intelligence\nManagement', image: soft3, route: '/services/identity-intelligence' },
+  { title: 'Software\nDevelopment', image: soft, route: '/services/software-development' },
 ];
 
 interface ServicesProps {
@@ -53,6 +53,7 @@ export default function Services({ data }: ServicesProps) {
       ? data.serviceItem.map((item) => ({
           title: item.title ?? '',
           image: strapiUrl(item.bgImage?.[0]?.url) ?? soft,
+          route: item.href ?? '',
         }))
       : fallbackServices;
 
@@ -266,7 +267,7 @@ export default function Services({ data }: ServicesProps) {
                 }}
               >
                 <a
-                  href="#"
+                  href={service.route}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',

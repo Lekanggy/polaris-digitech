@@ -36,8 +36,8 @@ const icons: Record<string, React.ReactNode> = {
 };
 
 // ── Plain arrow link ───────────────────────────────────────────────────────
-const ArrowBtn = () => (
-  <a href="#" style={{ display: 'inline-flex', alignItems: 'center', color: '#393B50', transition: 'opacity 0.2s' }}
+const ArrowBtn = ({ route }: { route?: string }) => (
+  <a href={route} style={{ display: 'inline-flex', alignItems: 'center', color: '#393B50', transition: 'opacity 0.2s' }}
     onMouseEnter={e => (e.currentTarget.style.opacity = '0.6')}
     onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
   >
@@ -56,9 +56,10 @@ interface CardProps {
   delay: number;
   isVisible: boolean;
   offsetTop?: boolean;
+  route?: string;
 }
 
-function ProductCard({ bg, icon, title, description, delay, isVisible, offsetTop }: CardProps) {
+function ProductCard({ bg, icon, title, description, delay, isVisible, offsetTop, route }: CardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -109,8 +110,8 @@ function ProductCard({ bg, icon, title, description, delay, isVisible, offsetTop
       </p>
 
       {/* Arrow */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <ArrowBtn />
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }} >
+        <ArrowBtn route={route} />
       </div>
     </motion.div>
   );
@@ -126,10 +127,10 @@ export default function Products({ data }: { data?: Product }) {
 
   // Hardcoded fallback products — preserved
   const fallbackProducts = [
-    { id: 1, bg: '#F0E2FF', icon: 'database', title: 'Polaris Data Collector (PDC)', description: 'A digital tool for real-time data gathering using custom forms, enabling efficient electronic data collection and storage.', col: 'left' as const },
-    { id: 2, bg: '#CCECFF', icon: 'address', title: 'Address Management Portal', description: 'A user-friendly platform that streamlines address verification and management, improving data accuracy and customer experience.', col: 'right' as const },
-    { id: 3, bg: '#FFF2D7', icon: 'google', title: 'Google Workspace', description: 'Polaris Digitech offers seamless integration of Google Workspace apps and Google Cloud Platform to enhance client productivity and experience.', col: 'left' as const },
-    { id: 4, bg: '#DAE4FF', icon: 'risk', title: 'Risk Geo-Platform', description: 'An advanced tool that analyzes and visualizes geospatial data to help organizations manage risks proactively and support business growth.', col: 'right' as const },
+    { id: 1, bg: '#F0E2FF', icon: 'database', title: 'Polaris Data Collector (PDC)', description: 'A digital tool for real-time data gathering using custom forms, enabling efficient electronic data collection and storage.', col: 'left' as const, route: '/products/polaris-data-collector' },
+    { id: 2, bg: '#CCECFF', icon: 'address', title: 'Address Management Portal', description: 'A user-friendly platform that streamlines address verification and management, improving data accuracy and customer experience.', col: 'right' as const, route: '/products/address-management-portal' },
+    { id: 3, bg: '#FFF2D7', icon: 'google', title: 'Google Workspace', description: 'Polaris Digitech offers seamless integration of Google Workspace apps and Google Cloud Platform to enhance client productivity and experience.', col: 'left' as const, route: '/products/google-workspace' },
+    { id: 4, bg: '#DAE4FF', icon: 'risk', title: 'Risk Geo-Platform', description: 'An advanced tool that analyzes and visualizes geospatial data to help organizations manage risks proactively and support business growth.', col: 'right' as const, route: '/products/risk-geo-platform' },
   ];
 
   const products =
@@ -141,6 +142,7 @@ export default function Products({ data }: { data?: Product }) {
           title: item.title ?? '',
           description: item.description ?? '',
           col: idx % 2 === 0 ? ('left' as const) : ('right' as const),
+          route: item.href ?? '',
         }))
       : fallbackProducts;
 
@@ -211,7 +213,7 @@ export default function Products({ data }: { data?: Product }) {
 
             {/* CTA button */}
             <a
-              href="#"
+              href="/solutions"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -258,6 +260,7 @@ export default function Products({ data }: { data?: Product }) {
                   description={p.description}
                   delay={i * 0.1}
                   isVisible={isVisible}
+                  route={p.route}
                 />
               ))}
             </div>

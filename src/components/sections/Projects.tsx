@@ -24,6 +24,7 @@ const fallbackProjects = [
     btnBorder: '1px solid rgba(255,255,255,0.4)',
     textColor: '#fff',
     image: project2,
+    route: '/projects/lagferry-ict-surveillance-center',
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ const fallbackProjects = [
     btnBorder: '1px solid rgba(255,255,255,0.3)',
     textColor: '#fff',
     image: project1,
+    route: '/solutions/risk-geo-platform',
   },
   {
     id: 3,
@@ -48,6 +50,7 @@ const fallbackProjects = [
     btnBorder: '1px solid rgba(0,0,0,0.2)',
     textColor: '#1a1a1a',
     image: project3,
+    route: '/projects/mtn-coverage-locator',
   },
 ];
 
@@ -74,6 +77,7 @@ interface ProjectCardData {
   btnBorder: string;
   textColor: string;
   image: string;
+  route?: string;
 }
 
 // ── Logo badge ─────────────────────────────────────────────────────────────
@@ -173,7 +177,7 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
         </div>
 
         <a
-          href="#"
+          href={project?.route}
           style={{
             display: 'inline-flex',
             alignItems: 'center',

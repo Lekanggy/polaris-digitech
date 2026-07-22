@@ -177,7 +177,7 @@ export default function AboutStatsWhy({ data }: AboutStatsWhyProps) {
 
           {/* CTA */}
           <motion.a
-            href="#contact"
+            href="schedule"
             initial={{ opacity: 0, y: 16 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.2 }}

@@ -83,7 +83,7 @@ export default function Footer() {
           </p>
 
           <a
-            href="#contact"
+            href="/contact"
             style={{
               display: 'inline-flex',
               alignItems: 'center',

@@ -188,7 +188,7 @@ export default function Hero({ data }: HeroProps) {
 
             {/* View All Projects — gold */}
             <a
-              href="#projects"
+              href="projects"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
