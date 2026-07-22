@@ -56,8 +56,16 @@ export interface ServiceEntry {
   publishedAt?: string;
 }
 
+export interface FaqEntry {
+  documentId?: string;
+  title?: string;
+  description?: string;
+  createdAt?: string;
+}
+
 export interface ServicesData {
   services?: ServiceEntry[];
+  faqs?: FaqEntry[];
 }
 
 export const serviceQuery = `
@@ -121,6 +129,12 @@ query Services {
       }
     }
     publishedAt
+  }
+  faqs {
+    title
+    documentId
+    description
+    createdAt
   }
 }
 `;

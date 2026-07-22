@@ -54,7 +54,7 @@ export default function ProductsMegaMenu({ items, partnerProducts }: ProductsMeg
 
         <div style={{ position: 'relative', zIndex: 1 }}>
           <a
-            href="#contact"
+            href="/contact"
             style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', color: '#fff', fontFamily: 'Satoshi, Inter, sans-serif', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}
           >
             <span>Get in touch</span>

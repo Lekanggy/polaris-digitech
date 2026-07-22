@@ -1,6 +1,6 @@
 import { useGraphQLQuery } from './useGraphQLQuery';
 import { serviceQuery } from '../services/queries/serviceQuery';
-import type { ServicesData, ServiceEntry } from '../services/queries/serviceQuery';
+import type { ServicesData, ServiceEntry, FaqEntry } from '../services/queries/serviceQuery';
 import { gql } from '../services/apolloClient';
 
 const SERVICE_QUERY = gql(serviceQuery);
@@ -14,12 +14,14 @@ const SERVICE_QUERY = gql(serviceQuery);
  */
 export function useServicesQuery(): {
   services: ServiceEntry[];
+  faqs: FaqEntry[];
   loading: boolean;
   error: unknown;
 } {
   const { data, loading, error } = useGraphQLQuery<ServicesData>(SERVICE_QUERY);
   return {
     services: (data?.services as ServiceEntry[]) ?? [],
+    faqs: (data?.faqs as FaqEntry[]) ?? [],
     loading,
     error,
   };

@@ -79,7 +79,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
         {/* CTA */}
         <div style={{ position: 'relative', zIndex: 1 }}>
           <a
-            href="#contact"
+            href="/contact"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
