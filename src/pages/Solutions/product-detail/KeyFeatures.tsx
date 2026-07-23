@@ -65,7 +65,7 @@ export default function KeyFeatures({ sectionTitle, sectionDescription, features
             style={{
               fontFamily: satoshi,
               fontWeight: 600,
-              fontSize: 'clamp(28px, 3.5vw, 44px)',
+              fontSize: 'clamp(28px, 3.5vw, 60px)',
               lineHeight: '120%',
               letterSpacing: '-0.02em',
               color: '#FFFFFF',
@@ -74,9 +74,9 @@ export default function KeyFeatures({ sectionTitle, sectionDescription, features
           >
             {sectionTitle}
           </h2>
-          <p style={{ ...descStyle, color: 'rgba(255,255,255,0.7)', maxWidth: '320px' }}>
+          {/* <p style={{ ...descStyle, color: 'rgba(255,255,255,0.7)', maxWidth: '320px' }}>
             {sectionDescription}
-          </p>
+          </p> */}
         </motion.div>
 
         {/* Right — feature list */}

@@ -16,7 +16,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
       exit={{ opacity: 0, y: 8 }}
       transition={{ duration: 0.18 }}
       style={{
-        width: 'min(780px, 92vw)',
+        width: 'min(880px, 92vw)',
         borderRadius: '16px',
         boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
         border: '1px solid rgba(255,255,255,0.1)',
@@ -28,7 +28,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
       {/* Left panel — background image + text overlay + CTA */}
       <div
         style={{
-          width: 'min(220px, 28%)',
+          width: 'min(320px, 38%)', 
           flexShrink: 0,
           position: 'relative',
           backgroundImage: `url(${servicebg})`,
@@ -79,7 +79,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
         {/* CTA */}
         <div style={{ position: 'relative', zIndex: 1 }}>
           <a
-            href="/contact"
+            href="/schedule"
             style={{
               display: 'inline-flex',
               alignItems: 'center',

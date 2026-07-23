@@ -33,7 +33,7 @@ export default function ProductIntro({ title, description, boxBg, boxImage }: Pr
           display: 'grid',
           gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
           gap: isMobile ? '32px' : 'clamp(40px, 6vw, 80px)',
-          alignItems: 'center',
+          alignItems: 'stretch', // Changed to stretch so text container matches image height
         }}
       >
         {/* Left — image box, fills edge-to-edge with rounded corners */}
@@ -42,6 +42,7 @@ export default function ProductIntro({ title, description, boxBg, boxImage }: Pr
           animate={isVisible ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.7 }}
           style={{
+            order: isMobile ? 2 : 1, // Moves image to the bottom on mobile
             background: boxBg,
             borderRadius: '24px',
             overflow: 'hidden',
@@ -68,7 +69,13 @@ export default function ProductIntro({ title, description, boxBg, boxImage }: Pr
           initial={{ opacity: 0, x: 32 }}
           animate={isVisible ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
-          style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+          style={{
+            order: isMobile ? 1 : 2, // Moves text to the top on mobile
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center', // Vertically centers text relative to the image
+            gap: '20px',
+          }}
         >
           <h1
             style={{
