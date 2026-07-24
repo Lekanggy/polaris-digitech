@@ -115,18 +115,33 @@ export default function Navbar() {
   // Mark a link active if the current pathname matches or starts with the link's href
   const isLinkActive = (href: string) => href.startsWith('/') && location.pathname.startsWith(href);
 
-  // Scroll lock + clear expanded when mobile menu closes
+  // Helper to check if any child of a link is active
+  const isParentActive = (link: typeof NAV_LINKS[number]) => {
+    if (isLinkActive(link.href)) return true;
+    const subs = link.products ? cmsNavProducts : link.services ? cmsNavServices : link.projects ? cmsNavProjects : [];
+    return subs.some(s => s.href && s.href !== '#' && location.pathname.startsWith(s.href));
+  };
+
+  // Scroll lock + auto-expand active parent ONLY when the menu opens/closes
   useEffect(() => {
     if (mobileOpen) {
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
+      
+      // Auto-expand the parent menu if we are currently on one of its child pages
+      const activeParent = NAV_LINKS.find(link => isParentActive(link));
+      if (activeParent) {
+        setExpanded(activeParent.label);
+      }
+
       return () => {
         document.body.style.overflow = originalOverflow;
       };
     } else {
       setExpanded(null);
     }
-  }, [mobileOpen]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mobileOpen]); // Only run when mobileOpen changes so user can manually toggle freely
 
   const closeMobileNav = () => {
     setMobileOpen(false);
@@ -294,7 +309,6 @@ export default function Navbar() {
                   }}
                 >
                   {activeLink.dropdown.map((item) => (
-                      
                     <a
                       key={item}
                       href="#"
@@ -321,6 +335,24 @@ export default function Navbar() {
             className="fixed inset-0 z-60 flex flex-col lg:hidden"
             style={{ backgroundColor: '#0a0e27' }}
           >
+            {/* Scoped CSS to invert scrollbar colors (Blue track, White thumb) */}
+            <style>{`
+              .polaris-mobile-scroll::-webkit-scrollbar {
+                width: 6px;
+              }
+              .polaris-mobile-scroll::-webkit-scrollbar-track {
+                background: #0a0e27; /* Blue background */
+              }
+              .polaris-mobile-scroll::-webkit-scrollbar-thumb {
+                background: #ffffff; /* White scroll bar */
+                border-radius: 3px;
+              }
+              .polaris-mobile-scroll {
+                scrollbar-width: thin;
+                scrollbar-color: #ffffff #0a0e27; /* Firefox support */
+              }
+            `}</style>
+
             {/* Top bar: logo + close */}
             <div className="flex items-center justify-between px-5! py-6!">
               <button
@@ -360,10 +392,12 @@ export default function Navbar() {
             <div className="h-px bg-white/10 mx-5" />
 
             {/* Nav items — left-aligned list, each row with bottom border divider */}
-            <div className="flex-1 overflow-y-auto flex flex-col px-5! pt-3!">
+            {/* Added custom scrollbar class 'polaris-mobile-scroll' */}
+            <div className="polaris-mobile-scroll flex-1 overflow-y-auto flex flex-col px-5! pt-3! pb-24!">
               {NAV_LINKS.map((link) => {
                 const hasDropdown = !!(link.products || link.services || link.projects);
                 const isExpanded = expanded === link.label;
+                const parentActive = isParentActive(link);
 
                 // Build the flat sub-item list for this link (Products / Services / Projects)
                 const subItems = link.products
@@ -376,12 +410,15 @@ export default function Navbar() {
 
                 return (
                   <div key={link.label} className="w-full border-b border-white/10">
-                    <div className="flex items-center justify-between py-4">
+                    <div className="flex items-center justify-between py-6">
                       <Link
                         to={link.href}
                         onClick={hasDropdown ? undefined : closeMobileNav}
-                        className="text-[16px] font-semibold tracking-wide uppercase text-white"
-                        style={{ fontFamily: 'Satoshi, Inter, sans-serif' }}
+                        className="text-[16px] font-semibold tracking-wide uppercase transition-colors"
+                        style={{ 
+                          fontFamily: 'Satoshi, Inter, sans-serif',
+                          color: isExpanded || parentActive ? '#D7B56D' : '#fff' 
+                        }}
                       >
                         {link.label}
                       </Link>
@@ -394,7 +431,7 @@ export default function Navbar() {
                           }}
                           aria-label={`Toggle ${link.label} submenu`}
                           className="p-2 -mr-2 text-white/75 active:text-white"
-                          style={{ color: isExpanded ? '#D7B56D' : undefined }}
+                          style={{ color: isExpanded || parentActive ? '#D7B56D' : undefined }}
                         >
                           <svg
                             width="14"
@@ -412,7 +449,7 @@ export default function Navbar() {
                       )}
                     </div>
 
-                    {/* Submenu block — left accent line running full height, internal scroll if tall */}
+                    {/* Submenu block — individual borders for each child item */}
                     {hasDropdown && (
                       <AnimatePresence initial={false}>
                         {isExpanded && (
@@ -420,30 +457,42 @@ export default function Navbar() {
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.22, ease: 'easeInOut' }}
+                            transition={{ duration: 0.3, ease: 'easeInOut' }}
                             style={{ overflow: 'hidden' }}
                           >
+                            {/* Added custom scrollbar class 'polaris-mobile-scroll' */}
                             <div
-                              className="pl-4 mb-4"
+                              className="polaris-mobile-scroll mb-6 flex flex-col gap-3"
                               style={{
-                                borderLeft: '2px solid #D7B56D',
-                                maxHeight: '220px',
+                                paddingLeft: '16px',
+                                maxHeight: '300px',
                                 overflowY: 'auto',
+                                paddingRight: '8px',
+                                marginTop: '4px',
                               }}
                             >
-                              <div className="flex flex-col">
-                                {subItems.map((item, i) => (
+                              {subItems.map((item, i) => {
+                                const childActive = item.href && item.href !== '#' && location.pathname.startsWith(item.href);
+                                
+                                return (
                                   <Link
                                     key={item.title ?? i}
                                     to={item.href || '#'}
                                     onClick={closeMobileNav}
-                                    className="py-3 text-[14px] leading-snug text-white/70 active:text-[#D7B56D] transition-colors"
-                                    style={{ fontFamily: 'Satoshi, Inter, sans-serif' }}
+                                    className="text-[14px] leading-snug transition-colors"
+                                    style={{ 
+                                      fontFamily: 'Satoshi, Inter, sans-serif',
+                                      color: childActive ? '#D7B56D' : 'rgba(255,255,255,0.7)',
+                                      borderLeft: `2px solid ${childActive ? '#D7B56D' : 'rgba(255,255,255,0.1)'}`,
+                                      paddingLeft: '12px',
+                                      paddingTop: '8px',
+                                      paddingBottom: '8px',
+                                    }}
                                   >
                                     {item.title}
                                   </Link>
-                                ))}
-                              </div>
+                                );
+                              })}
                             </div>
                           </motion.div>
                         )}
@@ -452,38 +501,38 @@ export default function Navbar() {
                   </div>
                 );
               })}
+            </div>
 
-              {/* CTA — full-width pill button with arrow, fixed near bottom */}
-              <div className="w-full flex justify-center mt-8 mb-6">
-                <Link
-                  to="/contact"
-                  onClick={closeMobileNav}
-                  className="flex items-center justify-center gap-2 text-sm font-semibold active:opacity-90 transition-opacity"
-                  style={{
-                    backgroundColor: '#D7B56D',
-                    color: '#0a0e27',
-                    fontFamily: 'Satoshi, Inter, sans-serif',
-                    textDecoration: 'none',
-                    width: '100%',
-                    height: 52,
-                    borderRadius: '999px',
-                  }}
+            {/* CTA — full-width pill button with arrow, fixed near bottom */}
+            <div className="w-full flex justify-center px-5! py-6! bg-[#0a0e27] border-t border-white/10">
+              <Link
+                to="/contact"
+                onClick={closeMobileNav}
+                className="flex items-center justify-center gap-2 text-sm font-semibold active:opacity-90 transition-opacity"
+                style={{
+                  backgroundColor: '#D7B56D',
+                  color: '#0a0e27',
+                  fontFamily: 'Satoshi, Inter, sans-serif',
+                  textDecoration: 'none',
+                  width: '100%',
+                  height: 52,
+                  borderRadius: '999px',
+                }}
+              >
+                Contact Us
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  Contact Us
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14M13 6l6 6-6 6" />
-                  </svg>
-                </Link>
-              </div>
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </Link>
             </div>
           </motion.div>
         )}

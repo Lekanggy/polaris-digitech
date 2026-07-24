@@ -27,7 +27,7 @@ interface KeyFeaturesProps {
 
 // ── Small pin icon ─────────────────────────────────────────────────────────
 
-export default function KeyFeatures({ sectionTitle, sectionDescription, features }: KeyFeaturesProps) {
+export default function KeyFeatures({ sectionTitle, features }: KeyFeaturesProps) {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
