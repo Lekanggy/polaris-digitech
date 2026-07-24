@@ -204,25 +204,30 @@ export const TESTIMONIALS = [
   },
 ];
 
-export const FOOTER_LINKS: Record<string, string[]> = {
+export const FOOTER_LINKS: Record<string, {label: string, href: string}[]> = {
   Products: [
-    'Polaris Data Collector',
-    'Address Management Portal',
-    'Risk-Geo Platform',
-    'Digital Address Verification App',
+    { label: 'Polaris Data Collector', href: '/solutions/pdc' },
+    { label: 'Address Management Portal', href: '/solutions/amp' },
+    { label: 'Risk-Geo Platform', href: '/solutions/risk-geo-platform' },
+    { label: 'Digital Address Verification App', href: '/services/identity-intelligence' },
   ],
   Services: [
-    'Software Development',
-    'Land Surveying Services',
-    'Customer Address Verification',
-    'Geo-Spatial Data Acquisition Management',
-    'Training and Technical Support Services',
+    { label: 'Software Development', href: '/services/software-development' },
+    { label: 'Land Surveying Services', href: '/services/land-surveying' },
+    { label: 'Customer Address Verification', href: '/services/identity-intelligence' },
+    { label: 'Geo-Spatial Data Acquisition Management', href: '/services/geospatial-data-acquisition' },
+    { label: 'Training and Technical Support Services', href: '/services/training-support' },
   ],
   Projects: [
-    'MTN Coverage Locator',
-    'Risk-Geo Platform',
-    'LagFerry Surveillance System',
-    'Geo-enabled ICT Surveillance Centre',
+    { label: 'MTN Coverage Locator', href: '/projects/mtn-coverage-locator' },
+    { label: 'Risk-Geo Platform', href: '/projects/risk-geo-platform' },
+    { label: 'LagFerry Surveillance System', href: '/projects/lag-ferry' },
+    { label: 'Geo-enabled ICT Surveillance Centre', href: '/projects/lag-ferry' },
   ],
-  Company: ['About Us', 'Careers', 'News & Updates', 'Contact'],
+  Company: [
+    { label: 'About Us', href: '/about' },
+    { label: 'Careers', href: '/careers' },
+    { label: 'News & Updates', href: '/blog' },
+    { label: 'Contact', href: '/contact' },
+  ],
 };

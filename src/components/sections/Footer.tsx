@@ -182,7 +182,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Columns 2–5 — Link groups */}
+            {/* Columns 2–5 — Link groups */}
           {Object.entries(FOOTER_LINKS).map(([title, links]) => (
             <div key={title}>
               <h4
@@ -199,10 +199,10 @@ export default function Footer() {
                 {title}
               </h4>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {links.map((link) => (
-                  <li key={link}>
+                {(links as {label: string, href: string}[]).map((link) => (
+                  <li key={link.label}>
                     <a
-                      href="#"
+                      href={link.href}
                       style={{
                         fontFamily: satoshi,
                         fontSize: '13px',
@@ -213,7 +213,7 @@ export default function Footer() {
                       onMouseEnter={e => (e.currentTarget.style.color = '#D7B56D')}
                       onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
                     >
-                      {link}
+                      {link.label}
                     </a>
                   </li>
                 ))}
