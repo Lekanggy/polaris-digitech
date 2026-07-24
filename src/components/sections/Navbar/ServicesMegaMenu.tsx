@@ -28,7 +28,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
       {/* Left panel — background image + text overlay + CTA */}
       <div
         style={{
-          width: 'min(320px, 38%)', 
+          width: 'min(220px, 38%)',
           flexShrink: 0,
           position: 'relative',
           backgroundImage: `url(${servicebg})`,
@@ -91,7 +91,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
               textDecoration: 'none',
             }}
           >
-            <span>Get in touch</span>
+            <span>Schedule a meeting</span>
             <span
               style={{
                 width: '32px',
@@ -114,6 +114,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
       {/* Right panel — service cards grid */}
       <div
         style={{
+          width: 'min(400px, 50%)',
           flex: 1,
           padding: '16px',
           display: 'grid',

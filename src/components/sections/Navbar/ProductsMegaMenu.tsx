@@ -29,7 +29,7 @@ export default function ProductsMegaMenu({ items, partnerProducts }: ProductsMeg
       {/* Panel 1 — background image + overlay + CTA */}
       <div
         style={{
-          width: 'min(320px, 38%)', 
+          width: 'min(220px, 38%)',
           flexShrink: 0,
           position: 'relative',
           backgroundImage: `url(${productbg})`,
@@ -65,34 +65,34 @@ export default function ProductsMegaMenu({ items, partnerProducts }: ProductsMeg
         </div>
       </div>
 
-      {/* Panel 2 — product cards (single column, colored bg) */}
-      <div
-        style={{
-          width: 'min(300px, 38%)',
-          flexShrink: 0,
-          padding: '16px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          borderRight: '1px solid #F0F1F5',
-        }}
-      >
-        {items.map((item) => (
-          <a
-            key={item.title}
-            href={item.href}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              padding: '14px',
-              borderRadius: '10px',
-              backgroundColor: item.bg,
-              textDecoration: 'none',
-              transition: 'opacity 200ms, box-shadow 200ms',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.10)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none'; }}
-          >
+{/* Panel 2 — product cards (single column, colored bg) */}
+       <div
+         style={{
+           width: 'min(400px, 50%)',
+           flexShrink: 0,
+           padding: '16px',
+           display: 'flex',
+           flexDirection: 'column',
+           gap: '10px',
+           borderRight: '1px solid #F0F1F5',
+         }}
+       >
+{items.map((item) => (
+           <a
+             key={item.title}
+             href={item.href}
+             style={{
+               display: 'flex',
+               flexDirection: 'column',
+               padding: '14px',
+               borderRadius: '4px',
+               backgroundColor: item.bg,
+               textDecoration: 'none',
+               transition: 'opacity 200ms, box-shadow 200ms',
+             }}
+             onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.10)'; }}
+             onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none'; }}
+           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
               <span style={{ color: '#010527', display: 'flex', alignItems: 'center' }}>
                 <ProductIcon name={item.icon} />

@@ -28,7 +28,7 @@ export default function ProjectsMegaMenu({ items }: ProjectsMegaMenuProps) {
       {/* Left panel — prbg image + overlay + CTA */}
       <div
         style={{
-          width: 'min(320px, 38%)', 
+          width: 'min(220px, 38%)',
           flexShrink: 0,
           position: 'relative',
           backgroundImage: `url(${prbg})`,
@@ -56,7 +56,7 @@ export default function ProjectsMegaMenu({ items }: ProjectsMegaMenuProps) {
             href="/schedule"
             style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', color: '#fff', fontFamily: 'Satoshi, Inter, sans-serif', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}
           >
-            <span>Request Demo</span>
+            <span>Schedule a meeting</span>
             <span style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#D7B56D', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#fff' }}>
               <ShortArrow />
             </span>
@@ -67,6 +67,7 @@ export default function ProjectsMegaMenu({ items }: ProjectsMegaMenuProps) {
       {/* Right panel — 2-column project cards grid */}
       <div
         style={{
+          width: 'min(400px, 50%)',
           flex: 1,
           padding: '16px',
           display: 'grid',
