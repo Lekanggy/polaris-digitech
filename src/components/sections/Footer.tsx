@@ -156,29 +156,46 @@ export default function Footer() {
 
             {/* Social icons */}
             <div style={{ display: 'flex', gap: '12px' }}>
-              {socialIcons.map(({ label, icon }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    background: 'rgba(215,181,109,0.15)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#D7B56D',
-                    textDecoration: 'none',
-                    transition: 'background 200ms',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.background = '#D7B56D')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(215,181,109,0.15)')}
-                >
-                  {icon}
-                </a>
-              ))}
+              {socialIcons.map(({ label, icon }) => {
+                // Define URLs for each social platform
+                const urls: Record<string, string> = {
+                  LinkedIn: 'https://www.linkedin.com/article/edit/7094267008640294913/',
+                  Facebook: 'https://www.facebook.com/profile.php?id=100070466832415',
+                  Instagram: 'https://www.instagram.com/polarisdigitech/',
+                  // Twitter is intentionally omitted as requested
+                };
+                
+                // Skip Twitter as requested
+                if (label === 'Twitter') {
+                  return null;
+                }
+                
+                return (
+                  <a
+                    key={label}
+                    href={urls[label] || '#'}
+                    aria-label={label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: 'rgba(215,181,109,0.15)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#D7B56D',
+                      textDecoration: 'none',
+                      transition: 'background 200ms',
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = '#D7B56D')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'rgba(215,181,109,0.15)')}
+                  >
+                    {icon}
+                  </a>
+                );
+              }).filter(Boolean)} {/* Filter out null values (Twitter) */}
             </div>
           </div>
 

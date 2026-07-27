@@ -47,7 +47,7 @@ export default function ProjectsMegaMenu({ items }: ProjectsMegaMenuProps) {
             Projects
           </h3>
           <p style={{ fontFamily: 'Satoshi, Inter, sans-serif', fontWeight: 400, fontSize: '15px', lineHeight: '160%', color: 'rgba(255,255,255,0.82)' }}>
-            Curious about how our products can help you get things done? Reach out and let's show you.
+           Explore our projects and see how we solve real world challenges with our smart solutions
           </p>
         </div>
 

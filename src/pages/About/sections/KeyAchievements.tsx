@@ -287,14 +287,16 @@ export default function KeyAchievements({ data }: KeyAchievementsProps) {
                       height: '100%',
                     }}
                   >
-                    <span
+                 <span
                       style={{
                         fontFamily: satoshi,
                         fontWeight: 900,
                         fontSize: 'clamp(100px, 12vw, 160px)',
                         lineHeight: '150%',
                         letterSpacing: '0',
-                        WebkitTextStroke: '1px rgba(255,255,255,0.3)',
+                        // White text with low opacity to blend with the background
+                        color: 'rgba(255, 255, 255, 0.2)', 
+                        WebkitTextStroke: '1px rgba(255,255,255,0.1)',
                         userSelect: 'none',
                         whiteSpace: 'nowrap',
                         position: 'absolute',

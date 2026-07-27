@@ -72,7 +72,7 @@ export default function ServicesMegaMenu({ items }: ServicesMegaMenuProps) {
               color: 'rgba(255,255,255,0.82)',
             }}
           >
-            Curious about how our products can help you get things done? Reach out and let's show you.
+           Explore how we can transform your operations with geospatial technology.
           </p>
         </div>
 
