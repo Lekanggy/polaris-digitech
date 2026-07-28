@@ -38,7 +38,6 @@ export default function LandParcelPage() {
         objectivePlain={cms.objectiveText}
         objectiveNode={!cms.objectiveText ? (<><span style={{ color: '#8A93B2' }}>The objective of the project is to </span><span style={{ color: '#283172' }}>provide a user-friendly application that automates the Ministry's daily activities, enhances operational efficiency, and ensures accurate, up-to-date land ownership and physical planning data.</span></>) : undefined}
         image={cms.objectiveImage}
-        placeholderHeight={400}
       />
       <ProjectKeyFeatures features={features} heading="Key Features" />
       <ProjectGallery imageLarge={cms.galleryLarge} imageBottomLeft={cms.galleryLeft} imageBottomRight={cms.galleryRight} />

@@ -51,7 +51,7 @@ const AMP_FEATURES = [
 
 export default function AMPPage() {
   // Use the GraphQL hook to fetch product data for AMP
-  const { data, error } = useGraphQLQuery(productQuery);
+  useGraphQLQuery(productQuery);
 
   // Log the result when data is available
   // if (data) {

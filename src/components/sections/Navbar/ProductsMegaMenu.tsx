@@ -123,7 +123,7 @@ export default function ProductsMegaMenu({ items, partnerProducts }: ProductsMeg
            Our Partners' Product
          </h4>
          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-           {partnerProducts.map((name, index) => {
+           {partnerProducts.map((name, _index) => {
              // Define URLs for each partner product - matching the PartnersExplore section
              const partnerUrls: Record<string, string> = {
                'MapInfo': '/solutions/mapinfo',

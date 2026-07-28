@@ -415,7 +415,7 @@ export default function Navbar() {
                   // Add partner products if this is the Products link
                   if (link.label === 'Products' && Array.isArray(link.partnerProducts)) {
                     // Convert partner product strings to objects matching MenuItem shape
-                    const partnerItems = link.partnerProducts.map((name, index) => {
+                    const partnerItems = link.partnerProducts.map((name, _index) => {
                       // Define URLs for each partner product - matching PartnersExplore section
                       const partnerUrls: Record<string, string> = {
                         'MapInfo': '/solutions/mapinfo',
