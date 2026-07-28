@@ -6,7 +6,6 @@ import ProjectObjective from './ProjectObjective';
 import ProjectKeyFeatures from './ProjectKeyFeatures';
 import ProjectGallery from './ProjectGallery';
 import { useProjectData } from './useProjectData';
-import lad from '../../../assets/lad.png';
 
 const HREF = '/projects/land-parcel';
 const FB_FIELDS   = [{ label: 'Industry', value: 'Government' }, { label: 'Service', value: 'Land Information System' }, { label: 'Year', value: '2020' }, { label: 'Website', value: '-' }];
@@ -26,15 +25,14 @@ export default function LandParcelPage() {
   return (
     <div className="min-h-screen">
       <ProjectHero
-        bgImage={cms.heroBgImage ?? lad}
+        bgImage={cms.heroBgImage ?? ''}
         title={cms.heroTitle ?? 'Land Parcel Information System'}
         subtitle={cms.heroSubtitle ?? 'A state-of-the-art, automated land management and physical planning system for the Osun State Ministry of Land.'}
       />
-      <ProjectMeta fields={metaFields} showcaseImage={cms.metaImage} showcaseCardBg="#EBECF6" showcaseCardHeight={480} />
+      <ProjectMeta fields={metaFields} showcaseImage={cms.metaImage} />
       <ProjectDescription
         description={cms.descText ?? 'A state-of-the-art, automated land management and physical planning system developed for the Osun State Ministry of Land and Physical Planning by Polaris Digitech Limited.'}
         imageLeft={cms.descImageLeft} imageRight={cms.descImageRight} imageFull={cms.descImageFull}
-        imageFullPlaceholder={!cms.descImageFull}
       />
       <ProjectObjective
         objectivePlain={cms.objectiveText}
@@ -43,7 +41,7 @@ export default function LandParcelPage() {
         placeholderHeight={400}
       />
       <ProjectKeyFeatures features={features} heading="Key Features" />
-      <ProjectGallery imageLarge={cms.galleryLarge} imageBottomLeft={cms.galleryLeft} imageBottomRight={cms.galleryRight} placeholderBg="#EBECF6" />
+      <ProjectGallery imageLarge={cms.galleryLarge} imageBottomLeft={cms.galleryLeft} imageBottomRight={cms.galleryRight} />
       <Footer />
     </div>
   );

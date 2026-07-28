@@ -108,42 +108,56 @@ export default function ProductsMegaMenu({ items, partnerProducts }: ProductsMeg
         ))}
       </div>
 
-      {/* Panel 3 — partners list */}
-      <div style={{ flex: 1, padding: '20px 22px' }}>
-        <h4
-          style={{
-            fontFamily: 'Satoshi, Inter, sans-serif',
-            fontWeight: 700,
-            fontSize: '13.5px',
-            color: '#010527',
-            marginBottom: '16px',
-            letterSpacing: '0',
-          }}
-        >
-          Our Partners' Product
-        </h4>
-        <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {partnerProducts.map((name) => (
-            <li key={name}>
-              <a
-                href="#"
-                style={{
-                  fontFamily: 'Satoshi, Inter, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '13px',
-                  color: '#46485F',
-                  textDecoration: 'none',
-                  transition: 'color 150ms',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#010527'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#46485F'; }}
-              >
-                {name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+{/* Panel 3 — partners list */}
+       <div style={{ flex: 1, padding: '20px 22px' }}>
+         <h4
+           style={{
+             fontFamily: 'Satoshi, Inter, sans-serif',
+             fontWeight: 700,
+             fontSize: '13.5px',
+             color: '#010527',
+             marginBottom: '16px',
+             letterSpacing: '0',
+           }}
+         >
+           Our Partners' Product
+         </h4>
+         <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+           {partnerProducts.map((name, index) => {
+             // Define URLs for each partner product - matching the PartnersExplore section
+             const partnerUrls: Record<string, string> = {
+               'MapInfo': '/solutions/mapinfo',
+               'Google Maps': '/solutions/google-maps',
+               'Google Cloud Platform': '/solutions/google-cloud',
+               'High Resolution Imagery': '/solutions/high-resolution-imagery',
+               'Google Workspace for Education': '/solutions/google-workspace-education',
+               'Google Workspace for Business': '/solutions/google-workspace-business',
+             };
+             
+             const url = partnerUrls[name] || '#';
+             
+             return (
+               <li key={name}>
+                 <a
+                   href={url}
+                   style={{
+                     fontFamily: 'Satoshi, Inter, sans-serif',
+                     fontWeight: 400,
+                     fontSize: '13px',
+                     color: '#46485F',
+                     textDecoration: 'none',
+                     transition: 'color 150ms',
+                   }}
+                   onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#010527'; }}
+                   onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#46485F'; }}
+                 >
+                   {name}
+                 </a>
+               </li>
+             );
+           })}
+         </ul>
+       </div>
     </motion.div>
   );
 }

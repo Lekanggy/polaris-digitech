@@ -15,15 +15,15 @@ export default function ProductIntro({ title, description, boxBg, boxImage }: Pr
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  return (
-    <section
-      ref={ref}
-      style={{
-        background: '#fff',
-        paddingTop: '160px',
-        paddingBottom: '80px',
-      }}
-    >
+return (
+     <section
+       ref={ref}
+       style={{
+         background: '#fff',
+         paddingTop: isMobile ? '80px' : '160px',
+         paddingBottom: '80px',
+       }}
+     >
       <div
         style={{
           maxWidth: '1280px',

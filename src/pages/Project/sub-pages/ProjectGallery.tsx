@@ -13,10 +13,10 @@ import { useMediaQuery } from '../../../hooks/useMediaQuery';
 const satoshi = 'Satoshi, Inter, sans-serif';
 
 export interface ProjectGalleryProps {
-  /** Large top image — omit to show a placeholder card */
+  /** Large top image — omit to hide */
   imageLarge?: string;
   imageLargeAlt?: string;
-  /** Two bottom images — omit to show placeholder cards */
+  /** Two bottom images — omit to hide */
   imageBottomLeft?: string;
   imageBottomRight?: string;
   imageBottomLeftAlt?: string;
@@ -25,8 +25,6 @@ export interface ProjectGalleryProps {
   heading?: string;
   /** Background colour (default white) */
   bg?: string;
-  /** Placeholder card colour when images are missing */
-  placeholderBg?: string;
 }
 
 export default function ProjectGallery({
@@ -38,7 +36,6 @@ export default function ProjectGallery({
   imageBottomRightAlt = 'Project image',
   heading,
   bg = '#FFFFFF',
-  placeholderBg = '#EBECF6',
 }: ProjectGalleryProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -78,24 +75,19 @@ export default function ProjectGallery({
           </motion.h2>
         )}
 
-        {/* ── Large centred image or placeholder ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.65 }}
-          style={{
-            background: placeholderBg,
-            borderRadius: '24px',
-            overflow: 'hidden',
-            marginBottom: '24px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: imageLarge ? '24px' : '0',
-            minHeight: isMobile ? '220px' : '400px',
-          }}
-        >
-          {imageLarge && (
+        {/* ── Large centred image — only rendered when URL is provided ── */}
+        {imageLarge && (
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.65 }}
+            style={{
+              borderRadius: '24px',
+              overflow: 'hidden',
+              marginBottom: '24px',
+              padding: '24px',
+            }}
+          >
             <img
               src={imageLarge}
               alt={imageLargeAlt}
@@ -108,48 +100,48 @@ export default function ProjectGallery({
                 borderRadius: '16px',
               }}
             />
-          )}
-        </motion.div>
+          </motion.div>
+        )}
 
-        {/* ── Two bottom images or placeholders ── */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-            gap: '24px',
-          }}
-        >
-          {[
-            { src: imageBottomLeft, alt: imageBottomLeftAlt },
-            { src: imageBottomRight, alt: imageBottomRightAlt },
-          ].map((img, i) => (
-            <motion.div
-              key={(img.alt ?? '') + i}
-              initial={{ opacity: 0, y: 28 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.65, delay: 0.12 + i * 0.1 }}
-              style={{
-                borderRadius: '24px',
-                overflow: 'hidden',
-                background: placeholderBg,
-                minHeight: isMobile ? '220px' : '360px',
-              }}
-            >
-              {img.src && (
-                <img
-                  src={img.src}
-                  alt={img.alt}
+        {/* ── Two bottom images — only rendered when URLs are provided ── */}
+        {(imageBottomLeft || imageBottomRight) && (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+              gap: '24px',
+            }}
+          >
+            {[
+              { src: imageBottomLeft, alt: imageBottomLeftAlt },
+              { src: imageBottomRight, alt: imageBottomRightAlt },
+            ].map((img, i) =>
+              img.src ? (
+                <motion.div
+                  key={(img.alt ?? '') + i}
+                  initial={{ opacity: 0, y: 28 }}
+                  animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.65, delay: 0.12 + i * 0.1 }}
                   style={{
-                    width: '100%',
-                    height: isMobile ? '220px' : '480px',
-                    objectFit: 'cover',
-                    display: 'block',
+                    borderRadius: '24px',
+                    overflow: 'hidden',
                   }}
-                />
-              )}
-            </motion.div>
-          ))}
-        </div>
+                >
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    style={{
+                      width: '100%',
+                      height: isMobile ? '220px' : '480px',
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
+                  />
+                </motion.div>
+              ) : null
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

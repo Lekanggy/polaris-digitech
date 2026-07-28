@@ -31,8 +31,8 @@ const FALLBACK_QUOTE      = 'Our skilled team collaborates with clients to under
 
 function IntroSection({ isMobile, introImage, description }: { isMobile: boolean; introImage: string; description: string }) {
   const { ref, isVisible } = useScrollAnimation(0.05);
-  return (
-    <section ref={ref} style={{ background: '#fff', paddingTop: '160px', paddingBottom: '80px' }}>
+return (
+       <section ref={ref} style={{ background: '#fff', paddingTop: isMobile ? '80px' : '160px', paddingBottom: '80px' }}>
       <div
         style={{
           maxWidth: '1280px', margin: '0 auto',

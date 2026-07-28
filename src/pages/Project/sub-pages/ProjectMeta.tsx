@@ -2,8 +2,7 @@
  * ProjectMeta — Section 2
  * A two-part section:
  *   • Top row: borderless 4-column metadata (label above, bold value below)
- *   • Bottom: either a full-width showcase image OR a plain coloured card
- *             (when showcaseImage is omitted, showcaseCardBg is used instead)
+ *   • Bottom: full-width showcase image (hidden when omitted)
  *
  * Reusable across all project sub-pages.
  */
@@ -20,24 +19,15 @@ export interface ProjectMetaField {
 
 export interface ProjectMetaProps {
   fields: ProjectMetaField[];
-  /** When provided, renders an <img> in the showcase area */
+  /** When provided, renders an <img> in the showcase area; omit to hide the showcase entirely */
   showcaseImage?: string;
   showcaseAlt?: string;
-  /**
-   * When showcaseImage is omitted, renders a plain coloured card instead.
-   * Defaults to #EBECF6.
-   */
-  showcaseCardBg?: string;
-  /** Height of the plain card (default 480px) */
-  showcaseCardHeight?: number;
 }
 
 export default function ProjectMeta({
   fields,
   showcaseImage,
   showcaseAlt = 'Project showcase',
-  showcaseCardBg = '#EBECF6',
-  showcaseCardHeight = 480,
 }: ProjectMetaProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -101,20 +91,18 @@ export default function ProjectMeta({
           ))}
         </motion.div>
 
-        {/* ── Showcase: image OR plain coloured card ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          style={{
-            width: '100%',
-            borderRadius: '24px',
-            overflow: 'hidden',
-            background: showcaseImage ? 'transparent' : showcaseCardBg,
-            minHeight: showcaseImage ? undefined : `${showcaseCardHeight}px`,
-          }}
-        >
-          {showcaseImage ? (
+        {/* ── Showcase: image only — hidden when no URL is provided ── */}
+        {showcaseImage && (
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            style={{
+              width: '100%',
+              borderRadius: '24px',
+              overflow: 'hidden',
+            }}
+          >
             <img
               src={showcaseImage}
               alt={showcaseAlt}
@@ -125,8 +113,8 @@ export default function ProjectMeta({
                 objectFit: 'cover',
               }}
             />
-          ) : null}
-        </motion.div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

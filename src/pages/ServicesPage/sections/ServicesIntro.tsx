@@ -10,15 +10,17 @@ const satoshi = 'Satoshi, Inter, sans-serif';
 export default function ServicesIntro() {
   const { ref, isVisible } = useScrollAnimation(0.05);
 
-  return (
-    <section
-      ref={ref}
-      style={{
-        background: '#FFFFFF',
-        paddingTop: '160px',
-        paddingBottom: '64px',
-      }}
-    >
+  const isMobile = window.innerWidth <= 768; // Simple check for mobile devices
+
+return (
+     <section
+       ref={ref}
+       style={{
+         background: '#FFFFFF',
+         paddingTop: isMobile ? '80px' : '160px',
+         paddingBottom: '64px',
+       }}
+     >
       <div
         style={{
           maxWidth: '860px',

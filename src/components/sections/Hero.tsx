@@ -152,39 +152,40 @@ export default function Hero({ data }: HeroProps) {
               alignItems: 'center',
             }}
           >
-            {/* Schedule a meeting — muted glass button */}
-            <Link
-              to="/schedule"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: satoshi,
-                fontSize: isMobile ? '15px' : '16px',
-                fontWeight: 700,
-                lineHeight: '150%',
-                letterSpacing: '0',
-                width: isMobile ? '100%' : '240px',
-                maxWidth: isMobile ? '320px' : 'none',
-                height: '48px',
-                paddingTop: '8px',
-                paddingBottom: '8px',
-                paddingLeft: isMobile ? '24px' : '36px',
-                paddingRight: isMobile ? '24px' : '36px',
-                gap: '8px',
-                background: 'rgba(255, 255, 255, 0.4)',
-                border: '1px solid rgba(255,255,255,0.18)',
-                borderRadius: '10px',
-                color: '#FFFFFF',
-                textDecoration: 'none',
-                transition: 'opacity 200ms',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = '0.9')}
-              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-            >
-              Schedule a meeting
-            </Link>
+{/* Schedule a meeting — muted glass button */}
+             <Link
+               to="/schedule"
+               style={{
+                 display: 'inline-flex',
+                 alignItems: 'center',
+                 justifyContent: 'center',
+                 fontFamily: satoshi,
+                 fontSize: isMobile ? '15px' : '16px',
+                 fontWeight: 700,
+                 lineHeight: '150%',
+                 letterSpacing: '0',
+                 width: isMobile ? '100%' : '240px',
+                 maxWidth: isMobile ? '320px' : 'none',
+                 height: '48px',
+                 paddingTop: '8px',
+                 paddingBottom: '8px',
+                 paddingLeft: isMobile ? '24px' : '36px',
+                 paddingRight: isMobile ? '24px' : '36px',
+                 gap: '8px',
+                 background: 'rgba(207, 207, 207, 0.4)',
+                 //mixBlendMode: 'screen',
+                 border: '1px solid rgba(255,255,255,0.18)',
+                 borderRadius: '10px',
+                 color: '#FFFFFF',
+                 textDecoration: 'none',
+                 transition: 'opacity 200ms',
+                 cursor: 'pointer',
+               }}
+               onMouseEnter={e => (e.currentTarget.style.opacity = '0.9')}
+               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+             >
+               Schedule a meeting
+             </Link>
 
             {/* View All Projects — gold */}
             <a
@@ -223,7 +224,7 @@ export default function Hero({ data }: HeroProps) {
       </div>
 
       {/* Double-chevron scroll indicator */}
-      <motion.div
+      {/* <motion.div
         style={{
           position: 'relative',
           zIndex: 10,
@@ -250,7 +251,7 @@ export default function Hero({ data }: HeroProps) {
         >
           <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 }

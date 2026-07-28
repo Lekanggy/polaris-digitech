@@ -54,13 +54,13 @@ export default function AMPPage() {
   const { data, error } = useGraphQLQuery(productQuery);
 
   // Log the result when data is available
-  if (data) {
-    console.log('AMP Product Data:', data);
-  }
+  // if (data) {
+  //   console.log('AMP Product Data:');
+  // }
 
-  if (error) {
-    console.error('Error fetching AMP product:', error);
-  }
+  // if (error) {
+  //   console.error('Error fetching AMP product:', error);
+  // }
 
   return (
     <div className="min-h-screen">

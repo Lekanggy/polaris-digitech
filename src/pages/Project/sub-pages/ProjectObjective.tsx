@@ -19,11 +19,9 @@ const satoshi = 'Satoshi, Inter, sans-serif';
 export interface ProjectObjectiveProps {
   objectivePlain?: string;
   objectiveNode?: React.ReactNode;
-  /** Image URL — omit to show a placeholder card */
+  /** Image URL — omit to hide the image block entirely */
   image?: string;
   imageAlt?: string;
-  /** Height of placeholder card when image is omitted (default 400px) */
-  placeholderHeight?: number;
 }
 
 export default function ProjectObjective({
@@ -31,7 +29,6 @@ export default function ProjectObjective({
   objectiveNode,
   image,
   imageAlt = 'Project objective',
-  placeholderHeight = 400,
 }: ProjectObjectiveProps) {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -71,19 +68,17 @@ export default function ProjectObjective({
           {objectiveNode ?? objectivePlain}
         </motion.p>
 
-        {/* ── Image or placeholder card ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          style={{
-            borderRadius: '24px',
-            overflow: 'hidden',
-            background: image ? 'transparent' : '#EBECF6',
-            minHeight: image ? undefined : `${placeholderHeight}px`,
-          }}
-        >
-          {image && (
+        {/* ── Image — only rendered when a URL is provided ── */}
+        {image && (
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            style={{
+              borderRadius: '24px',
+              overflow: 'hidden',
+            }}
+          >
             <img
               src={image}
               alt={imageAlt}
@@ -94,8 +89,8 @@ export default function ProjectObjective({
                 objectFit: 'cover',
               }}
             />
-          )}
-        </motion.div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

@@ -42,15 +42,15 @@ export default function CareersHero({ header, headerDescription, images }: Caree
   const imgTopRight    = strapiUrl(images?.[0]?.url) ?? car1;
   const imgBottomRight = strapiUrl(images?.[2]?.url) ?? car3;
 
-  return (
-    <section
-      ref={ref}
-      style={{
-        background: '#FFFFFF',
-        paddingTop: '160px',
-        paddingBottom: '80px',
-      }}
-    >
+return (
+     <section
+       ref={ref}
+       style={{
+         background: '#FFFFFF',
+         paddingTop: isMobile ? '80px' : '160px',
+         paddingBottom: '80px',
+       }}
+     >
       <div
         style={{
           maxWidth: '1280px',

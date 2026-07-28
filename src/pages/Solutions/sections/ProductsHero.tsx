@@ -267,8 +267,8 @@ export default function ProductsHero() {
   const NAVBAR_H = 100;
   const PEEK     = 20;
 
-  return (
-    <section style={{ background: '#fff', paddingTop: '160px', paddingBottom: '80px' }}>
+return (
+     <section style={{ background: '#fff', paddingTop: isMobile ? '80px' : '160px', paddingBottom: '80px' }}>
       <div
         style={{
           maxWidth: '1280px',

@@ -143,8 +143,8 @@ export default function PartnersExplore() {
 
   const partners = normalisePartners(data?.partnersProducts as PartnersProductsData['partnersProducts']);
 
-  return (
-    <section ref={ref} style={{ background: '#fff', paddingTop: '80px', paddingBottom: '80px' }}>
+return (
+     <section ref={ref} style={{ background: '#fff', paddingTop: '80px', paddingBottom: '80px' }}>
       <div
         style={{
           maxWidth: '1280px',

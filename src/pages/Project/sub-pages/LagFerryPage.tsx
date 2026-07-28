@@ -6,15 +6,6 @@ import ProjectObjective from './ProjectObjective';
 import ProjectKeyFeatures from './ProjectKeyFeatures';
 import ProjectGallery from './ProjectGallery';
 import { useProjectData } from './useProjectData';
-import lag1 from '../../../assets/lag1.png';
-import lag2 from '../../../assets/lag2.png';
-import lag3 from '../../../assets/lag3.png';
-import lag4 from '../../../assets/lag4.png';
-import lag5 from '../../../assets/lag5.png';
-import lag6 from '../../../assets/lag6.png';
-import lag7 from '../../../assets/lag7.png';
-import lag8 from '../../../assets/lag8.png';
-import lag9 from '../../../assets/lag9.png';
 
 const HREF = '/projects/lag-ferry';
 
@@ -35,19 +26,23 @@ export default function LagFerryPage() {
 
   return (
     <div className="min-h-screen">
-      <ProjectHero bgImage={cms.heroBgImage ?? lag1} title={cms.heroTitle ?? 'Lag Ferry'} subtitle={cms.heroSubtitle ?? 'Deployment of Geo-enabled ICT Surveillance Centre for Boats, Ships in Lagos state.'} />
-      <ProjectMeta fields={metaFields} showcaseImage={cms.metaImage ?? lag7} showcaseAlt="LagFerry platform showcase" />
+      <ProjectHero
+        bgImage={cms.heroBgImage ?? ''}
+        title={cms.heroTitle ?? 'Lag Ferry'}
+        subtitle={cms.heroSubtitle ?? 'Deployment of Geo-enabled ICT Surveillance Centre for Boats, Ships in Lagos state.'}
+      />
+      <ProjectMeta fields={metaFields} showcaseImage={cms.metaImage} showcaseAlt="LagFerry platform showcase" />
       <ProjectDescription
         description={cms.descText ?? 'A collaboration between the Lagos State Ferry Service and Polaris Digitech Limited to deploy a geo-enabled ICT surveillance center integrating CCTV, AIS, and geo-fencing to oversee boat and ship operations across Lagos State waters.'}
-        imageLeft={cms.descImageLeft ?? lag4} imageRight={cms.descImageRight ?? lag6} imageFull={cms.descImageFull ?? lag5}
+        imageLeft={cms.descImageLeft} imageRight={cms.descImageRight} imageFull={cms.descImageFull}
       />
       <ProjectObjective
         objectivePlain={cms.objectiveText}
         objectiveNode={!cms.objectiveText ? (<><span style={{ color: '#8A93B2' }}>The objective of the project is to </span><span style={{ color: '#283172' }}>modernize the water transport sector by enhancing the safety and security of passengers and crew, while providing a real-time data pipeline for maritime stakeholders.</span></>) : undefined}
-        image={cms.objectiveImage ?? lag9}
+        image={cms.objectiveImage}
       />
       <ProjectKeyFeatures features={features} heading="Key Features" />
-      <ProjectGallery imageLarge={cms.galleryLarge ?? lag2} imageBottomLeft={cms.galleryLeft ?? lag8} imageBottomRight={cms.galleryRight ?? lag3} />
+      <ProjectGallery imageLarge={cms.galleryLarge} imageBottomLeft={cms.galleryLeft} imageBottomRight={cms.galleryRight} />
       <Footer />
     </div>
   );

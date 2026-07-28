@@ -400,13 +400,53 @@ export default function Navbar() {
                 const parentActive = isParentActive(link);
 
                 // Build the flat sub-item list for this link (Products / Services / Projects)
-                const subItems = link.products
-                  ? cmsNavProducts
-                  : link.services
-                  ? cmsNavServices
-                  : link.projects
-                  ? cmsNavProjects
-                  : [];
+                interface MenuItem {
+                  title: string;
+                  href: string;
+                }
+
+// Build the flat sub-item list for this link (Products / Services / Projects)
+                let subItems: MenuItem[] = [];
+                if (link.products) {
+                  subItems = cmsNavProducts.map(item => ({
+                    title: item.title,
+                    href: item.href || '#',
+                  }));
+                  // Add partner products if this is the Products link
+                  if (link.label === 'Products' && Array.isArray(link.partnerProducts)) {
+                    // Convert partner product strings to objects matching MenuItem shape
+                    const partnerItems = link.partnerProducts.map((name, index) => {
+                      // Define URLs for each partner product - matching PartnersExplore section
+                      const partnerUrls: Record<string, string> = {
+                        'MapInfo': '/solutions/mapinfo',
+                        'Google Maps': '/solutions/google-maps',
+                        'Google Cloud Platform': '/solutions/google-cloud',
+                        'High Resolution Imagery': '/solutions/high-resolution-imagery',
+                        'Google Workspace for Education': '/solutions/google-workspace-education',
+                        'Google Workspace for Business': '/solutions/google-workspace-business',
+                      };
+                      
+                      const url = partnerUrls[name] || '#';
+                      
+                      return {
+                        title: name,
+                        href: url,
+                      };
+                    });
+                    
+                    subItems = [...subItems, ...partnerItems];
+                  }
+                } else if (link.services) {
+                  subItems = cmsNavServices.map(item => ({
+                    title: item.title,
+                    href: item.href || '#',
+                  }));
+                } else if (link.projects) {
+                  subItems = cmsNavProjects.map(item => ({
+                    title: item.title,
+                    href: item.href || '#',
+                  }));
+                }
 
                 return (
                   <div key={link.label} className="w-full border-b border-white/10">
@@ -460,40 +500,44 @@ export default function Navbar() {
                             transition={{ duration: 0.3, ease: 'easeInOut' }}
                             style={{ overflow: 'hidden' }}
                           >
-                            {/* Added custom scrollbar class 'polaris-mobile-scroll' */}
-                            <div
-                              className="polaris-mobile-scroll mb-6 flex flex-col gap-3"
-                              style={{
-                                paddingLeft: '16px',
-                                maxHeight: '300px',
-                                overflowY: 'auto',
-                                paddingRight: '8px',
-                                marginTop: '4px',
-                              }}
-                            >
-                              {subItems.map((item, i) => {
-                                const childActive = item.href && item.href !== '#' && location.pathname.startsWith(item.href);
-                                
-                                return (
-                                  <Link
-                                    key={item.title ?? i}
-                                    to={item.href || '#'}
-                                    onClick={closeMobileNav}
-                                    className="text-[14px] leading-snug transition-colors"
-                                    style={{ 
-                                      fontFamily: 'Satoshi, Inter, sans-serif',
-                                      color: childActive ? '#D7B56D' : 'rgba(255,255,255,0.7)',
-                                      borderLeft: `2px solid ${childActive ? '#D7B56D' : 'rgba(255,255,255,0.1)'}`,
-                                      paddingLeft: '12px',
-                                      paddingTop: '8px',
-                                      paddingBottom: '8px',
-                                    }}
-                                  >
-                                    {item.title}
-                                  </Link>
-                                );
-                              })}
-                            </div>
+{/* Added custom scrollbar class 'polaris-mobile-scroll' */}
+                              <div
+                                className="polaris-mobile-scroll mb-6 flex flex-col gap-3"
+                                style={{
+                                  paddingLeft: '16px',
+                                  maxHeight: '300px',
+                                  overflowY: 'auto',
+                                  paddingRight: '8px',
+                                  marginTop: '4px',
+                                }}
+                              >
+                                {subItems.map((item, i) => {
+                                  // Determine if this is a partner item (we'll need to track this separately)
+                                  // For now, we'll treat all items as internal links since we're mapping to solution pages
+                                  const itemTitle = item.title;
+                                  const itemHref = item.href;
+                                  const childActive = itemHref && itemHref !== '#' && location.pathname.startsWith(itemHref);
+                                  
+                                  return (
+                                    <Link
+                                      key={itemTitle || i}
+                                      to={itemHref}
+                                      onClick={closeMobileNav}
+                                      className="text-[14px] leading-snug transition-colors"
+                                      style={{ 
+                                        fontFamily: 'Satoshi, Inter, sans-serif',
+                                        color: childActive ? '#D7B56D' : 'rgba(255,255,255,0.7)',
+                                        borderLeft: `2px solid ${childActive ? '#D7B56D' : 'rgba(255,255,255,0.1)'}`,
+                                        paddingLeft: '12px',
+                                        paddingTop: '8px',
+                                        paddingBottom: '8px',
+                                      }}
+                                    >
+                                      {itemTitle}
+                                    </Link>
+                                  );
+                                })}
+                              </div>
                           </motion.div>
                         )}
                       </AnimatePresence>

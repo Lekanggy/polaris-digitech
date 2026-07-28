@@ -6,15 +6,6 @@ import ProjectObjective from './ProjectObjective';
 import ProjectKeyFeatures from './ProjectKeyFeatures';
 import ProjectGallery from './ProjectGallery';
 import { useProjectData } from './useProjectData';
-import mtn1 from '../../../assets/mtn1.png';
-import mtn2 from '../../../assets/mtn2.png';
-import mtn3 from '../../../assets/mtn3.png';
-import mtn4 from '../../../assets/mtn4.png';
-import mtn5 from '../../../assets/mtn5.png';
-import mtn6 from '../../../assets/mtn6.png';
-import mtn7 from '../../../assets/mtn7.png';
-import mtn8 from '../../../assets/mtn8.png';
-import mtn9 from '../../../assets/mtn9.png';
 
 const HREF = '/projects/mtn-coverage-locator';
 
@@ -35,19 +26,23 @@ export default function MTNCoveragePage() {
 
   return (
     <div className="min-h-screen">
-      <ProjectHero bgImage={cms.heroBgImage ?? mtn1} title={cms.heroTitle ?? 'MTN Coverage Locator'} subtitle={cms.heroSubtitle ?? 'The MTNN Coverage Locator helps users find network coverage and report weak areas, boosting 5G sales and adoption.'} />
-      <ProjectMeta fields={metaFields} showcaseImage={cms.metaImage ?? mtn8} showcaseAlt="MTN Coverage Locator platform" />
+      <ProjectHero
+        bgImage={cms.heroBgImage ?? ''}
+        title={cms.heroTitle ?? 'MTN Coverage Locator'}
+        subtitle={cms.heroSubtitle ?? 'The MTNN Coverage Locator helps users find network coverage and report weak areas, boosting 5G sales and adoption.'}
+      />
+      <ProjectMeta fields={metaFields} showcaseImage={cms.metaImage} showcaseAlt="MTN Coverage Locator platform" />
       <ProjectDescription
         description={cms.descText ?? 'The Coverage Locator Application developed by PDL for MTN Nigeria serves as a web-based map interface providing real-time visibility into network signal strength and availability across Nigeria.'}
-        imageLeft={cms.descImageLeft ?? mtn4} imageRight={cms.descImageRight ?? mtn3} imageFull={cms.descImageFull ?? mtn6}
+        imageLeft={cms.descImageLeft} imageRight={cms.descImageRight} imageFull={cms.descImageFull}
       />
       <ProjectObjective
         objectivePlain={cms.objectiveText}
         objectiveNode={!cms.objectiveText ? (<><span style={{ color: '#8A93B2' }}>The objective of the project is to </span><span style={{ color: '#283172' }}>enhance customer satisfaction and service delivery by providing transparent network information, driving 5G adoption, and assisting the network planning team in identifying high-value clusters for broadband expansion.</span></>) : undefined}
-        image={cms.objectiveImage ?? mtn5}
+        image={cms.objectiveImage}
       />
       <ProjectKeyFeatures features={features} heading="Key Features" />
-      <ProjectGallery imageLarge={cms.galleryLarge ?? mtn7} imageBottomLeft={cms.galleryLeft ?? mtn2} imageBottomRight={cms.galleryRight ?? mtn9} />
+      <ProjectGallery imageLarge={cms.galleryLarge} imageBottomLeft={cms.galleryLeft} imageBottomRight={cms.galleryRight} />
       <Footer />
     </div>
   );
