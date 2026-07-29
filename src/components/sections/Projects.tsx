@@ -5,6 +5,9 @@ import { useMediaQuery } from '../../hooks/useMediaQuery';
 import project1 from '../../assets/project1.png';
 import project2 from '../../assets/project2.png';
 import project3 from '../../assets/project3.png';
+import log1 from '../../assets/log1.png';
+import log2 from '../../assets/log2.png';
+import log3 from '../../assets/image 23.png';
 import starlogo from '../../assets/starlogo.png';
 import type { ProjectItem } from '../../services/queries/homeQuery';
 import { strapiUrl } from '../../services/queries/homeQuery';
@@ -80,8 +83,19 @@ interface ProjectCardData {
   route?: string;
 }
 
+// ── Logo Mapping ───────────────────────────────────────────────────────────
+const logoMap: Record<string, string> = {
+  lagferry: log3,
+  axa: log1,
+  mtn: log2,
+};
+
 // ── Logo badge ─────────────────────────────────────────────────────────────
 function LogoBadge({ name, dark }: { name: string; dark?: boolean }) {
+  // Convert name to lowercase to safely compare against our map keys
+  const lowerCaseName = name?.toLowerCase() ?? '';
+  const logoSrc = logoMap[lowerCaseName];
+
   return (
     <div style={{
       display: 'inline-flex',
@@ -91,16 +105,30 @@ function LogoBadge({ name, dark }: { name: string; dark?: boolean }) {
       borderRadius: '8px',
       background: dark ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)',
       marginBottom: '16px',
+      minHeight: '32px', // Ensures the badge keeps its shape with an image
     }}>
-      <span style={{
-        fontFamily: satoshi,
-        fontWeight: 700,
-        fontSize: '13px',
-        color: dark ? '#1a1a1a' : '#fff',
-        letterSpacing: '0.05em',
-      }}>
-        {name}
-      </span>
+      {logoSrc ? (
+        <img 
+          src={logoSrc} 
+          alt={name} 
+          style={{ 
+            height: '20px', 
+            width: 'auto', 
+            objectFit: 'contain' 
+          }} 
+        />
+      ) : (
+        // Fallback to text if the logo name isn't in the map
+        <span style={{
+          fontFamily: satoshi,
+          fontWeight: 700,
+          fontSize: '13px',
+          color: dark ? '#1a1a1a' : '#fff',
+          letterSpacing: '0.05em',
+        }}>
+          {name}
+        </span>
+      )}
     </div>
   );
 }
@@ -127,31 +155,34 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
       style={{
         backgroundColor: project?.bg,
         borderRadius: '24px',
-        padding: '32px',
+        padding: isMobile ? '24px' : '32px',
         position: 'relative',
         overflow: 'hidden',
         display: 'flex',
-        alignItems: 'stretch',
-        height,
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: isMobile ? 'stretch' : 'stretch',
+        height: isMobile ? 'auto' : height,
+        minHeight: isMobile ? '480px' : height,
         cursor: 'pointer',
         border: showBorder ? '1px solid rgba(0,0,0,0.12)' : 'none',
       }}
     >
-      {/* Left content */}
+      {/* Top content section */}
       <div style={{
-        flex: isMobile ? '0 0 65%' : '0 0 55%',
+        flex: isMobile ? '0 0 auto' : '0 0 55%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         zIndex: 2,
         position: 'relative',
+        paddingBottom: isMobile ? '16px' : '0',
       }}>
         <div>
           <LogoBadge name={project?.logo} dark={isDark} />
           <h3 style={{
             fontFamily: satoshi,
             fontWeight: 700,
-            fontSize: '20px',
+            fontSize: isMobile ? '18px' : '20px',
             lineHeight: '130%',
             color: project.textColor,
             marginBottom: '10px',
@@ -161,14 +192,14 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
           <p style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '16px',
+            fontSize: isMobile ? '14px' : '16px',
             lineHeight: '150%',
             letterSpacing: '0',
             color: project.textColor,
             opacity: 0.85,
-            marginBottom: '20px',
+            marginBottom: isMobile ? '16px' : '20px',
             display: '-webkit-box',
-            WebkitLineClamp: 3,
+            WebkitLineClamp: isMobile ? 2 : 3,
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
           }}>
@@ -206,46 +237,94 @@ function ProjectCard({ project, delay, isVisible, height = '408px', showBorder =
         </a>
       </div>
 
-      {/* Right image — slides in from right on hover */}
-      <div
-        style={{
-          position: 'absolute',
-          right: 0,
-          top: '15%',
-          bottom: '-20px',
-          width: '48%',
-          transform: hovered || isMobile ? 'translateX(0) rotate(0deg)' : 'translateX(40%) rotate(0deg)',
-          transition: 'transform 0.4s ease',
-        }}
-      >
-        <div style={{
-          width: '100%',
-          height: '100%',
-          overflow: 'hidden',
-          borderTopLeftRadius: '16px',
-          borderTopRightRadius: '24px',
-          borderBottomLeftRadius: '0',
-          borderBottomRightRadius: '0',
-          borderLeft: '16px solid #000000',
-          borderTop: '16px solid #000000',
-          borderRight: 'none',
-          borderBottom: 'none',
-          boxSizing: 'border-box',
-        }}>
-          <img
-            src={project?.image}
-            alt={project?.title}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'left center',
-              transform: 'rotate(0deg)',
-            }}
-            loading="lazy"
-          />
+      {/* Image section */}
+      {isMobile ? (
+        /* ── Mobile: full-width device image at bottom ── */
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            flex: '1 1 auto',
+            marginTop: '8px',
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{
+            width: '100%',
+            height: '100%',
+            minHeight: '220px',
+            overflow: 'hidden',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            borderBottomLeftRadius: '0',
+            borderBottomRightRadius: '0',
+            // Adding the black screen bezel back for mobile
+            borderLeft: '16px solid #000000',
+            borderTop: '16px solid #000000',
+            borderRight: '16px solid #000000',
+            borderBottom: 'none',
+            boxSizing: 'border-box',
+            position: 'relative',
+            // Negative bottom margin to bleed perfectly into the card's bottom padding
+            marginBottom: '-50px', 
+          }}>
+            <img
+              src={project?.image}
+              alt={project?.title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center top',
+              }}
+              loading="lazy"
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        /* ── Desktop: slides in from right on hover ── */
+        <div
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: '15%',
+            bottom: '-20px',
+            width: '48%',
+            transform: hovered ? 'translateX(0) rotate(0deg)' : 'translateX(40%) rotate(0deg)',
+            transition: 'transform 0.4s ease',
+          }}
+        >
+          <div style={{
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '24px',
+            borderBottomLeftRadius: '0',
+            borderBottomRightRadius: '0',
+            borderLeft: '16px solid #000000',
+            borderTop: '16px solid #000000',
+            borderRight: 'none',
+            borderBottom: 'none',
+            boxSizing: 'border-box',
+          }}>
+            <img
+              src={project?.image}
+              alt={project?.title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'left center',
+                transform: 'rotate(0deg)',
+              }}
+              loading="lazy"
+            />
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -327,13 +406,13 @@ export default function Projects({ data }: ProjectsProps) {
 
         {/* ── Row 1: two equal cards ── */}
         <div className="projects-row1" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '656px 656px', gap: '20px', justifyContent: 'center' }}>
-          <ProjectCard project={p0} delay={0.1} isVisible={isVisible} height={isMobile ? '320px' : '408px'} showBorder />
-          <ProjectCard project={p1} delay={0.2} isVisible={isVisible} height={isMobile ? '320px' : '408px'} showBorder />
+          <ProjectCard project={p0} delay={0.1} isVisible={isVisible} height={isMobile ? 'auto' : '408px'} showBorder />
+          <ProjectCard project={p1} delay={0.2} isVisible={isVisible} height={isMobile ? 'auto' : '408px'} showBorder />
         </div>
 
         {/* ── Row 2: third card + See All ── */}
         <div className="projects-row2" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '791px 521px', gap: '20px', justifyContent: 'center', marginTop: '20px' }}>
-          <ProjectCard project={p2} delay={0.3} isVisible={isVisible} height={isMobile ? '320px' : '408px'} />
+          <ProjectCard project={p2} delay={0.3} isVisible={isVisible} height={isMobile ? 'auto' : '408px'} />
 
           {/* See All Projects card */}
           <motion.a

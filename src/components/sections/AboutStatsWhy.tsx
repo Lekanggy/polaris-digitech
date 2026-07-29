@@ -246,7 +246,7 @@ export default function AboutStatsWhy({ data }: AboutStatsWhyProps) {
             paddingBottom: isMobile ? '60px' : '140px',
           }}
         >
-          <div className="why-choose-row" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '24px' : '40px', width: '100%' }}>
+          <div className="why-choose-row" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', gap: isMobile ? '24px' : '40px', width: '100%' }}>
 
             {/* Left — "Why You Should Choose Us" — Task 3: 40px, weight 500, 2 lines */}
             <motion.div
@@ -263,6 +263,7 @@ export default function AboutStatsWhy({ data }: AboutStatsWhyProps) {
                 lineHeight: '150%',
                 letterSpacing: '-0.02em',
                 color: '#FFFFFF',
+                textAlign: isMobile ? 'center' : 'left', // Centralized on mobile
               }}>
                 Why You Should<br />Choose Us
               </h2>
@@ -289,6 +290,8 @@ export default function AboutStatsWhy({ data }: AboutStatsWhyProps) {
                     flexDirection: 'column',
                     overflow: 'hidden',
                     boxSizing: 'border-box',
+                    alignItems: isMobile ? 'center' : 'flex-start', // Centralized content on mobile
+                    textAlign: isMobile ? 'center' : 'left', // Centralized text on mobile
                   }}
                 >
                   <div style={{ marginBottom: '16px' }}>{icons[item.icon]}</div>

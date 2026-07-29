@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import partner1 from '../../assets/partner1.png';
 import partner2 from '../../assets/partner2.png';
 import partner3 from '../../assets/partner3.png';
@@ -12,15 +13,13 @@ import partner9 from '../../assets/partner9.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-const row1 = [
+// Combine all logos into a single array to ensure continuous flow
+const allLogos = [
   { src: partner1, alt: 'Google' },
   { src: partner2, alt: 'Partner 2' },
   { src: partner3, alt: 'Partner 3' },
   { src: partner4, alt: 'MTN' },
   { src: partner5, alt: 'AXA' },
-];
-
-const row2 = [
   { src: partner6, alt: 'GTBank' },
   { src: partner7, alt: 'OPay' },
   { src: partner8, alt: 'UPDC' },
@@ -28,7 +27,7 @@ const row2 = [
 ];
 
 // ── Single logo card ───────────────────────────────────────────────────────
-function LogoCard({ src, alt, delay, isVisible }: { src: string; alt: string; delay: number; isVisible: boolean }) {
+function LogoCard({ src, alt, delay, isVisible, isMobile }: { src: string; alt: string; delay: number; isVisible: boolean; isMobile: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -42,8 +41,11 @@ function LogoCard({ src, alt, delay, isVisible }: { src: string; alt: string; de
         alignItems: 'center',
         justifyContent: 'center',
         boxShadow: '0px 0px 40px 0px rgba(2, 10, 71, 0.10)',
-        width: '200px',
+        // On mobile: strictly takes up 50% minus half the gap. 
+        // On desktop: stays fixed at 200px.
+        width: isMobile ? 'calc((100% - 16px) / 2)' : '200px',
         height: '140px',
+        boxSizing: 'border-box',
       }}
     >
       <img
@@ -60,6 +62,7 @@ function LogoCard({ src, alt, delay, isVisible }: { src: string; alt: string; de
 // ── Main section ───────────────────────────────────────────────────────────
 export default function Clients() {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     /* Shares white bg with Products & Projects */
@@ -92,27 +95,33 @@ export default function Clients() {
           <p style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '20px',
+            fontSize: isMobile ? '16px' : '20px',
             lineHeight: '150%',
             letterSpacing: '0',
             color: '#6b7280',
             textAlign: 'center',
+            padding: isMobile ? '0 8px' : '0',
           }}>
             We are proud to contribute to the success of these great brands
           </p>
         </motion.div>
 
-        {/* Row 1 — 6 logos */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '16px' }}>
-          {row1.map((logo, i) => (
-            <LogoCard key={logo.alt} src={logo.src} alt={logo.alt} delay={0.1 + i * 0.06} isVisible={isVisible} />
-          ))}
-        </div>
-
-        {/* Row 2 — 3 logos centered */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
-          {row2.map((logo, i) => (
-            <LogoCard key={logo.alt} src={logo.src} alt={logo.alt} delay={0.46 + i * 0.06} isVisible={isVisible} />
+        {/* Unified Flex Container for all logos */}
+        <div style={{ 
+          display: 'flex', 
+          flexWrap: 'wrap', 
+          justifyContent: 'center', 
+          gap: '16px' 
+        }}>
+          {allLogos.map((logo, i) => (
+            <LogoCard 
+              key={logo.alt} 
+              src={logo.src} 
+              alt={logo.alt} 
+              delay={0.1 + i * 0.06} 
+              isVisible={isVisible} 
+              isMobile={isMobile} 
+            />
           ))}
         </div>
       </div>

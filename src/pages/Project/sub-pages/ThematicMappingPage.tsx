@@ -19,12 +19,17 @@ export default function ThematicMappingPage() {
         title={cms.heroTitle ?? 'Thematic Mapping of Restricted Areas for Mining'}
         subtitle={cms.heroSubtitle ?? 'Production of Thematic Mapping of Areas Restricted From Mining Activities in Nigeria for Integration into the Nigeria Mining Cadastre Digital Database'}
       />
-      <ProjectMeta fields={metaFields} showcaseImage={cms.metaImage} showcaseAlt="Thematic mapping showcase" />
+      <ProjectMeta 
+        fields={metaFields} 
+        showcaseImage={cms.metaImage} 
+        showcaseAlt="Thematic mapping showcase" 
+      />
       <ProjectDescription
         description={cms.descText ?? 'Polaris Digitech Limited was engaged to produce comprehensive thematic maps of areas restricted and protected from mining activities across Nigeria, designed for seamless integration into the Nigeria Mining Cadastre Digital Database.'}
         imageLeft={cms.descImageLeft} imageRight={cms.descImageRight}
         imageFull={cms.descImageFull}
       />
+      
       <ProjectObjective
         objectivePlain={cms.objectiveText}
         objectiveNode={!cms.objectiveText ? (<><span style={{ color: '#8A93B2' }}>The objective of the project is to </span><span style={{ color: '#283172' }}>delineate and document all areas restricted from mining activities in Nigeria, producing accurate thematic maps that support regulatory compliance, environmental protection, and the modernisation of the Nigeria Mining Cadastre Digital Database.</span></>) : undefined}

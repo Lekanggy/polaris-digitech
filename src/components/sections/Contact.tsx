@@ -136,8 +136,8 @@ export default function Contact({ data }: ContactProps) {
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
-          paddingTop: '80px',
-          paddingBottom: '80px',
+          paddingTop: isMobile ? '48px' : '80px',
+          paddingBottom: isMobile ? '48px' : '80px',
           paddingLeft: 'clamp(24px, 5vw, 80px)',
           paddingRight: 'clamp(24px, 5vw, 80px)',
         }}
@@ -147,7 +147,7 @@ export default function Contact({ data }: ContactProps) {
           style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-            gap: isMobile ? '40px' : '64px',
+            gap: isMobile ? '32px' : '64px',
             alignItems: 'start',
           }}
         >
@@ -162,11 +162,12 @@ export default function Contact({ data }: ContactProps) {
               style={{
                 fontFamily: satoshi,
                 fontWeight: 500,
-                fontSize: 'clamp(28px, 4vw, 48px)',
+                fontSize: isMobile ? '26px' : 'clamp(28px, 4vw, 48px)',
                 lineHeight: '120%',
                 letterSpacing: '-0.02em',
                 color: '#010527',
-                marginBottom: '40px',
+                marginBottom: isMobile ? '24px' : '40px',
+                textAlign: isMobile ? 'center' : 'left', // Centralized on mobile
               }}
             >
               Interested in our services, products, or a potential partnership?
@@ -251,7 +252,7 @@ export default function Contact({ data }: ContactProps) {
               style={{
                 background: '#fff',
                 borderRadius: '16px',
-                padding: '32px',
+                padding: isMobile ? '24px' : '32px', // Reduced padding on mobile
                 boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
               }}
             >
@@ -262,11 +263,19 @@ export default function Contact({ data }: ContactProps) {
                   fontSize: '20px',
                   color: '#010527',
                   marginBottom: '6px',
+                  textAlign: isMobile ? 'center' : 'left', // Centralized on mobile
                 }}
               >
                 Let's Work Together
               </h3>
-              <p style={{ fontFamily: satoshi, fontSize: '14px', color: '#6b7280', marginBottom: '24px', lineHeight: '1.5' }}>
+              <p style={{ 
+                fontFamily: satoshi, 
+                fontSize: '14px', 
+                color: '#6b7280', 
+                marginBottom: '24px', 
+                lineHeight: '1.5',
+                textAlign: isMobile ? 'center' : 'left', // Centralized on mobile
+              }}>
                 We're here to answer your questions and explore new possibilities.
               </p>
 
