@@ -167,7 +167,7 @@ export default function Contact({ data }: ContactProps) {
                 letterSpacing: '-0.02em',
                 color: '#010527',
                 marginBottom: isMobile ? '24px' : '40px',
-                textAlign: isMobile ? 'center' : 'left', // Centralized on mobile
+                textAlign:  'left', // Centralized on mobile
               }}
             >
               Interested in our services, products, or a potential partnership?

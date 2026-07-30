@@ -134,7 +134,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           style={{
-            textAlign: 'center',
+            // textAlign: 'center',
             marginBottom: '48px',
           }}
         >
@@ -161,7 +161,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
               color: '#6b7280',
               maxWidth: '600px',
               margin: '0 auto',
-              textAlign: 'center',
+              // textAlign: 'center',
             }}
           >
             See how our clients use geospatial technology to transform operations and make smarter decisions.

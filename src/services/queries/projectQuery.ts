@@ -11,6 +11,7 @@ export interface ProjectItemCard {
   href?: string;
   image?: CmsImage;
   cardLogo?: CmsImage;
+  cardBackground?: string;
 }
 
 export interface ProjectIntroData {
@@ -61,6 +62,7 @@ export interface ProjectsData {
 }
 
 export const projectQuery = `
+
 query Projects {
   projects {
     documentId
@@ -80,6 +82,7 @@ query Projects {
         name
         documentId
       }
+      cardBackground
     }
     project_intro {
       leftImage {

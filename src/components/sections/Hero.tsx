@@ -152,7 +152,7 @@ export default function Hero({ data }: HeroProps) {
               alignItems: 'center',
             }}
           >
-{/* Schedule a meeting — muted glass button */}
+            {/* Schedule a meeting — muted glass button */}
              <Link
                to="/schedule"
                style={{
@@ -222,36 +222,6 @@ export default function Hero({ data }: HeroProps) {
           </motion.div>
         </div>
       </div>
-
-      {/* Double-chevron scroll indicator */}
-      {/* <motion.div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          paddingBottom: '32px',
-        }}
-        animate={{ y: [0, 6, 0] }}
-        transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" opacity="0.7">
-          <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <svg
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="white"
-          strokeWidth="2"
-          opacity="0.35"
-          style={{ marginTop: '-8px' }}
-        >
-          <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </motion.div> */}
     </section>
   );
 }

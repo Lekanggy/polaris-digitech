@@ -290,8 +290,8 @@ export default function AboutStatsWhy({ data }: AboutStatsWhyProps) {
                     flexDirection: 'column',
                     overflow: 'hidden',
                     boxSizing: 'border-box',
-                    alignItems: isMobile ? 'center' : 'flex-start', // Centralized content on mobile
-                    textAlign: isMobile ? 'center' : 'left', // Centralized text on mobile
+                    alignItems:  'flex-start', // Centralized content on mobile
+                    textAlign:  'left', // Centralized text on mobile
                   }}
                 >
                   <div style={{ marginBottom: '16px' }}>{icons[item.icon]}</div>
