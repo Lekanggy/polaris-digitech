@@ -95,21 +95,19 @@ export default function ProjectDescription({
             transition={{ duration: 0.65, delay: 0.1 }}
             style={{
               display: 'grid',
-              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+              gridTemplateColumns: isMobile ? '1fr' : '586px 586px',
               gap: '10px',
               marginBottom: '10px',
+              justifyContent: 'center',
             }}
           >
           {/* Left card */}
           <div
             style={{
               borderRadius: isMobile ? '24px' : '40px',
-              padding: isMobile ? '16px' : '48px 10px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               overflow: 'hidden',
-              boxSizing: 'border-box',
+              width: '100%',
+              height: isMobile ? 'auto' : '448px',
             }}
           >
             {imageLeft && (
@@ -118,9 +116,8 @@ export default function ProjectDescription({
                 alt={imageLeftAlt}
                 style={{
                   width: '100%',
-                  height: 'auto',
-                  objectFit: 'contain',
-                  borderRadius: isMobile ? '16px' : '28px',
+                  height: isMobile ? 'auto' : '448px',
+                  objectFit: 'cover',
                   display: 'block',
                 }}
               />
@@ -131,12 +128,9 @@ export default function ProjectDescription({
           <div
             style={{
               borderRadius: isMobile ? '24px' : '40px',
-              padding: isMobile ? '16px' : '48px 10px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               overflow: 'hidden',
-              boxSizing: 'border-box',
+              width: '100%',
+              height: isMobile ? 'auto' : '448px',
             }}
           >
             {imageRight && (
@@ -145,9 +139,8 @@ export default function ProjectDescription({
                 alt={imageRightAlt}
                 style={{
                   width: '100%',
-                  height: 'auto',
-                  objectFit: 'contain',
-                  borderRadius: isMobile ? '16px' : '28px',
+                  height: isMobile ? 'auto' : '448px',
+                  objectFit: 'cover',
                   display: 'block',
                 }}
               />
