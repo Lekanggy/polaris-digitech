@@ -27,7 +27,7 @@ export default function MTNCoveragePage() {
   return (
     <div className="min-h-screen">
       <ProjectHero
-        bgImage={cms.heroBgImage ?? ''}
+        bgImage={cms.heroBgImage}
         title={cms.heroTitle ?? 'MTN Coverage Locator'}
         subtitle={cms.heroSubtitle ?? 'The MTNN Coverage Locator helps users find network coverage and report weak areas, boosting 5G sales and adoption.'}
       />
@@ -47,3 +47,4 @@ export default function MTNCoveragePage() {
     </div>
   );
 }
+

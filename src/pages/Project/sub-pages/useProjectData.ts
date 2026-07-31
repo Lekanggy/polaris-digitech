@@ -79,13 +79,26 @@ export interface CmsProjectData {
 }
 
 export function useProjectData(href: string): CmsProjectData {
+
+
   const { projects } = useProjectsQuery();
   const entry = projects.find((p) => normalizeText(p.project_item?.href) === href);
+
+  
+
+  console.log("entry", projects);
 
   // ── Hero ──────────────────────────────────────────────────────────────
   const heroTitle    = normalizeText(entry?.project_intro?.title);
   const heroSubtitle = normalizeText(entry?.project_intro?.description);
-  const heroBgImage  = normalizeImage(entry?.project_intro?.leftImage?.url);
+  // project_intro.leftImage is the primary hero bg; fall back to the card
+  // image (project_item.image) which is always populated for every project.
+  const heroBgImage  =
+    normalizeImage(entry?.project_intro?.leftImage?.url) ??
+    normalizeImage(entry?.project_item?.image?.url);
+
+
+
 
   // ── Meta ──────────────────────────────────────────────────────────────
   const rawMetaFields = Array.isArray(entry?.projectMeta?.project_meta)

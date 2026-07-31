@@ -25,7 +25,7 @@ export default function LandParcelPage() {
   return (
     <div className="min-h-screen">
       <ProjectHero
-        bgImage={cms.heroBgImage ?? ''}
+        bgImage={cms.heroBgImage}
         title={cms.heroTitle ?? 'Land Parcel Information System'}
         subtitle={cms.heroSubtitle ?? 'A state-of-the-art, automated land management and physical planning system for the Osun State Ministry of Land.'}
       />
@@ -45,3 +45,4 @@ export default function LandParcelPage() {
     </div>
   );
 }
+

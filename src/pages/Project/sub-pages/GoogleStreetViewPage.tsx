@@ -5,7 +5,7 @@ import ProjectDescription from './ProjectDescription';
 import ProjectObjective from './ProjectObjective';
 import { useProjectData } from './useProjectData';
 
-const HREF = '/projects/googl-street-view';
+const HREF = '/projects/google-street-view';
 
 const FB_FIELDS = [{ label: 'Industry', value: 'Technology' }, { label: 'Service', value: 'Street View Data Collection' }, { label: 'Year', value: '2016 - 2022' }, { label: 'Website', value: '-' }];
 
@@ -16,7 +16,7 @@ export default function GoogleStreetViewPage() {
   return (
     <div className="min-h-screen">
       <ProjectHero
-        bgImage={cms.heroBgImage ?? ''}
+        bgImage={cms.heroBgImage!}
         title={cms.heroTitle ?? 'Google Street View'}
         subtitle={cms.heroSubtitle ?? 'Collection of street names, environmental features, and building/house/structure details to aid remote view of locations'}
       />
@@ -34,3 +34,4 @@ export default function GoogleStreetViewPage() {
     </div>
   );
 }
+

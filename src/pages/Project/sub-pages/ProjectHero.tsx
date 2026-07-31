@@ -11,8 +11,8 @@ import Navbar from '../../../components/sections/Navbar';
 const satoshi = 'Satoshi, Inter, sans-serif';
 
 export interface ProjectHeroProps {
-  /** Background image URL */
-  bgImage: string;
+  /** Background image URL — omit or leave undefined for a solid colour fallback */
+  bgImage?: string;
   /** Large heading (e.g. "Lag Ferry") */
   title: string;
   /** Subtitle / tagline below the heading */
@@ -20,6 +20,8 @@ export interface ProjectHeroProps {
 }
 
 export default function ProjectHero({ bgImage, title, subtitle }: ProjectHeroProps) {
+  const hasBg = !!bgImage;
+
   return (
     <section
       style={{
@@ -30,7 +32,8 @@ export default function ProjectHero({ bgImage, title, subtitle }: ProjectHeroPro
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: `url(${bgImage})`,
+        backgroundColor: hasBg ? 'transparent' : '#010527',
+        backgroundImage: hasBg ? `url(${bgImage})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

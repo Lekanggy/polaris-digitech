@@ -15,7 +15,7 @@ export default function AlmaBeachPage() {
   return (
     <div className="min-h-screen">
       <ProjectHero
-        bgImage={cms.heroBgImage ?? ''}
+        bgImage={cms.heroBgImage}
         title={cms.heroTitle ?? 'Alma Beach'}
         subtitle={cms.heroSubtitle ?? 'Evaluate survey plan and set out the proposed coastal road right of way'}
       />
@@ -34,3 +34,4 @@ export default function AlmaBeachPage() {
     </div>
   );
 }
+

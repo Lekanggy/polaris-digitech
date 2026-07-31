@@ -15,7 +15,7 @@ export default function ThematicMappingPage() {
   return (
     <div className="min-h-screen">
       <ProjectHero
-        bgImage={cms.heroBgImage ?? ''}
+        bgImage={cms.heroBgImage}
         title={cms.heroTitle ?? 'Thematic Mapping of Restricted Areas for Mining'}
         subtitle={cms.heroSubtitle ?? 'Production of Thematic Mapping of Areas Restricted From Mining Activities in Nigeria for Integration into the Nigeria Mining Cadastre Digital Database'}
       />
@@ -39,3 +39,4 @@ export default function ThematicMappingPage() {
     </div>
   );
 }
+

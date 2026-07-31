@@ -15,7 +15,7 @@ export default function AssetMappingPage() {
   return (
     <div className="min-h-screen">
       <ProjectHero
-        bgImage={cms.heroBgImage ?? ''}
+        bgImage={cms.heroBgImage}
         title={cms.heroTitle ?? 'Asset Mapping and Customer Enumeration'}
         subtitle={cms.heroSubtitle ?? 'A comprehensive geospatial data collection and field enumeration project conducted for Eko Disco in Lagos.'}
       />
@@ -34,3 +34,4 @@ export default function AssetMappingPage() {
     </div>
   );
 }
+

@@ -26,7 +26,7 @@ export default function RiskGeoPage() {
   return (
     <div className="min-h-screen">
       <ProjectHero
-        bgImage={cms.heroBgImage ?? ''}
+        bgImage={cms.heroBgImage}
         title={cms.heroTitle ?? 'The Risk Geo-Platform'}
         subtitle={cms.heroSubtitle ?? 'A tool for AXA Mansard to assess assets for insurance by current and potential customers.'}
       />
@@ -46,3 +46,4 @@ export default function RiskGeoPage() {
     </div>
   );
 }
+

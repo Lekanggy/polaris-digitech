@@ -56,7 +56,6 @@ export default function App() {
         <Route path="/projects/risk-geo-platform" element={<RiskGeoPage />} />
         <Route path="/projects/mtn-coverage-locator" element={<MTNCoveragePage />} />
         <Route path="/projects/google-street-view" element={<GoogleStreetViewPage />} />
-        {/* <Route path="/projects/google-street-view" element={<GoogleStreetViewPage />} /> */}
         <Route path="/projects/asset-mapping" element={<AssetMappingPage />} />
         <Route path="/projects/thematic-mapping" element={<ThematicMappingPage />} />
         <Route path="/projects/alma-beach" element={<AlmaBeachPage />} />

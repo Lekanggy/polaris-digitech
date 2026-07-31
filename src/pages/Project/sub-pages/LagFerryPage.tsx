@@ -27,7 +27,7 @@ export default function LagFerryPage() {
   return (
     <div className="min-h-screen">
       <ProjectHero
-        bgImage={cms.heroBgImage ?? ''}
+        bgImage={cms.heroBgImage}
         title={cms.heroTitle ?? 'Lag Ferry'}
         subtitle={cms.heroSubtitle ?? 'Deployment of Geo-enabled ICT Surveillance Centre for Boats, Ships in Lagos state.'}
       />
@@ -47,3 +47,4 @@ export default function LagFerryPage() {
     </div>
   );
 }
+

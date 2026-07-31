@@ -32,7 +32,7 @@ const FALLBACK_PROJECTS = [
   { logo: image27Logo,  title: 'Asset Mapping and Customer Enumeration', description: 'To ascertain the number of customers per asset of Eko electric in readiness for their SCADA project.', bg: '#2B295B', image: project1, href: '/projects/asset-mapping', cardBackground: '#FFFFFF' },
   { logo: partner6Logo, title: 'OLIS – Osun Land Information System', description: 'An application to effectively manage the day-to-day activities of the Osun state ministry of lands.', bg: '#2E7D32', image: project2, href: '/projects/land-parcel', cardBackground: '#FFFFFF' },
   { logo: almLogo,      title: 'Alma Beach',                          description: 'Evaluate survey plan and set out the proposed coastal road right of way.', bg: '#B0E4FE', image: alBeach, href: '/projects/alma-beach', cardBackground: '#FFFFFF' },
-  { logo: googLogo,     title: 'Google Street View',                  description: 'Collect street names, environmental features, and building details to aid remote view of locations.', bg: '#4A90D9', image: assetMap, href: '/projects/googl-street-view', cardBackground: '#FFFFFF' },
+  { logo: googLogo,     title: 'Google Street View',                  description: 'Collect street names, environmental features, and building details to aid remote view of locations.', bg: '#4A90D9', image: assetMap, href: '/projects/google-street-view', cardBackground: '#FFFFFF' },
   { logo: pol2Logo,     title: 'Thematic Mapping of restricted area for mining.', description: 'Production Of Thematic Mapping of Areas Restricted From Mining Activities in Nigeria.', bg: '#2B295B', image: tMap, href: '/projects/thematic-mapping', cardBackground: '#FFFFFF' },
 ];
 
@@ -55,6 +55,7 @@ function ChevronRight() {
     </svg>
   );
 }
+
 
 // ── Single card ───────────────────────────────────────────────────────────
 function ProjectCard({ logo, title, description, bg, cardBackground, image, href, index, isVisible, isMobile }: DisplayProject & { index: number; isVisible: boolean; isMobile: boolean }) {
@@ -83,26 +84,60 @@ function ProjectCard({ logo, title, description, bg, cardBackground, image, href
         >Read More <ChevronRight /></Link>
       </div>
 
-      {/* Desktop image */}
+      {/* Desktop image - Increased width & thicker black bezel */}
       {!isMobile && (
-        <div style={{ width: 'clamp(280px,38vw,520px)', position: 'relative', alignSelf: 'stretch', display: 'flex', alignItems: 'flex-end', paddingRight: '80px', marginBottom: '-80px' }}>
-          <div style={{ width: '100%', height: '90%', borderRadius: '16px 16px 0 0', overflow: 'hidden', border: '10px solid rgba(0,0,0,0.88)', borderBottom: 'none', boxSizing: 'border-box' }}>
+        <div style={{ width: 'clamp(380px, 48vw, 640px)', position: 'relative', alignSelf: 'stretch', display: 'flex', alignItems: 'flex-end', paddingRight: '40px', marginBottom: '-40px' }}>
+          <div style={{ width: '100%', height: '85%', borderRadius: '20px 20px 0 0', overflow: 'hidden', border: '14px solid #000', borderBottom: 'none', boxSizing: 'border-box' }}>
             <img src={image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
           </div>
         </div>
       )}
 
-      {/* Mobile image */}
+      {/* Mobile image - Fills the border box perfectly */}
       {isMobile && (
-        <div style={{ width: '100%', height: '220px', position: 'relative' }}>
-          <img src={image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.35))' }} />
+        <div style={{ 
+          position: 'relative', 
+          width: '100%', 
+          marginTop: '16px', 
+          display: 'flex', 
+          justifyContent: 'center',
+          paddingLeft: '20px',  
+          paddingRight: '20px', 
+          boxSizing: 'border-box',
+        }}>
+          <div style={{
+            width: '100%',
+            height: '240px', // Fixed height ensures the box is large enough for the image to fill
+            overflow: 'hidden',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            borderBottomLeftRadius: '0',
+            borderBottomRightRadius: '0',
+            borderLeft: '16px solid #000000',
+            borderTop: '16px solid #000000',
+            borderRight: '16px solid #000000',
+            borderBottom: 'none',
+            boxSizing: 'border-box',
+            position: 'relative',
+            marginBottom: '-24px', // Bleeds perfectly into the card's bottom edge
+          }}>
+            <img 
+              src={image} 
+              alt={title} 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover', 
+                objectPosition: 'center top', 
+                display: 'block' 
+              }} 
+            />
+          </div>
         </div>
       )}
     </motion.div>
   );
 }
-
 // ── Main section ──────────────────────────────────────────────────────────
 export default function ProjectsList() {
   const { ref, isVisible } = useScrollAnimation(0.05);
