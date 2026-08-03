@@ -199,7 +199,7 @@ export default function BlogGrid({ articles }: BlogGridProps) {
           </div>
 
           {/* Sort By button */}
-          <button
+          {/* <button
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -225,7 +225,7 @@ export default function BlogGrid({ articles }: BlogGridProps) {
               <line x1="6" y1="12" x2="18" y2="12" />
               <line x1="9" y1="18" x2="15" y2="18" />
             </svg>
-          </button>
+          </button> */}
         </motion.div>
 
         {/* Category filter tabs */}
