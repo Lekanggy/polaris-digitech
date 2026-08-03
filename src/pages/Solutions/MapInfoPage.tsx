@@ -67,7 +67,7 @@ export default function MapInfoPage() {
   const cms = (data?.partnersProducts ?? []).find(p => p.route === 'solutions/mapinfo' || p.route === '/solutions/mapinfo');
 
   const introImage  = strapiUrl(cms?.introsection?.leftImage?.url) ?? top2;
-  const introDesc   = cms?.description ?? FALLBACK_INTRO_DESC;
+  const introDesc   = cms?.introsection?.description ?? cms?.description ?? FALLBACK_INTRO_DESC;
   const quoteText   = cms?.quote?.quote ?? FALLBACK_QUOTE;
   const quoteImage  = strapiUrl(cms?.quote?.image?.url) ?? gen5;
   const kfTitle     = cms?.features?.sectionTitle ?? FALLBACK_KF_TITLE;
@@ -76,6 +76,8 @@ export default function MapInfoPage() {
     ? (cms!.features!.features!).map(f => ({ title: f.title ?? '', description: f.description ?? '' }))
     : FALLBACK_FEATURES;
   const showcaseImg = strapiUrl(cms?.showcase?.image?.url) ?? bot2;
+
+  console.log("MapInfoPage CMS Data:", cms);
 
   return (
     <div className="min-h-screen">

@@ -69,7 +69,7 @@ export default function GoogleCloudPage() {
   const cms = (data?.partnersProducts ?? []).find(p => p.route === 'solutions/google-cloud' || p.route === '/solutions/google-cloud');
 
   const introImage  = strapiUrl(cms?.introsection?.leftImage?.url) ?? gcc1;
-  const introDesc   = cms?.description ?? FALLBACK_INTRO_DESC;
+  const introDesc   = cms?.introsection?.description ?? cms?.description ?? FALLBACK_INTRO_DESC;
   const quoteText   = cms?.quote?.quote ?? FALLBACK_QUOTE;
   const quoteImage  = strapiUrl(cms?.quote?.image?.url) ?? gen8;
   const kfTitle     = cms?.features?.sectionTitle ?? FALLBACK_KF_TITLE;

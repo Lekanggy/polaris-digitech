@@ -9,6 +9,7 @@ export interface PartnerProductImage {
 
 export interface PartnerProductIntroSection {
   id?: string;
+  description?: string;
   leftImage?: PartnerProductImage;
 }
 
@@ -78,67 +79,67 @@ export interface PartnersProductsData {
 export const partnersProductQuery = `
 query PartnersProducts {
   partnersProducts {
-    documentId
-    title
     description
-    image {
-      url
-      name
-      documentId
+    documentId
+    features {
+      features {
+        Icon
+        description
+        id
+        title
+      }
+      id
+      sectionDescription
+      sectionTitle
     }
-    route
+    image {
+      name
+      url
+    }
     introsection {
+      description
       id
       leftImage {
         url
         name
-        documentId
       }
-    }
-    quote {
-      image {
-        url
-        name
-        documentId
-      }
-      quote
-      id
+      title
     }
     pricing {
       description
-      title
       id
       plans {
+        features {
+          id
+          text
+        }
         highlighted
+        id
+        name
         period
         price
-        name
-        id
-        features {
-          text
-          id
-        }
       }
+      title
     }
-    features {
+    quote {
       id
-      sectionTitle
-      sectionDescription
-      features {
-        title
-        description
-        Icon
-        id
+      image {
+        url
+        name
       }
+      quote
     }
+    route
     showcase {
+      id
       image {
         url
         name
         documentId
       }
     }
-    publishedAt
+    title
+    createdAt
   }
 }
 `

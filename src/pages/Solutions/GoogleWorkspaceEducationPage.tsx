@@ -148,7 +148,7 @@ export default function GoogleWorkspaceEducationPage() {
   );
 
   const introImage  = strapiUrl(cms?.introsection?.leftImage?.url) ?? top3;
-  const introDesc   = cms?.description ?? FALLBACK_INTRO_DESC;
+  const introDesc   = cms?.introsection?.description ?? cms?.description ?? FALLBACK_INTRO_DESC;
   const quoteText   = cms?.quote?.quote ?? FALLBACK_QUOTE;
   const quoteImage  = strapiUrl(cms?.quote?.image?.url) ?? gen6;
   const kfTitle     = cms?.features?.sectionTitle ?? FALLBACK_KF_TITLE;
