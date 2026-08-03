@@ -27,7 +27,7 @@ return (
           margin: '0 auto',
           paddingLeft: 'clamp(24px, 5vw, 80px)',
           paddingRight: 'clamp(24px, 5vw, 80px)',
-          textAlign: 'center',
+          textAlign: isMobile ? 'left' : 'center',
         }}
       >
         {/* Title */}

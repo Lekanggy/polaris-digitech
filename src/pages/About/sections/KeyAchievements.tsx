@@ -168,7 +168,7 @@ export default function KeyAchievements({ data }: KeyAchievementsProps) {
             lineHeight: '120%',
             letterSpacing: '-0.02em',
             color: '#010527',
-            textAlign: 'center',
+            textAlign: isMobile ? 'left' : 'center',
             marginBottom: '48px',
           }}
         >
@@ -190,7 +190,7 @@ export default function KeyAchievements({ data }: KeyAchievementsProps) {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               width: '100%',
-              minHeight: '480px',
+              minHeight: isMobile ? '580px' : '480px', // Increased slightly for stacked mobile layout
             }}
           >
             {/* Left arrow */}
@@ -233,14 +233,15 @@ export default function KeyAchievements({ data }: KeyAchievementsProps) {
                   zIndex: 1,
                   display: 'grid',
                   gridTemplateColumns: isMobile ? '1fr' : '1.3fr 1fr',
-                  alignItems: 'center',
-                  padding: isMobile ? '40px 52px' : '56px 88px',
+                  // Changed to flex-start on mobile so content flows top-to-bottom
+                  alignItems: isMobile ? 'flex-start' : 'center', 
+                  padding: isMobile ? '40px 48px' : '56px 88px',
                   gap: isMobile ? '24px' : '40px',
                   overflowY: isMobile ? 'auto' : 'visible',
                 }}
               >
                 {/* ── Left: title + description ── */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'left' }}>
                   <h3
                     style={{
                       fontFamily: satoshi,
@@ -253,6 +254,7 @@ export default function KeyAchievements({ data }: KeyAchievementsProps) {
                       textDecorationStyle: 'solid',
                       textUnderlineOffset: '4px',
                       margin: 0,
+                      textAlign: 'left', // Explicit left align
                     }}
                   >
                     {achievement.title}
@@ -266,6 +268,7 @@ export default function KeyAchievements({ data }: KeyAchievementsProps) {
                       letterSpacing: '0',
                       color: '#DBDBDB',
                       margin: 0,
+                      textAlign: 'left', // Explicit left align
                       display: isMobile ? '-webkit-box' : 'block',
                       WebkitLineClamp: isMobile ? 5 : undefined,
                       WebkitBoxOrient: isMobile ? 'vertical' : undefined,
@@ -276,25 +279,28 @@ export default function KeyAchievements({ data }: KeyAchievementsProps) {
                   </p>
                 </div>
 
-                {/* ── Right: year + logo — hidden on mobile ── */}
-                {!isMobile && (
-                  <div
-                    style={{
-                      position: 'relative',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '100%',
-                    }}
-                  >
-                 <span
+                {/* ── Right: logo (year hidden on mobile) ── */}
+                <div
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    // Left align the image container on mobile so it matches text
+                    alignItems: isMobile ? 'flex-start' : 'center',
+                    justifyContent: isMobile ? 'flex-start' : 'center',
+                    height: '100%',
+                    marginTop: isMobile ? '8px' : '0',
+                  }}
+                >
+                  {/* Render year ONLY on desktop */}
+                  {!isMobile && (
+                    <span
                       style={{
                         fontFamily: satoshi,
                         fontWeight: 900,
                         fontSize: 'clamp(100px, 12vw, 160px)',
                         lineHeight: '150%',
                         letterSpacing: '0',
-                        // White text with low opacity to blend with the background
                         color: 'rgba(255, 255, 255, 0.2)', 
                         WebkitTextStroke: '1px rgba(255,255,255,0.1)',
                         userSelect: 'none',
@@ -308,23 +314,25 @@ export default function KeyAchievements({ data }: KeyAchievementsProps) {
                     >
                       {achievement.year}
                     </span>
-                    <img
-                      src={achievement.logo}
-                      alt="Achievement logo"
-                      style={{
-                        position: 'absolute',
-                        zIndex: 2,
-                        width: 'clamp(140px, 16vw, 220px)',
-                        height: 'auto',
-                        objectFit: 'contain',
-                        top: '40%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5))',
-                      }}
-                    />
-                  </div>
-                )}
+                  )}
+                  
+                  <img
+                    src={achievement.logo}
+                    alt="Achievement logo"
+                    style={{
+                      // Switch to relative on mobile so it stacks properly in flow
+                      position: isMobile ? 'relative' : 'absolute',
+                      zIndex: 2,
+                      width: isMobile ? '120px' : 'clamp(140px, 16vw, 220px)',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      top: isMobile ? 'auto' : '40%',
+                      left: isMobile ? '0' : '50%',
+                      transform: isMobile ? 'none' : 'translateX(-50%)',
+                      filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5))',
+                    }}
+                  />
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>

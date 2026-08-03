@@ -278,7 +278,7 @@ return (
         }}
       >
         {/* ── Header ── */}
-        <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+        <div style={{ textAlign: isMobile ? 'left' : 'center', marginBottom: '64px' }}>
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

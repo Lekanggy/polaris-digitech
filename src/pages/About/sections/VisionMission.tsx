@@ -68,19 +68,21 @@ function VMCard({ icon, title, body, delay, isVisible, isMobile }: VMCardProps) 
       style={{
         flex: isMobile ? 'unset' : '1 1 0',
         width: isMobile ? '100%' : undefined,
-        maxWidth: isMobile ? '100%' : '433px',
+        maxWidth: isMobile ? '420px' : '433px',
         minHeight: isMobile ? 'auto' : '280px',
-        borderRadius: '40px',
-        paddingTop: '26px',
-        paddingRight: '22px',
-        paddingBottom: '26px',
-        paddingLeft: '22px',
+        borderRadius: isMobile ? '24px' : '40px',
+        paddingTop: isMobile ? '20px' : '26px',
+        paddingRight: isMobile ? '18px' : '22px',
+        paddingBottom: isMobile ? '20px' : '26px',
+        paddingLeft: isMobile ? '18px' : '22px',
         backgroundColor: '#F0F5FF',
         display: 'flex',
         flexDirection: 'column',
-        gap: '12px',
+        gap: isMobile ? '10px' : '12px',
         boxSizing: 'border-box',
         alignSelf: isMobile ? 'stretch' : 'center',
+        textAlign: 'left',
+        border: 'none', // Explicitly remove any borders
       }}
     >
       {/* Icon + title row */}
@@ -92,7 +94,7 @@ function VMCard({ icon, title, body, delay, isVisible, isMobile }: VMCardProps) 
           style={{
             fontFamily: satoshi,
             fontWeight: 600,
-            fontSize: '20px',
+            fontSize: isMobile ? '18px' : '20px',
             lineHeight: '130%',
             color: '#010527',
             margin: 0,
@@ -107,7 +109,7 @@ function VMCard({ icon, title, body, delay, isVisible, isMobile }: VMCardProps) 
         style={{
           fontFamily: satoshi,
           fontWeight: 400,
-          fontSize: '16px',
+          fontSize: isMobile ? '14px' : '16px',
           lineHeight: '150%',
           letterSpacing: '0',
           color: '#46485F',
@@ -138,12 +140,13 @@ function CultureCard({ isVisible, isMobile, title, body, imageUrl }: CultureCard
       style={{
         flex: isMobile ? 'unset' : '1 1 0',
         width: isMobile ? '100%' : undefined,
-        maxWidth: isMobile ? '100%' : '433px',
-        borderRadius: '40px',
+        maxWidth: isMobile ? '420px' : '433px',
+        borderRadius: isMobile ? '24px' : '40px',
         overflow: 'hidden',
         position: 'relative',
         alignSelf: isMobile ? 'stretch' : 'flex-start',
         marginTop: isMobile ? '0' : '-48px',
+        border: 'none', // Explicitly remove any borders
       }}
     >
       {/* Photo */}
@@ -162,23 +165,28 @@ function CultureCard({ isVisible, isMobile, title, body, imageUrl }: CultureCard
           right: 0,
           top: '25%',
           background: 'linear-gradient(180deg, rgba(11, 19, 83, 0) 10.58%, rgba(11, 19, 83, 0.850962) 52.4%, #01062F 100%)',
-          padding: '28px 22px 26px',
+          paddingTop: isMobile ? '120px' : '200px', 
+          paddingBottom: isMobile ? '20px' : '26px',
+          paddingLeft: isMobile ? '18px' : '22px',
+          paddingRight: isMobile ? '18px' : '22px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
           gap: '10px',
+          textAlign: 'left',
+          border: 'none', // Explicitly remove any borders
         }}
       >
         {/* Icon + title */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-            <CultureIcon size={32} />
+            <CultureIcon size={isMobile ? 26 : 32} />
           </span>
           <h3
             style={{
               fontFamily: satoshi,
               fontWeight: 500,
-              fontSize: '32px',
+              fontSize: isMobile ? '24px' : '32px',
               lineHeight: '140%',
               letterSpacing: '0',
               color: '#FFFFFF',
@@ -194,7 +202,7 @@ function CultureCard({ isVisible, isMobile, title, body, imageUrl }: CultureCard
           style={{
             fontFamily: satoshi,
             fontWeight: 400,
-            fontSize: '16px',
+            fontSize: isMobile ? '14px' : '16px',
             lineHeight: '150%',
             letterSpacing: '0',
             color: 'rgba(255,255,255,0.82)',
@@ -251,8 +259,8 @@ export default function VisionMission({ vision, cultureImage }: VisionMissionPro
           background: '#FFFFFF',
           borderRadius: '40px 40px 0 0',
           width: '100%',
-          paddingTop: '80px',
-          paddingBottom: '80px',
+          paddingTop: isMobile ? '48px' : '80px',
+          paddingBottom: isMobile ? '48px' : '80px',
           paddingLeft: 'clamp(24px, 5vw, 80px)',
           paddingRight: 'clamp(24px, 5vw, 80px)',
           boxSizing: 'border-box',
@@ -265,9 +273,10 @@ export default function VisionMission({ vision, cultureImage }: VisionMissionPro
             margin: '0 auto',
             display: 'flex',
             flexDirection: isMobile ? 'column' : 'row',
-            alignItems: isMobile ? 'stretch' : 'flex-end',
+            alignItems: isMobile ? 'center' : 'flex-end',
             justifyContent: 'center',
             gap: '24px',
+            border: 'none', // Ensure no borders on the grid container
           }}
         >
           {/* Mission */}

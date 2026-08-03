@@ -74,8 +74,8 @@ export default function AboutHero({ data }: AboutHeroProps) {
             flexDirection: 'column',
             alignItems: 'center',
             textAlign: 'center',
-            paddingTop: '180px',
-            paddingBottom: '100px',
+            paddingTop: isMobile ? '120px' : '180px', // Reduced top padding on mobile
+            paddingBottom: isMobile ? '40px' : '100px', // Reduced bottom padding on mobile
             paddingLeft: 'clamp(24px, 5vw, 80px)',
             paddingRight: 'clamp(24px, 5vw, 80px)',
             maxWidth: '1280px',
@@ -129,11 +129,12 @@ export default function AboutHero({ data }: AboutHeroProps) {
             width: '100%',
             paddingLeft: 'clamp(24px, 5vw, 80px)',
             paddingRight: 'clamp(24px, 5vw, 80px)',
-            paddingBottom: '100px',
+            paddingBottom: isMobile ? '40px' : '100px',
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-            gap: isMobile ? '32px' : 'clamp(48px, 8vw, 120px)',
+            gap: isMobile ? '24px' : 'clamp(48px, 8vw, 120px)',
             alignItems: 'center',
+            justifyItems: isMobile ? 'center' : 'start', // Center items on mobile
           }}
         >
           {/* Left — hero image */}
@@ -147,7 +148,7 @@ export default function AboutHero({ data }: AboutHeroProps) {
               borderRadius: '50%',
               overflow: 'hidden',
               maxWidth: isMobile ? '260px' : '420px',
-              justifySelf: 'center',
+              justifySelf: 'center', // Always center the image
             }}
           >
             <img
@@ -162,7 +163,13 @@ export default function AboutHero({ data }: AboutHeroProps) {
             initial={{ opacity: 0, x: isMobile ? 0 : 32 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.25 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
+            style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              gap: '24px',
+              textAlign: isMobile ? 'center' : 'left', // Center text on mobile
+              alignItems: isMobile ? 'center' : 'flex-start', // Center the block container on mobile
+            }}
           >
             {rightParagraphs.map((paragraph, i) => (
               <p
@@ -174,6 +181,7 @@ export default function AboutHero({ data }: AboutHeroProps) {
                   lineHeight: '175%',
                   letterSpacing: '-0.01em',
                   color: '#DBDBDB',
+                  maxWidth: '680px'
                 }}
               >
                 {paragraph}
@@ -197,7 +205,8 @@ export default function AboutHero({ data }: AboutHeroProps) {
             paddingBottom: isMobile ? '60px' : '100px',
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-            gap: isMobile ? '40px' : '0',
+            gap: isMobile ? '32px' : '0',
+            justifyItems: isMobile ? 'center' : 'stretch', // Center the stat blocks on mobile
           }}
         >
           {stats.map((stat) => (

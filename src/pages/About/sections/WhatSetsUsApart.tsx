@@ -32,12 +32,9 @@ interface ValueItemProps {
   index: number;
   isVisible: boolean;
   isMobile: boolean;
-  isLastInRow: boolean;
 }
 
-function ValueItem({ image, title, description, index, isVisible, isMobile, isLastInRow }: ValueItemProps) {
-  const showRightDivider = !isMobile && !isLastInRow;
-
+function ValueItem({ image, title, description, index, isVisible, isMobile }: ValueItemProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -47,12 +44,12 @@ function ValueItem({ image, title, description, index, isVisible, isMobile, isLa
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
+        // Align left on mobile, center on desktop
+        alignItems: isMobile ? 'flex-start' : 'center',
+        textAlign: isMobile ? 'left' : 'center',
         padding: isMobile ? '32px 20px' : '40px 32px 48px',
         position: 'relative',
-        borderRight: showRightDivider ? '1px solid rgba(40,49,114,0.15)' : 'none',
-        borderBottom: isMobile ? '1px solid rgba(40,49,114,0.15)' : 'none',
+        border: 'none', // Removed all borders and dividers
       }}
     >
       {/* Image */}
@@ -90,10 +87,12 @@ function ValueItem({ image, title, description, index, isVisible, isMobile, isLa
           fontSize: '16px',
           lineHeight: '150%',
           letterSpacing: '0',
-          textAlign: 'center',
+          // Align left on mobile, center on desktop
+          textAlign: isMobile ? 'left' : 'center',
           color: '#46485F',
-          maxWidth: '260px',
-          margin: '0 auto',
+          // Remove auto margins on mobile so it doesn't center
+          maxWidth: isMobile ? '100%' : '260px',
+          margin: isMobile ? '0' : '0 auto',
         }}
       >
         {description}
@@ -115,8 +114,7 @@ export default function WhatSetsUsApart({ data }: WhatSetsUsApartProps) {
   const sectionTitle       = data?.title       ?? 'What Sets Us Apart';
   const sectionDescription = data?.description ?? 'From strategic partnerships to expert delivery, we offer tailored solutions, reliable execution, and deep industry expertise that drive measurable impact.';
 
-  // Merge CMS items with fallbacks:
-  // CMS items come first (with their API images), then fill remaining slots from fallback
+  // Merge CMS items with fallbacks
   const cmsItems = (data?.items ?? []).map((item, i) => ({
     image:       strapiUrl(item.image?.url) ?? FALLBACK_IMAGES[i] ?? val1,
     title:       item.title       ?? FALLBACK_VALUES[i]?.title ?? '',
@@ -153,7 +151,7 @@ export default function WhatSetsUsApart({ data }: WhatSetsUsApartProps) {
         }}
       >
         {/* ── Section header ── */}
-        <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+        <div style={{ textAlign: isMobile ? 'left' : 'center', marginBottom: '64px' }}>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
@@ -181,7 +179,7 @@ export default function WhatSetsUsApart({ data }: WhatSetsUsApartProps) {
               lineHeight: '160%',
               color: '#46485F',
               maxWidth: '560px',
-              margin: '0 auto',
+              margin: isMobile ? '0' : '0 auto',
             }}
           >
             {sectionDescription}
@@ -201,13 +199,11 @@ export default function WhatSetsUsApart({ data }: WhatSetsUsApartProps) {
                 index={i}
                 isVisible={isVisible}
                 isMobile={isMobile}
-                isLastInRow={i === topRow.length - 1}
               />
             ))}
           </div>
 
-          {/* Horizontal divider between rows */}
-          <div style={{ height: '1px', background: 'rgba(40,49,114,0.2)', margin: '0' }} />
+          {/* Horizontal divider between rows completely removed */}
 
           {/* Bottom row */}
           <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'stretch' }}>
@@ -220,7 +216,6 @@ export default function WhatSetsUsApart({ data }: WhatSetsUsApartProps) {
                 index={i + 3}
                 isVisible={isVisible}
                 isMobile={isMobile}
-                isLastInRow={i === bottomRow.length - 1}
               />
             ))}
           </div>
