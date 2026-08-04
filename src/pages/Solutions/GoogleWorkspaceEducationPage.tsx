@@ -101,10 +101,10 @@ function IntroSection({ isMobile, introImage, description }: { isMobile: boolean
 return (
        <section ref={ref} style={{ background: '#fff', paddingTop: isMobile ? '80px' : '160px', paddingBottom: '80px' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', paddingLeft: 'clamp(24px, 5vw, 80px)', paddingRight: 'clamp(24px, 5vw, 80px)', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.4fr 1fr', gap: isMobile ? '32px' : 'clamp(40px, 6vw, 80px)', alignItems: 'stretch' }}>
-        <motion.div initial={{ opacity: 0, x: -32 }} animate={isVisible ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }} style={{ background: '#E8F5E9', borderRadius: '24px', overflow: 'hidden', width: '100%', aspectRatio: '1 / 1' }}>
+        <motion.div initial={{ opacity: 0, x: -32 }} animate={isVisible ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }} style={{ background: '#E8F5E9', borderRadius: '24px', overflow: 'hidden', width: '100%', aspectRatio: '1 / 1', order: isMobile ? 2 : 1 }}>
           <img src={introImage} alt="Google Workspace for Education" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         </motion.div>
-        <motion.div initial={{ opacity: 0, x: 32 }} animate={isVisible ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.1 }}>
+        <motion.div initial={{ opacity: 0, x: 32 }} animate={isVisible ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.1 }} style={{ order: isMobile ? 1 : 2 }}>
           <h1 style={{ fontFamily: satoshi, fontWeight: 700, fontSize: 'clamp(32px, 4.5vw, 56px)', lineHeight: '115%', letterSpacing: '-0.02em', color: '#283172', marginBottom: '24px' }}>Google Workspace for Education</h1>
           <p style={{ fontFamily: satoshi, fontWeight: 400, fontSize: '15px', lineHeight: '170%', color: '#46485F' }}>{description}</p>
         </motion.div>

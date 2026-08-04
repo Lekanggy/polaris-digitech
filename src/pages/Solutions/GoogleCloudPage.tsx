@@ -45,11 +45,11 @@ return (
       >
         <motion.div
           initial={{ opacity: 0, x: -32 }} animate={isVisible ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}
-          style={{ width: '100%' }}
+          style={{ width: '100%', order: isMobile ? 2 : 1 }}
         >
           <img src={introImage} alt="Google Cloud Platform" style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '24px', objectFit: 'cover' }} />
         </motion.div>
-        <motion.div initial={{ opacity: 0, x: 32 }} animate={isVisible ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.1 }}>
+        <motion.div initial={{ opacity: 0, x: 32 }} animate={isVisible ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.1 }} style={{ order: isMobile ? 1 : 2 }}>
           <h1 style={{ fontFamily: satoshi, fontWeight: 700, fontSize: 'clamp(32px, 4.5vw, 56px)', lineHeight: '115%', letterSpacing: '-0.02em', color: '#283172', marginBottom: '24px' }}>
             Google Cloud Platform
           </h1>
