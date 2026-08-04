@@ -276,6 +276,7 @@ export default function Products({ data }: { data?: Product }) {
                   description={p.description}
                   delay={0.15 + i * 0.1}
                   isVisible={isVisible}
+                  route={p.route}
                 />
               ))}
             </div>
