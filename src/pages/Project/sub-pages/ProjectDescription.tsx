@@ -80,7 +80,7 @@ export default function ProjectDescription({
               lineHeight: '150%',
               letterSpacing: '-0.02em',
               color: '#46485F',
-              maxWidth: '900px',
+              maxWidth: isMobile ? '100%' : '75vw',
             }}
           >
             {description}

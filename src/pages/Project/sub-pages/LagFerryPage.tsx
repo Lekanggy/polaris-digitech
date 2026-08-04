@@ -10,19 +10,11 @@ import { useProjectData } from './useProjectData';
 const HREF = '/projects/lag-ferry';
 
 const FB_FIELDS   = [{ label: 'Industry', value: 'Government' }, { label: 'Service', value: 'Geo-enabled ICT Surveillance Centre' }, { label: 'Year', value: '2023' }, { label: 'Website', value: '-' }];
-const FB_FEATURES = [
-  { icon: 'geo' as const,           title: 'Geo-Enabled',             description: 'LAGFerry has a location-based system that allows it to collect and analyse data from various sources and present it on a map.' },
-  { icon: 'video' as const,         title: 'Video Surveillance',       description: 'A network of video cameras strategically placed in different areas to monitor activities and alert authorities.' },
-  { icon: 'emergency' as const,     title: 'Emergency Response',       description: 'The surveillance center can quickly send alerts to relevant authorities, including police, fire department, and ambulance services.' },
-  { icon: 'realtime' as const,      title: 'Real-Time Data Collection',description: 'LAGFerry collects and analyses real-time data from various sources to provide timely and accurate information.' },
-  { icon: 'collaboration' as const, title: 'Collaboration',            description: 'LAGFerry promotes collaboration among different agencies to enhance security and emergency response.' },
-  { icon: 'mobile' as const,        title: 'Mobile App',               description: 'The centre has a mobile app that allows citizens to report suspicious activities and receive alerts.' },
-];
 
 export default function LagFerryPage() {
   const cms = useProjectData(HREF);
   const metaFields = cms.metaFields.length > 0 ? cms.metaFields : FB_FIELDS;
-  const features   = cms.features.length   > 0 ? cms.features   : FB_FEATURES;
+  const features   = cms.features;
 
   return (
     <div className="min-h-screen">
@@ -41,7 +33,7 @@ export default function LagFerryPage() {
         objectiveNode={!cms.objectiveText ? (<><span style={{ color: '#8A93B2' }}>The objective of the project is to </span><span style={{ color: '#283172' }}>modernize the water transport sector by enhancing the safety and security of passengers and crew, while providing a real-time data pipeline for maritime stakeholders.</span></>) : undefined}
         image={cms.objectiveImage}
       />
-      <ProjectKeyFeatures features={features} heading="Key Features" />
+      {features.length > 0 ? <ProjectKeyFeatures features={features} heading="Key Features" /> : null}
       <ProjectGallery imageLarge={cms.galleryLarge} imageBottomLeft={cms.galleryLeft} imageBottomRight={cms.galleryRight} />
       <Footer />
     </div>

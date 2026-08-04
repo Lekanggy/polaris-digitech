@@ -121,6 +121,10 @@ export default function ProjectKeyFeatures({
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
+  if (!features || features.length === 0) {
+    return null;
+  }
+
   return (
     <section
       ref={ref}

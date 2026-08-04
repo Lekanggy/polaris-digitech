@@ -10,18 +10,11 @@ import { useProjectData } from './useProjectData';
 const HREF = '/projects/risk-geo-platform';
 
 const FB_FIELDS   = [{ label: 'Industry', value: 'Insurance' }, { label: 'Service', value: 'Risk Geoplatform' }, { label: 'Year', value: '2016 - 2022' }, { label: 'Website', value: '-' }];
-const FB_FEATURES = [
-  { icon: 'database' as const,      title: 'Centralized Repository',  description: 'High-quality address data validates addresses in real-time, ensuring they are accurate and complete.' },
-  { icon: 'globe' as const,         title: 'Geospatial analysis',     description: 'The portal standardizes address data to conform to globally recognized formats.' },
-  { icon: 'monitor' as const,       title: 'Real-time Monitoring',    description: 'Geocoding technology assigns coordinates to each address, allowing businesses to plot locations on a map.' },
-  { icon: 'geo' as const,           title: 'Customizable Alerts',     description: 'The portal cleanses address data by removing duplicates, incorrect data, and incomplete records.' },
-  { icon: 'collaboration' as const, title: 'Collaboration Tools',     description: 'The portal enriches address data with additional information such as demographic and property data.' },
-];
 
 export default function RiskGeoPage() {
   const cms = useProjectData(HREF);
   const metaFields = cms.metaFields.length > 0 ? cms.metaFields : FB_FIELDS;
-  const features   = cms.features.length   > 0 ? cms.features   : FB_FEATURES;
+  const features   = cms.features;
 
   return (
     <div className="min-h-screen">
@@ -40,7 +33,7 @@ export default function RiskGeoPage() {
         objectiveNode={!cms.objectiveText ? (<><span style={{ color: '#8A93B2' }}>The objective of the project is to </span><span style={{ color: '#283172' }}>build a platform that enables AXA Mansard to accurately evaluate both prospective and existing assets, ensuring customers are placed on the correct policies.</span></>) : undefined}
         image={cms.objectiveImage}
       />
-      <ProjectKeyFeatures features={features} heading="Key Features" />
+      {features.length > 0 ? <ProjectKeyFeatures features={features} heading="Key Features" /> : null}
       <ProjectGallery imageLarge={cms.galleryLarge} imageBottomLeft={cms.galleryLeft} imageBottomRight={cms.galleryRight} />
       <Footer />
     </div>

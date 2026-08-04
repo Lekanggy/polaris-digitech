@@ -18,7 +18,7 @@ import BlogDetailHero from './BlogDetailHero';
 import BlogArticleBody from './BlogArticleBody';
 import MoreArticles from './MoreArticles';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
-import { FEATURED_ARTICLE, ARTICLES, normaliseBlog } from '../blogData';
+import { normaliseBlog } from '../blogData';
 import type { BlogArticle } from '../blogData';
 import { useGraphQLQuery } from '../../../hooks/useGraphQLQuery';
 import { blogsQuery } from '../../../services/queries/blogQuery';
@@ -37,7 +37,7 @@ export default function BlogDetailPage() {
 
   // Normalise all CMS posts; Apollo cache means no extra network request
   const cmsPosts: BlogArticle[] = (data?.blogs ?? []).map(normaliseBlog);
-  const allCms = cmsPosts.length > 0 ? cmsPosts : [FEATURED_ARTICLE, ...ARTICLES];
+  const allCms = cmsPosts;
 
   // Find the article whose slug matches the URL param
   const article = allCms.find(a => a.id === id);
