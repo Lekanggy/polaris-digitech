@@ -1,9 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import hero2 from '../../assets/hero2.png';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import type { HeroSection } from '../../services/queries/homeQuery';
-import { strapiUrl } from '../../services/queries/homeQuery';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -32,7 +30,7 @@ export default function Hero({ data }: HeroProps) {
   const badge = data?.badage ?? FALLBACK_BADGE;
   const heading = data?.mainDescription ?? FALLBACK_HEADING;
   const description = data?.bottomDescription ?? FALLBACK_DESCRIPTION;
-  const bgImage = strapiUrl(data?.bgImage?.url) ?? hero2;
+
   return (
     <section
       id="hero"
@@ -42,13 +40,55 @@ export default function Hero({ data }: HeroProps) {
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center',
+        background: '#000',
       }}
     >
-     
-      {/* Main content — vertically and horizontally centered */}
+      {/* ── Earth orbital loop background ── */}
+      {/* Wrapper scales the iframe like background-size: cover */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          overflow: 'hidden',
+          zIndex: 0,
+        }}
+      >
+        <iframe
+          src="/earth-hero-loop.html"
+          title=""
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            // Anchor to centre so the scale stays centred
+            top: '50%',
+            left: '50%',
+            // Native animation canvas is 1536 × 825 (≈ 1.86 : 1)
+            // Make it big enough to cover any viewport while keeping
+            // the correct aspect ratio, then re-centre with translate.
+            width: 'max(100%, calc(100vh * (1536 / 825)))',
+            height: 'max(100%, calc(100vw * (825 / 1536)))',
+            transform: 'translate(-50%, -50%)',
+            border: 'none',
+            pointerEvents: 'none',
+          }}
+        />
+      </div>
+
+      {/* Dark gradient overlay so text stays legible */}
+      {/* <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.62) 100%)',
+          zIndex: 1,
+        }}
+      /> */}
+
+      {/* Main content */}
       <div
         style={{
           position: 'relative',
@@ -152,42 +192,43 @@ export default function Hero({ data }: HeroProps) {
               alignItems: 'center',
             }}
           >
-            {/* Schedule a meeting — muted glass button */}
-             <Link
-               to="/schedule"
-               style={{
-                 display: 'inline-flex',
-                 alignItems: 'center',
-                 justifyContent: 'center',
-                 fontFamily: satoshi,
-                 fontSize: isMobile ? '15px' : '16px',
-                 fontWeight: 700,
-                 lineHeight: '150%',
-                 letterSpacing: '0',
-                 width: isMobile ? '100%' : '240px',
-                 maxWidth: isMobile ? '320px' : 'none',
-                 height: '48px',
-                 paddingTop: '8px',
-                 paddingBottom: '8px',
-                 paddingLeft: isMobile ? '24px' : '36px',
-                 paddingRight: isMobile ? '24px' : '36px',
-                 gap: '8px',
-                 background: 'rgba(207, 207, 207, 0.4)',
-                 //mixBlendMode: 'screen',
-                 border: '1px solid rgba(255,255,255,0.18)',
-                 borderRadius: '10px',
-                 color: '#FFFFFF',
-                 textDecoration: 'none',
-                 transition: 'opacity 200ms',
-                 cursor: 'pointer',
-               }}
-               onMouseEnter={e => (e.currentTarget.style.opacity = '0.9')}
-               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-             >
-               Schedule a meeting
-             </Link>
+            {/* Schedule a meeting */}
+            <Link
+              to="/schedule"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: satoshi,
+                fontSize: isMobile ? '15px' : '16px',
+                fontWeight: 700,
+                lineHeight: '150%',
+                letterSpacing: '0',
+                width: isMobile ? '100%' : '240px',
+                maxWidth: isMobile ? '320px' : 'none',
+                height: '48px',
+                paddingTop: '8px',
+                paddingBottom: '8px',
+                paddingLeft: isMobile ? '24px' : '36px',
+                paddingRight: isMobile ? '24px' : '36px',
+                gap: '8px',
+                background: 'rgba(207, 207, 207, 0.4)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                borderRadius: '10px',
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                transition: 'opacity 200ms',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '0.9')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+            >
+              Schedule a meeting
+            </Link>
 
-            {/* View All Projects — gold */}
+            {/* View All Projects */}
             <a
               href="projects"
               style={{
