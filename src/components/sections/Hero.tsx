@@ -31,6 +31,8 @@ export default function Hero({ data }: HeroProps) {
   const heading = data?.mainDescription ?? FALLBACK_HEADING;
   const description = data?.bottomDescription ?? FALLBACK_DESCRIPTION;
 
+
+
   return (
     <section
       id="hero"

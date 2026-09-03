@@ -14,6 +14,13 @@ import { strapiUrl } from '../../services/queries/homeQuery';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
+// ── Hardcoded fallback routes per position (used when CMS has no href) ────
+const fallbackRoutes = [
+  '/projects/lag-ferry',
+  '/projects/risk-geo-platform',
+  '/projects/mtn-coverage-locator',
+];
+
 // ── Hardcoded fallback projects — preserved ────────────────────────────────
 const fallbackProjects = [
   {
@@ -27,7 +34,7 @@ const fallbackProjects = [
     btnBorder: '1px solid rgba(255,255,255,0.4)',
     textColor: '#fff',
     image: project2,
-    route: '/projects/lagferry-ict-surveillance-center',
+    route: fallbackRoutes[0],
   },
   {
     id: 2,
@@ -40,7 +47,7 @@ const fallbackProjects = [
     btnBorder: '1px solid rgba(255,255,255,0.3)',
     textColor: '#fff',
     image: project1,
-    route: '/solutions/risk-geo-platform',
+    route: fallbackRoutes[1],
   },
   {
     id: 3,
@@ -53,7 +60,7 @@ const fallbackProjects = [
     btnBorder: '1px solid rgba(0,0,0,0.2)',
     textColor: '#1a1a1a',
     image: project3,
-    route: '/projects/mtn-coverage-locator',
+    route: fallbackRoutes[2],
   },
 ];
 
@@ -351,6 +358,7 @@ export default function Projects({ data }: ProjectsProps) {
             btnBorder: '1px solid rgba(255,255,255,0.3)',
             textColor: style.textColor,
             image: cmsImage ?? style.image,
+            route: item.href ?? fallbackRoutes[idx] ?? undefined,
           };
         })
       : fallbackProjects;

@@ -81,6 +81,7 @@ export const homeQuery = `
           logo
           description
           title
+          href
           image {
             name
             url
@@ -185,6 +186,7 @@ export const homeSubscription = `
           logo
           description
           title
+          href
           image {
             name
             url
@@ -285,6 +287,7 @@ export interface ProjectItem {
   logo?: string;
   description?: string;
   title?: string;
+  href?: string;
   image?: StrapiImage;
 }
 
