@@ -9,7 +9,10 @@ export default defineConfig({
       gifsicle: { optimizationLevel: 7 },
       optipng: { optimizationLevel: 7 },
       mozjpeg: { quality: 70 },
-      pngquant: { quality: [0.6, 0.8] },
+      // pngquant is disabled — its Windows binary (pngquant.exe) fails to
+      // spawn when the project path contains spaces or OneDrive redirection.
+      // optipng above already handles PNG compression.
+      pngquant: false,
       svgo: {
         plugins: [{ name: 'removeViewBox' }, { name: 'cleanupIDs', active: false }]
       },

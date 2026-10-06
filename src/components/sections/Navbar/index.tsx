@@ -184,16 +184,13 @@ export default function Navbar() {
             }}
           >
             {/* Logo — navigates home */}
-            <button
-              onClick={() => navigate('/')}
-              className="shrink-0 bg-transparent border-0 p-0 cursor-pointer"
-            >
+            <Link to="/" className="shrink-0">
               <img
                 src={whitelogo}
                 alt="Polaris Digitech"
                 style={{ height: isMobile ? '26px' : '36px', width: 'auto', objectFit: 'contain' }}
               />
-            </button>
+            </Link>
 
             {/* Desktop nav links */}
             <ul className="hidden lg:flex items-center gap-7 flex-1 justify-center">

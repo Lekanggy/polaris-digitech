@@ -24,28 +24,34 @@ import { getLinkPath } from '../../../utils/getLink';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-// ── Hardcoded fallback projects ────────────────────────────────────────────
-const FALLBACK_PROJECTS = [
-  { logo: image23Logo,  title: 'Geo-enabled ICT Surveillance Centre', description: 'Deployment of Geo-enabled ICT Surveillance centre for Boats, Ships in Lagos state.', bg: '#4A90D9', image: project1, href: '/projects/lag-ferry', cardBackground: '#FFFFFF' },
-  { logo: partner7Logo, title: 'Risk Geo-Platform',                   description: 'Polaris Digitech Limited has developed a platform that helps AXA Mansard assess insured assets.', bg: '#00008E', image: project2, href: '/projects/risk-geo-platform', cardBackground: '#FFFFFF' },
-  { logo: mtnLogo,      title: 'MTN Coverage Locator',                description: 'Providing MTNN staff and users with a web application to check signal strength, report poor coverage.', bg: '#F5C518', image: project3, href: '/projects/mtn-coverage-locator', cardBackground: '#FFFFFF' },
-  { logo: image27Logo,  title: 'Asset Mapping and Customer Enumeration', description: 'To ascertain the number of customers per asset of Eko electric in readiness for their SCADA project.', bg: '#2B295B', image: project1, href: '/projects/asset-mapping', cardBackground: '#FFFFFF' },
-  { logo: partner6Logo, title: 'OLIS – Osun Land Information System', description: 'An application to effectively manage the day-to-day activities of the Osun state ministry of lands.', bg: '#2E7D32', image: project2, href: '/projects/land-parcel', cardBackground: '#FFFFFF' },
-  { logo: almLogo,      title: 'Alma Beach',                          description: 'Evaluate survey plan and set out the proposed coastal road right of way.', bg: '#B0E4FE', image: alBeach, href: '/projects/alma-beach', cardBackground: '#FFFFFF' },
-  { logo: googLogo,     title: 'Google Street View',                  description: 'Collect street names, environmental features, and building details to aid remote view of locations.', bg: '#4A90D9', image: assetMap, href: '/projects/google-street-view', cardBackground: '#FFFFFF' },
-  { logo: pol2Logo,     title: 'Thematic Mapping of restricted area for mining.', description: 'Production Of Thematic Mapping of Areas Restricted From Mining Activities in Nigeria.', bg: '#2B295B', image: tMap, href: '/projects/thematic-mapping', cardBackground: '#FFFFFF' },
+// ── Ordered project style config ───────────────────────────────────────────
+// Order and colours are fixed regardless of CMS sort order.
+// `key` matches a substring of the project title (case-insensitive).
+const PROJECT_ORDER: { key: string; bg: string; textColor: string; logo: string; image: string; href: string }[] = [
+  { key: 'lag ferry',      bg: '#0093DD', textColor: '#FFFFFF', logo: image23Logo,  image: project2,  href: '/projects/lag-ferry' },
+  { key: 'axa',            bg: '#00008E', textColor: '#FFFFFF', logo: partner7Logo, image: project1,  href: '/projects/risk-geo-platform' },
+  { key: 'mtn',            bg: '#FFC403', textColor: '#000000', logo: mtnLogo,      image: project3,  href: '/projects/mtn-coverage-locator' },
+  { key: 'olis',           bg: '#24613D', textColor: '#FFFFFF', logo: partner6Logo, image: project2,  href: '/projects/land-parcel' },
+  { key: 'ekedc',          bg: '#2B295B', textColor: '#FFFFFF', logo: image27Logo,  image: project1,  href: '/projects/asset-mapping' },
+  { key: 'google street',  bg: '#F8CE08', textColor: '#000000', logo: googLogo,     image: assetMap,  href: '/projects/google-street-view' },
+  { key: 'thematic',       bg: '#033705', textColor: '#FFFFFF', logo: pol2Logo,     image: tMap,      href: '/projects/thematic-mapping' },
+  { key: 'alma beach',     bg: '#B0E4FE', textColor: '#000000', logo: almLogo,      image: alBeach,   href: '/projects/alma-beach' },
 ];
 
-const FALLBACK_LOGOS   = [image23Logo, partner7Logo, mtnLogo, image27Logo, partner6Logo, almLogo, googLogo, pol2Logo];
-const FALLBACK_IMAGES  = [project1, project2, project3, project1, project2, alBeach, assetMap, tMap];
-const FALLBACK_BGS     = ['#4A90D9','#00008E','#F5C518','#2B295B','#2E7D32','#B0E4FE','#4A90D9','#2B295B'];
+// ── Hardcoded fallback projects (matches PROJECT_ORDER exactly) ────────────
+const FALLBACK_PROJECTS = [
+  { logo: image23Logo,  title: 'Geo-enabled ICT Surveillance Centre (Lag Ferry)',  description: 'Deployment of Geo-enabled ICT Surveillance centre for Boats, Ships in Lagos state.',                      bg: '#0093DD', textColor: '#FFFFFF', image: project2, href: '/projects/lag-ferry' },
+  { logo: partner7Logo, title: 'AXA Risk Geo-Platform',                            description: 'Polaris Digitech Limited has developed a platform that helps AXA Mansard assess insured assets.',           bg: '#00008E', textColor: '#FFFFFF', image: project1, href: '/projects/risk-geo-platform' },
+  { logo: mtnLogo,      title: 'MTN Coverage Locator',                             description: 'Providing MTNN staff and users with a web application to check signal strength and report poor coverage.',   bg: '#FFC403', textColor: '#000000', image: project3, href: '/projects/mtn-coverage-locator' },
+  { logo: partner6Logo, title: 'OLIS – Osun Land Information System',              description: 'An application to effectively manage the day-to-day activities of the Osun state ministry of lands.',        bg: '#24613D', textColor: '#FFFFFF', image: project2, href: '/projects/land-parcel' },
+  { logo: image27Logo,  title: 'EKEDC Asset Mapping and Customer Enumeration',     description: 'To ascertain the number of customers per asset of Eko electric in readiness for their SCADA project.',     bg: '#2B295B', textColor: '#FFFFFF', image: project1, href: '/projects/asset-mapping' },
+  { logo: googLogo,     title: 'Google Street View',                               description: 'Collect street names, environmental features, and building details to aid remote view of locations.',        bg: '#F8CE08', textColor: '#000000', image: assetMap, href: '/projects/google-street-view' },
+  { logo: pol2Logo,     title: 'Thematic Mapping of restricted area for mining.',  description: 'Production Of Thematic Mapping of Areas Restricted From Mining Activities in Nigeria.',                    bg: '#033705', textColor: '#FFFFFF', image: tMap,     href: '/projects/thematic-mapping' },
+  { logo: almLogo,      title: 'Alma Beach',                                       description: 'Evaluate survey plan and set out the proposed coastal road right of way.',                                   bg: '#B0E4FE', textColor: '#000000', image: alBeach,  href: '/projects/alma-beach' },
+];
 
-interface DisplayProject { logo: string; title: string; description: string; cardBackground: string; bg: string; image: string; href: string; }
 
-function getText(value?: string | null, fallback?: string): string {
-  const text = value?.trim();
-  return text ? text : (fallback ?? '');
-}
+interface DisplayProject { logo: string; title: string; description: string; bg: string; textColor: string; image: string; href: string; }
 
 // ── Arrow helper ──────────────────────────────────────────────────────────
 function ChevronRight() {
@@ -58,26 +64,24 @@ function ChevronRight() {
 
 
 // ── Single card ───────────────────────────────────────────────────────────
-function ProjectCard({ logo, title, description, bg, cardBackground, image, href, index, isVisible, isMobile }: DisplayProject & { index: number; isVisible: boolean; isMobile: boolean }) {
-  const isDark = ['#00008E','#2B295B','#2E7D32','#4A90D9'].includes(bg);
-  const textColor = isDark ? '#FFFFFF' : '#010527';
-  const descColor = isDark ? 'rgba(255,255,255,0.85)' : 'rgba(1,5,39,0.75)';
-  const btnBg     = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(1,5,39,0.12)';
-  const btnColor  = isDark ? '#FFFFFF' : '#010527';
-  const linkPath = getLinkPath(href); // Ensure the href is always in the correct format
+function ProjectCard({ logo, title, description, bg, textColor, image, href, index, isVisible, isMobile }: DisplayProject & { index: number; isVisible: boolean; isMobile: boolean }) {
+  const isLight = textColor === '#000000' || textColor === '#1a1a1a';
+  const descColor  = isLight ? 'rgba(0,0,0,0.75)'   : 'rgba(255,255,255,0.85)';
+  const btnBg      = isLight ? 'rgba(0,0,0,0.12)'   : 'rgba(255,255,255,0.18)';
+  const btnColor   = textColor;
+  const linkPath = getLinkPath(href);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 32 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: 0.08 + index * 0.1 }}
-      style={{ background: cardBackground, borderRadius: '24px', border: '1px solid rgba(0,0,0,0.08)', display: 'flex', flexDirection: isMobile ? 'column' : 'row', overflow: 'hidden', minHeight: isMobile ? 'auto' : '450px', position: 'relative' }}
+      style={{ background: bg, borderRadius: '24px', border: '1px solid rgba(0,0,0,0.08)', display: 'flex', flexDirection: isMobile ? 'column' : 'row', overflow: 'hidden', minHeight: isMobile ? 'auto' : '450px', position: 'relative' }}
     >
       {/* Content */}
       <div style={{ padding: isMobile ? '24px 20px' : '40px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: '16px', zIndex: 1, flex: isMobile ? 'none' : 1 }}>
         <img src={logo} alt={title} style={{ height: isMobile ? '32px' : '40px', width: 'auto', objectFit: 'contain', objectPosition: 'left', maxWidth: '120px' }} />
-        <h3 style={{ fontFamily: satoshi, fontWeight: 700, fontSize: isMobile ? 'clamp(18px,5vw,24px)' : 'clamp(20px,2.5vw,28px)', lineHeight: '130%', color: textColor, margin: 0, maxWidth: isMobile ? '100%' : '400px' }}>{title}</h3>
-        <p style={{ fontFamily: satoshi, fontWeight: 400, fontSize: isMobile ? '14px' : '15px', lineHeight: '160%', color: descColor, margin: 0, maxWidth: isMobile ? '100%' : '380px' }}>{description}</p>
+        <h3 style={{ fontFamily: satoshi, fontWeight: 700, fontSize: isMobile ? 'clamp(18px,5vw,24px)' : 'clamp(20px,2.5vw,28px)', lineHeight: '130%', color: textColor, margin: 0, maxWidth: isMobile ? '100%' : '400px' }}>{title}</h3>        <p style={{ fontFamily: satoshi, fontWeight: 400, fontSize: isMobile ? '14px' : '15px', lineHeight: '160%', color: descColor, margin: 0, maxWidth: isMobile ? '100%' : '380px' }}>{description}</p>
         <Link to={linkPath} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: isMobile ? '8px 20px' : '10px 24px', borderRadius: '10px', background: btnBg, color: btnColor, fontFamily: satoshi, fontWeight: 600, fontSize: '14px', textDecoration: 'none', width: 'fit-content', transition: 'opacity 200ms', marginTop: '8px' }}
           onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
           onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
@@ -144,22 +148,36 @@ export default function ProjectsList() {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { projects: cmsProjects } = useProjectsQuery();
 
-  // Build display list from CMS, falling back per slot
+  // Build display list: sort CMS entries by PROJECT_ORDER, apply fixed colours
   const displayProjects: DisplayProject[] = (() => {
     if (!cmsProjects || cmsProjects.length === 0) return FALLBACK_PROJECTS;
-    return cmsProjects.map((entry, i) => {
-      const p  = entry.project_item;
-      const fb = FALLBACK_PROJECTS[i];
-      return {
-        logo:        p?.cardLogo?.url ? (strapiUrl(p.cardLogo.url) ?? FALLBACK_LOGOS[i]) : FALLBACK_LOGOS[i],
-        title:       getText(p?.title, fb?.title),
-        description: getText(p?.description, fb?.description),
-        bg:          FALLBACK_BGS[i % FALLBACK_BGS.length],
-        image:       p?.image?.url ? (strapiUrl(p.image.url) ?? FALLBACK_IMAGES[i]) : FALLBACK_IMAGES[i],
-        href:        getText(p?.href, fb?.href) || '#',
-        cardBackground: p?.cardBackground || '#FFFFFF',
-      };
+
+    // Sort CMS entries to match PROJECT_ORDER
+    const sorted: DisplayProject[] = [];
+    PROJECT_ORDER.forEach((slot, slotIdx) => {
+      const fb = FALLBACK_PROJECTS[slotIdx];
+      // Try to find a matching CMS entry for this slot
+      const match = cmsProjects.find(entry => {
+        const t = (entry.project_item?.title ?? '').toLowerCase();
+        return t.includes(slot.key);
+      });
+      if (match) {
+        const p = match.project_item;
+        sorted.push({
+          logo:        p?.cardLogo?.url ? (strapiUrl(p.cardLogo.url) ?? slot.logo) : slot.logo,
+          title:       p?.title?.trim() || fb.title,
+          description: p?.description?.trim() || fb.description,
+          bg:          slot.bg,
+          textColor:   slot.textColor,
+          image:       p?.image?.url ? (strapiUrl(p.image.url) ?? slot.image) : slot.image,
+          href:        p?.href?.trim() || slot.href,
+        });
+      } else {
+        // No CMS match — use fallback for this slot
+        sorted.push(fb);
+      }
     });
+    return sorted;
   })();
 
   return (
