@@ -4,56 +4,46 @@ import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
 import { useProjectsQuery } from '../../../hooks/useProjectsQuery';
 import { strapiUrl } from '../../../services/queries/projectQuery';
+import { getLinkPath } from '../../../utils/getLink';
 
-// ── Fallback logo + card image assets ─────────────────────────────────────
+// ── Fallback logos (shown when CMS cardLogo is absent) ─────────────────────
 import image23Logo  from '../../../assets/image 23.png';
 import partner7Logo from '../../../assets/partner7.png';
 import mtnLogo      from '../../../assets/mtn.png';
-import image27Logo  from '../../../assets/image 27.png';
 import partner6Logo from '../../../assets/partner6.png';
-import almLogo      from '../../../assets/alm.png';
+import image27Logo  from '../../../assets/image 27.png';
 import googLogo     from '../../../assets/goog.png';
 import pol2Logo     from '../../../assets/pol2.png';
-import project1     from '../../../assets/project1.png';
-import project2     from '../../../assets/project2.png';
-import project3     from '../../../assets/project3.png';
-import alBeach      from '../../../assets/al-beach.png';
-import assetMap     from '../../../assets/asset-map.png';
-import tMap         from '../../../assets/t-map.png';
-import { getLinkPath } from '../../../utils/getLink';
+import almLogo      from '../../../assets/alm.png';
 
 const satoshi = 'Satoshi, Inter, sans-serif';
 
-// ── Ordered project style config ───────────────────────────────────────────
-// Order and colours are fixed regardless of CMS sort order.
-// `key` matches a substring of the project title (case-insensitive).
-const PROJECT_ORDER: { key: string; bg: string; textColor: string; logo: string; image: string; href: string }[] = [
-  { key: 'lag ferry',      bg: '#0093DD', textColor: '#FFFFFF', logo: image23Logo,  image: project2,  href: '/projects/lag-ferry' },
-  { key: 'axa',            bg: '#00008E', textColor: '#FFFFFF', logo: partner7Logo, image: project1,  href: '/projects/risk-geo-platform' },
-  { key: 'mtn',            bg: '#FFC403', textColor: '#000000', logo: mtnLogo,      image: project3,  href: '/projects/mtn-coverage-locator' },
-  { key: 'olis',           bg: '#24613D', textColor: '#FFFFFF', logo: partner6Logo, image: project2,  href: '/projects/land-parcel' },
-  { key: 'ekedc',          bg: '#2B295B', textColor: '#FFFFFF', logo: image27Logo,  image: project1,  href: '/projects/asset-mapping' },
-  { key: 'google street',  bg: '#F8CE08', textColor: '#000000', logo: googLogo,     image: assetMap,  href: '/projects/google-street-view' },
-  { key: 'thematic',       bg: '#033705', textColor: '#FFFFFF', logo: pol2Logo,     image: tMap,      href: '/projects/thematic-mapping' },
-  { key: 'alma beach',     bg: '#B0E4FE', textColor: '#000000', logo: almLogo,      image: alBeach,   href: '/projects/alma-beach' },
-];
+// ── Slot config — keyed by href (stable CMS identifier) ───────────────────
+// bg and textColor are always enforced from here regardless of CMS.
+// logo is a fallback only if CMS cardLogo is absent.
+// Order in this array = render order.
+const SLOTS = [
+  { href: '/projects/lag-ferry',              bg: '#0093DD', textColor: '#FFFFFF', logo: image23Logo  },
+  { href: '/projects/risk-geo-platform',      bg: '#00008E', textColor: '#FFFFFF', logo: partner7Logo },
+  { href: '/projects/mtn-coverage-locator',   bg: '#FFC403', textColor: '#000000', logo: mtnLogo      },
+  { href: '/projects/land-parcel',            bg: '#24613D', textColor: '#FFFFFF', logo: partner6Logo },
+  { href: '/projects/asset-mapping',          bg: '#2B295B', textColor: '#FFFFFF', logo: image27Logo  },
+  { href: '/projects/google-street-view',     bg: '#F8CE08', textColor: '#000000', logo: googLogo     },
+  { href: '/projects/thematic-mapping',       bg: '#033705', textColor: '#FFFFFF', logo: pol2Logo     },
+  { href: '/projects/alma-beach',             bg: '#B0E4FE', textColor: '#000000', logo: almLogo      },
+] as const;
 
-// ── Hardcoded fallback projects (matches PROJECT_ORDER exactly) ────────────
-const FALLBACK_PROJECTS = [
-  { logo: image23Logo,  title: 'Geo-enabled ICT Surveillance Centre (Lag Ferry)',  description: 'Deployment of Geo-enabled ICT Surveillance centre for Boats, Ships in Lagos state.',                      bg: '#0093DD', textColor: '#FFFFFF', image: project2, href: '/projects/lag-ferry' },
-  { logo: partner7Logo, title: 'AXA Risk Geo-Platform',                            description: 'Polaris Digitech Limited has developed a platform that helps AXA Mansard assess insured assets.',           bg: '#00008E', textColor: '#FFFFFF', image: project1, href: '/projects/risk-geo-platform' },
-  { logo: mtnLogo,      title: 'MTN Coverage Locator',                             description: 'Providing MTNN staff and users with a web application to check signal strength and report poor coverage.',   bg: '#FFC403', textColor: '#000000', image: project3, href: '/projects/mtn-coverage-locator' },
-  { logo: partner6Logo, title: 'OLIS – Osun Land Information System',              description: 'An application to effectively manage the day-to-day activities of the Osun state ministry of lands.',        bg: '#24613D', textColor: '#FFFFFF', image: project2, href: '/projects/land-parcel' },
-  { logo: image27Logo,  title: 'EKEDC Asset Mapping and Customer Enumeration',     description: 'To ascertain the number of customers per asset of Eko electric in readiness for their SCADA project.',     bg: '#2B295B', textColor: '#FFFFFF', image: project1, href: '/projects/asset-mapping' },
-  { logo: googLogo,     title: 'Google Street View',                               description: 'Collect street names, environmental features, and building details to aid remote view of locations.',        bg: '#F8CE08', textColor: '#000000', image: assetMap, href: '/projects/google-street-view' },
-  { logo: pol2Logo,     title: 'Thematic Mapping of restricted area for mining.',  description: 'Production Of Thematic Mapping of Areas Restricted From Mining Activities in Nigeria.',                    bg: '#033705', textColor: '#FFFFFF', image: tMap,     href: '/projects/thematic-mapping' },
-  { logo: almLogo,      title: 'Alma Beach',                                       description: 'Evaluate survey plan and set out the proposed coastal road right of way.',                                   bg: '#B0E4FE', textColor: '#000000', image: alBeach,  href: '/projects/alma-beach' },
-];
+interface DisplayProject {
+  logo: string;
+  title: string;
+  description: string;
+  bg: string;
+  textColor: string;
+  image: string;
+  href: string;
+}
 
-
-interface DisplayProject { logo: string; title: string; description: string; bg: string; textColor: string; image: string; href: string; }
-
-// ── Arrow helper ──────────────────────────────────────────────────────────
+// ── Arrow ─────────────────────────────────────────────────────────────────
 function ChevronRight() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -62,14 +52,12 @@ function ChevronRight() {
   );
 }
 
-
-// ── Single card ───────────────────────────────────────────────────────────
+// ── Card ──────────────────────────────────────────────────────────────────
 function ProjectCard({ logo, title, description, bg, textColor, image, href, index, isVisible, isMobile }: DisplayProject & { index: number; isVisible: boolean; isMobile: boolean }) {
-  const isLight = textColor === '#000000' || textColor === '#1a1a1a';
-  const descColor  = isLight ? 'rgba(0,0,0,0.75)'   : 'rgba(255,255,255,0.85)';
-  const btnBg      = isLight ? 'rgba(0,0,0,0.12)'   : 'rgba(255,255,255,0.18)';
-  const btnColor   = textColor;
-  const linkPath = getLinkPath(href);
+  const isLight   = textColor === '#000000';
+  const descColor = isLight ? 'rgba(0,0,0,0.75)'  : 'rgba(255,255,255,0.85)';
+  const btnBg     = isLight ? 'rgba(0,0,0,0.12)'  : 'rgba(255,255,255,0.18)';
+  const linkPath  = getLinkPath(href);
 
   return (
     <motion.div
@@ -81,14 +69,17 @@ function ProjectCard({ logo, title, description, bg, textColor, image, href, ind
       {/* Content */}
       <div style={{ padding: isMobile ? '24px 20px' : '40px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: '16px', zIndex: 1, flex: isMobile ? 'none' : 1 }}>
         <img src={logo} alt={title} style={{ height: isMobile ? '32px' : '40px', width: 'auto', objectFit: 'contain', objectPosition: 'left', maxWidth: '120px' }} />
-        <h3 style={{ fontFamily: satoshi, fontWeight: 700, fontSize: isMobile ? 'clamp(18px,5vw,24px)' : 'clamp(20px,2.5vw,28px)', lineHeight: '130%', color: textColor, margin: 0, maxWidth: isMobile ? '100%' : '400px' }}>{title}</h3>        <p style={{ fontFamily: satoshi, fontWeight: 400, fontSize: isMobile ? '14px' : '15px', lineHeight: '160%', color: descColor, margin: 0, maxWidth: isMobile ? '100%' : '380px' }}>{description}</p>
-        <Link to={linkPath} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: isMobile ? '8px 20px' : '10px 24px', borderRadius: '10px', background: btnBg, color: btnColor, fontFamily: satoshi, fontWeight: 600, fontSize: '14px', textDecoration: 'none', width: 'fit-content', transition: 'opacity 200ms', marginTop: '8px' }}
+        <h3 style={{ fontFamily: satoshi, fontWeight: 700, fontSize: isMobile ? 'clamp(18px,5vw,24px)' : 'clamp(20px,2.5vw,28px)', lineHeight: '130%', color: textColor, margin: 0, maxWidth: isMobile ? '100%' : '400px' }}>{title}</h3>
+        <p style={{ fontFamily: satoshi, fontWeight: 400, fontSize: isMobile ? '14px' : '15px', lineHeight: '160%', color: descColor, margin: 0, maxWidth: isMobile ? '100%' : '380px' }}>{description}</p>
+        <Link
+          to={linkPath}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: isMobile ? '8px 20px' : '10px 24px', borderRadius: '10px', background: btnBg, color: textColor, fontFamily: satoshi, fontWeight: 600, fontSize: '14px', textDecoration: 'none', width: 'fit-content', transition: 'opacity 200ms', marginTop: '8px' }}
           onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
           onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
         >Read More <ChevronRight /></Link>
       </div>
 
-      {/* Desktop image - Increased width & thicker black bezel */}
+      {/* Desktop image */}
       {!isMobile && (
         <div style={{ width: 'clamp(380px, 48vw, 640px)', position: 'relative', alignSelf: 'stretch', display: 'flex', alignItems: 'flex-end', paddingRight: '40px', marginBottom: '-40px' }}>
           <div style={{ width: '100%', height: '85%', borderRadius: '20px 20px 0 0', overflow: 'hidden', border: '14px solid #000', borderBottom: 'none', boxSizing: 'border-box' }}>
@@ -97,88 +88,42 @@ function ProjectCard({ logo, title, description, bg, textColor, image, href, ind
         </div>
       )}
 
-      {/* Mobile image - Fills the border box perfectly */}
+      {/* Mobile image */}
       {isMobile && (
-        <div style={{ 
-          position: 'relative', 
-          width: '100%', 
-          marginTop: '16px', 
-          display: 'flex', 
-          justifyContent: 'center',
-          paddingLeft: '20px',  
-          paddingRight: '20px', 
-          boxSizing: 'border-box',
-        }}>
-          <div style={{
-            width: '100%',
-            height: '240px', // Fixed height ensures the box is large enough for the image to fill
-            overflow: 'hidden',
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: '16px',
-            borderBottomLeftRadius: '0',
-            borderBottomRightRadius: '0',
-            borderLeft: '16px solid #000000',
-            borderTop: '16px solid #000000',
-            borderRight: '16px solid #000000',
-            borderBottom: 'none',
-            boxSizing: 'border-box',
-            position: 'relative',
-            marginBottom: '-24px', // Bleeds perfectly into the card's bottom edge
-          }}>
-            <img 
-              src={image} 
-              alt={title} 
-              style={{ 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'cover', 
-                objectPosition: 'center top', 
-                display: 'block' 
-              }} 
-            />
+        <div style={{ position: 'relative', width: '100%', marginTop: '16px', display: 'flex', justifyContent: 'center', paddingLeft: '20px', paddingRight: '20px', boxSizing: 'border-box' }}>
+          <div style={{ width: '100%', height: '240px', overflow: 'hidden', borderTopLeftRadius: '16px', borderTopRightRadius: '16px', borderBottomLeftRadius: '0', borderBottomRightRadius: '0', borderLeft: '16px solid #000000', borderTop: '16px solid #000000', borderRight: '16px solid #000000', borderBottom: 'none', boxSizing: 'border-box', position: 'relative', marginBottom: '-24px' }}>
+            <img src={image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
           </div>
         </div>
       )}
     </motion.div>
   );
 }
-// ── Main section ──────────────────────────────────────────────────────────
+
+// ── Main ──────────────────────────────────────────────────────────────────
 export default function ProjectsList() {
   const { ref, isVisible } = useScrollAnimation(0.05);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { projects: cmsProjects } = useProjectsQuery();
 
-  // Build display list: sort CMS entries by PROJECT_ORDER, apply fixed colours
-  const displayProjects: DisplayProject[] = (() => {
-    if (!cmsProjects || cmsProjects.length === 0) return FALLBACK_PROJECTS;
+  // Build display list in SLOTS order.
+  // Each slot is matched to its CMS entry by href — the only stable unique key.
+  // project_item.image.url is used directly with no fallback override.
+  // bg and textColor always come from SLOTS, never from CMS.
+  const displayProjects: DisplayProject[] = SLOTS.map(slot => {
+    const entry = cmsProjects.find(e => e.project_item?.href === slot.href);
+    const p = entry?.project_item;
 
-    // Sort CMS entries to match PROJECT_ORDER
-    const sorted: DisplayProject[] = [];
-    PROJECT_ORDER.forEach((slot, slotIdx) => {
-      const fb = FALLBACK_PROJECTS[slotIdx];
-      // Try to find a matching CMS entry for this slot
-      const match = cmsProjects.find(entry => {
-        const t = (entry.project_item?.title ?? '').toLowerCase();
-        return t.includes(slot.key);
-      });
-      if (match) {
-        const p = match.project_item;
-        sorted.push({
-          logo:        p?.cardLogo?.url ? (strapiUrl(p.cardLogo.url) ?? slot.logo) : slot.logo,
-          title:       p?.title?.trim() || fb.title,
-          description: p?.description?.trim() || fb.description,
-          bg:          slot.bg,
-          textColor:   slot.textColor,
-          image:       p?.image?.url ? (strapiUrl(p.image.url) ?? slot.image) : slot.image,
-          href:        p?.href?.trim() || slot.href,
-        });
-      } else {
-        // No CMS match — use fallback for this slot
-        sorted.push(fb);
-      }
-    });
-    return sorted;
-  })();
+    return {
+      href:        slot.href,
+      bg:          slot.bg,
+      textColor:   slot.textColor,
+      logo:        p?.cardLogo?.url ? strapiUrl(p.cardLogo.url)! : slot.logo,
+      title:       p?.title        ?? '',
+      description: p?.description  ?? '',
+      image:       p?.image?.url   ? strapiUrl(p.image.url)!    : '',
+    };
+  }).filter(p => p.title); // drop slots with no CMS data yet
 
   return (
     <section ref={ref} style={{ background: '#fff', paddingTop: '140px', paddingBottom: '80px' }}>
